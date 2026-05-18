@@ -122,11 +122,11 @@
         <h1 id="decoder-text" class="text-lg sm:text-2xl md:text-4xl leading-snug md:leading-relaxed font-bold tracking-widest text-glow text-center mb-8 md:mb-12 min-h-[80px] flex items-center justify-center w-full break-words"></h1>
 
         <div id="actions" class="flex flex-col sm:flex-row gap-4 md:gap-8 opacity-0 transition-opacity duration-1000 w-full sm:w-auto items-center justify-center">
-            <button id="btn-yes" class="btn-theme group w-full sm:w-auto">
+            <button id="btn-yes" class="btn-theme group w-auto">
                 <span class="relative z-10 font-bold transition-colors duration-200 text-sm md:text-base">Conectarme (Sí)</span>
                 <div class="absolute inset-0 h-full w-0 bg-white/30 group-hover:w-full transition-all duration-300 ease-out z-0"></div>
             </button>
-            <button id="btn-no" class="btn-theme text-red-500 border-red-500/50 bg-red-500/10 hover:bg-red-500 hover:text-white hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] w-full sm:w-auto text-sm md:text-base">
+            <button id="btn-no" class="btn-theme text-red-500 border-red-500/50 bg-red-500/10 hover:bg-red-500 hover:text-white hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] w-auto text-sm md:text-base">
                 Desconectar
             </button>
         </div>
@@ -144,9 +144,11 @@
         const romanticAudio = document.getElementById('romantic-audio');
 
         function unlockAudioForMobile() {
-            // Reproducimos silenciado en fondo para desbloquear iOS
-            romanticAudio.muted = true;
-            romanticAudio.play().catch(() => { console.log("Unlock failed but handled"); });
+            // Reproducimos y pausamos inmediatamente para engañar a iOS/Android y ganar permisos
+            romanticAudio.play().then(() => {
+                romanticAudio.pause();
+                romanticAudio.currentTime = 0;
+            }).catch(() => { console.log("Unlock failed but handled"); });
         }
 
         let hasBooted = false;
@@ -521,27 +523,23 @@
                 decoderEl.innerText = "¡Casi! Pero no... 😏";
             }
 
-            // Evitar que el botón intente ocupar toda la pantalla en móviles al escapar
-            btnNo.classList.remove('w-full');
+            // Asegurar estilos antes de calcular (forzar reflow)
             btnNo.style.width = 'auto';
-            btnNo.style.margin = '0'; // Remover márgenes residuales
+            btnNo.style.margin = '0';
+            void btnNo.offsetWidth; // FORZAR REFLOW MÓVIL
 
             // SOLUCIÓN CLAVE: Mover al body
             if (btnNo.parentNode !== document.body) {
                 document.body.appendChild(btnNo);
             }
 
-            // Usar visualViewport asegura compatibilidad estricta con navegadores móviles (Safari/Chrome)
-            const viewWidth = window.visualViewport ? window.visualViewport.width : document.documentElement.clientWidth;
-            const viewHeight = window.visualViewport ? window.visualViewport.height : document.documentElement.clientHeight;
-
-            const isMobile = viewWidth < 768;
+            const isMobile = window.innerWidth < 768;
             const paddingX = isMobile ? 20 : 50;
             const paddingY = isMobile ? 20 : 50;
             
-            // Calculamos el espacio máximo seguro
-            const maxX = viewWidth - btnNo.offsetWidth - (paddingX * 2);
-            const maxY = viewHeight - btnNo.offsetHeight - (paddingY * 2);
+            // Usamos innerWidth porque position:fixed SIEMPRE respeta el Layout Viewport
+            const maxX = window.innerWidth - btnNo.offsetWidth - (paddingX * 2);
+            const maxY = window.innerHeight - btnNo.offsetHeight - (paddingY * 2);
             
             const x = paddingX + (Math.random() * Math.max(0, maxX));
             const y = paddingY + (Math.random() * Math.max(0, maxY));
