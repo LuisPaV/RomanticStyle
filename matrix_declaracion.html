@@ -56,10 +56,11 @@
             color: var(--theme-light);
             text-shadow: 0 0 15px var(--theme-glow);
             animation: floatMessage 6s ease-in-out forwards;
+            white-space: nowrap; /* Evita que el texto flote raro en móvil */
         }
         @media (max-width: 768px) {
             .floating-message {
-                font-size: 1rem;
+                font-size: 0.9rem; /* Más pequeño en móviles */
             }
         }
     </style>
@@ -77,7 +78,7 @@
                 transition: text-shadow 2s ease, color 2s ease;
             }
             .btn-theme {
-                @apply px-6 py-3 font-mono uppercase tracking-widest rounded-sm relative overflow-hidden;
+                @apply px-4 py-3 md:px-6 md:py-3 font-mono text-sm md:text-base uppercase tracking-widest rounded-sm relative overflow-hidden;
                 background-color: transparent;
                 border: 1px solid var(--theme-main);
                 color: var(--theme-main);
@@ -91,21 +92,21 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen overflow-hidden font-mono relative flex items-center justify-center m-0 p-0">
+<body class="h-screen w-screen overflow-hidden font-mono relative flex items-center justify-center m-0 p-0 touch-none">
 
     <audio id="romantic-audio" src="romantico.mp3" loop preload="auto"></audio>
 
     <!-- 1. PANTALLA DE PRE-ARRANQUE -->
     <div id="pre-boot" class="absolute inset-0 z-[60] bg-black flex items-center justify-center cursor-pointer transition-opacity duration-1000">
         <p class="text-red-600 font-mono text-sm md:text-xl font-bold animate-pulse tracking-widest text-shadow-[0_0_10px_rgba(255,0,0,0.8)] text-center px-4">
-            [ PELIGRO: BRECHA EN EL SISTEMA - CLIC PARA INTERVENIR ]
+            [ PELIGRO: BRECHA EN EL SISTEMA - TOCA PARA INTERVENIR ]
         </p>
     </div>
 
     <!-- 2. PANTALLA DE ARRANQUE CON EL BOTÓN -->
     <div id="boot-screen" class="absolute inset-0 z-50 bg-black flex flex-col items-center justify-center opacity-0 transition-opacity duration-1000 hidden">
         <div id="red-alert-flash" class="absolute inset-0 bg-red-600/20 opacity-0 pointer-events-none transition-opacity duration-100"></div>
-        <button id="btn-start" class="btn-theme text-xl bg-red-600/10 border-red-600 text-red-500 hover:bg-red-600 z-10">
+        <button id="btn-start" class="btn-theme text-lg md:text-xl bg-red-600/10 border-red-600 text-red-500 hover:bg-red-600 z-10 w-[80%] md:w-auto text-center">
             > INICIAR PROTOCOLO_
         </button>
     </div>
@@ -116,16 +117,17 @@
     <div id="vignette" class="absolute inset-0 z-10 pointer-events-none transition-colors duration-[2000ms]" 
          style="background: radial-gradient(circle at center, transparent 0%, var(--theme-dark) 100%); opacity: 0.85;"></div>
 
-    <main class="relative z-20 flex flex-col items-center justify-center p-8 md:p-12 glass-terminal max-w-4xl min-w-[300px] md:min-w-[700px] min-h-[300px] transition-transform duration-1000 transform scale-95 opacity-0" id="main-terminal">
+    <!-- Adaptación Móvil: w-[90%] en lugar de max-w-4xl para que no toque los bordes -->
+    <main class="relative z-20 flex flex-col items-center justify-center p-6 md:p-12 glass-terminal w-[90%] max-w-lg md:max-w-4xl md:min-w-[700px] min-h-[250px] md:min-h-[300px] transition-transform duration-1000 transform scale-95 opacity-0" id="main-terminal">
         
-        <h1 id="decoder-text" class="text-2xl md:text-4xl leading-relaxed font-bold tracking-widest text-glow text-center mb-12 min-h-[80px] flex items-center justify-center"></h1>
+        <h1 id="decoder-text" class="text-xl md:text-4xl leading-relaxed font-bold tracking-widest text-glow text-center mb-8 md:mb-12 min-h-[80px] flex items-center justify-center"></h1>
 
-        <div id="actions" class="flex gap-4 md:gap-8 opacity-0 transition-opacity duration-1000">
-            <button id="btn-yes" class="btn-theme group">
+        <div id="actions" class="flex flex-col md:flex-row gap-4 md:gap-8 opacity-0 transition-opacity duration-1000 w-full md:w-auto items-center">
+            <button id="btn-yes" class="btn-theme group w-full md:w-auto">
                 <span class="relative z-10 font-bold transition-colors duration-200">Conectarme (Sí)</span>
                 <div class="absolute inset-0 h-full w-0 bg-white/30 group-hover:w-full transition-all duration-300 ease-out z-0"></div>
             </button>
-            <button id="btn-no" class="px-6 py-3 bg-red-500/10 border border-red-500/50 text-red-500/80 font-mono text-sm md:text-base uppercase tracking-widest transition-all duration-200 hover:bg-red-500 hover:text-white hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] rounded-sm">
+            <button id="btn-no" class="px-6 py-3 bg-red-500/10 border border-red-500/50 text-red-500/80 font-mono text-sm md:text-base uppercase tracking-widest transition-all duration-200 hover:bg-red-500 hover:text-white hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] rounded-sm w-full md:w-auto">
                 Desconectar
             </button>
         </div>
@@ -143,9 +145,22 @@
         const bootScreen = document.getElementById('boot-screen');
         const terminalEl = document.getElementById('main-terminal');
         const redFlash = document.getElementById('red-alert-flash');
+        const romanticAudio = document.getElementById('romantic-audio'); // Movido arriba para acceso global
+
+        // Función clave para móviles (iOS/Android): Desbloquear el motor de audio
+        function unlockAudioForMobile() {
+            // Reproducimos y pausamos inmediatamente. Esto le dice a Apple/Google: "El usuario permitió el audio".
+            romanticAudio.play().then(() => {
+                romanticAudio.pause();
+                romanticAudio.currentTime = 0;
+            }).catch(() => {}); // Ignorar error si no hay archivo aún
+        }
 
         preBoot.addEventListener('click', () => {
             if (!audioCtx) audioCtx = new AudioContext();
+            
+            // DESBLOQUEO MÓVIL
+            unlockAudioForMobile();
             
             preBoot.style.opacity = '0';
             setTimeout(() => { preBoot.style.display = 'none'; }, 1000);
@@ -247,7 +262,6 @@
             setInterval(() => {
                 const msg = msgs[Math.floor(Math.random() * msgs.length)];
                 
-                // Obtener las dimensiones reales de la caja de cristal
                 const terminal = document.getElementById('main-terminal');
                 const rect = terminal.getBoundingClientRect();
                 
@@ -256,36 +270,36 @@
                 const halfW = rect.width / 2;
                 const halfH = rect.height / 2;
                 
-                // Distancia de separación para que no toquen el cristal
-                const padding = 60; 
+                const isMobile = window.innerWidth < 768;
+                const padding = isMobile ? 30 : 60; 
                 let x, y;
 
                 // 0: Arriba, 1: Derecha, 2: Abajo, 3: Izquierda
-                const side = Math.floor(Math.random() * 4);
+                // En móvil es mejor que salgan arriba o abajo porque no hay espacio a los lados
+                const side = isMobile ? (Math.random() > 0.5 ? 0 : 2) : Math.floor(Math.random() * 4);
                 
                 if (side === 0) { // Arriba
-                    x = centerX - halfW - 100 + Math.random() * (rect.width + 100);
-                    y = centerY - halfH - padding - (Math.random() * 80);
+                    x = centerX - halfW + Math.random() * rect.width;
+                    y = centerY - halfH - padding - (Math.random() * 50);
                 } else if (side === 1) { // Derecha
-                    x = centerX + halfW + padding + (Math.random() * 50);
+                    x = centerX + halfW + padding + (Math.random() * 20);
                     y = centerY - halfH + Math.random() * rect.height;
                 } else if (side === 2) { // Abajo
-                    x = centerX - halfW - 100 + Math.random() * (rect.width + 100);
-                    y = centerY + halfH + padding + (Math.random() * 80);
+                    x = centerX - halfW + Math.random() * rect.width;
+                    y = centerY + halfH + padding + (Math.random() * 50);
                 } else { // Izquierda
-                    x = centerX - halfW - padding - 250 - (Math.random() * 50); // 250 compensa el largo del texto
+                    x = centerX - halfW - padding - 150 - (Math.random() * 20); 
                     y = centerY - halfH + Math.random() * rect.height;
                 }
 
-                // Asegurar que no se oculten fuera de la ventana del navegador
-                x = Math.max(20, Math.min(x, window.innerWidth - 300));
-                y = Math.max(20, Math.min(y, window.innerHeight - 50));
+                // Asegurar que no se oculten fuera de la ventana
+                x = Math.max(10, Math.min(x, window.innerWidth - 200));
+                y = Math.max(10, Math.min(y, window.innerHeight - 50));
 
                 const container = document.createElement('div');
                 container.style.position = 'absolute';
                 container.style.left = `${x}px`;
                 container.style.top = `${y}px`;
-                // z-index 15 para que parezca que nacen por detrás del cuadro
                 container.style.zIndex = '15';
                 container.style.pointerEvents = 'none';
                 
@@ -299,7 +313,6 @@
                 container.appendChild(textSpan);
                 document.body.appendChild(container);
 
-                // Limpiar del DOM cuando termina la animación
                 setTimeout(() => { container.remove(); }, 6000);
             }, 1200);
         }
@@ -316,7 +329,8 @@
         const romanticChars = ['❤', '💕', '💖', '🌸', '✨', 'A', 'M', 'O', 'R', 'T', 'E', 'Q', 'U', 'I', 'E', 'R', 'O', 'I', 'N', 'F', 'I', 'N', 'I', 'T', 'O'];
 
         let currentChars = matrixChars;
-        const fontSize = 16;
+        // Ajustar lluvia al tamaño del dispositivo
+        const fontSize = window.innerWidth < 768 ? 12 : 16;
         let columns = canvas.width / fontSize;
         let drops = Array(Math.floor(columns)).fill(1);
 
@@ -357,7 +371,7 @@
         // 2. HISTORIA SECUENCIAL Y DECODIFICACIÓN
         // ==========================================
         const sequence = [
-            "INICIANDO ESCANEO DE SISTEMA...",
+            "INICIANDO ESCANEO...",
             "ANOMALÍA DETECTADA: LATIDOS ACELERADOS.",
             "ERES LA CONEXIÓN QUE SIEMPRE BUSQUÉ.",
             "¿QUIERES ESTAR CONMIGO?"
@@ -365,7 +379,6 @@
         
         const decoderEl = document.getElementById('decoder-text');
         const actionsEl = document.getElementById('actions');
-        const romanticAudio = document.getElementById('romantic-audio');
         
         let currentMessageIndex = 0;
 
@@ -395,18 +408,19 @@
                             currentChars = romanticChars;
                             
                             romanticAudio.volume = 0;
+                            // Aseguramos que empiece desde el segundo 0
+                            romanticAudio.currentTime = 0; 
                             romanticAudio.play().then(() => {
                                 let vol = 0;
                                 let fadeInterval = setInterval(() => {
-                                    if(vol < 0.9) { vol += 0.1; romanticAudio.volume = vol; }
+                                    if(vol < 0.9) { vol += 0.1; romanticAudio.volume = Math.min(1, vol); }
                                     else { clearInterval(fadeInterval); }
                                 }, 200);
-                            }).catch(e => console.log("Audio falló", e));
+                            }).catch(e => console.log("Audio falló en móvil/escritorio", e));
                             
                             document.querySelector('#btn-yes span').innerText = "¡SÍ, QUIERO! 💕";
                             document.getElementById('btn-no').innerText = "Me lo pierdo :(";
 
-                            // EMPEZAR EFECTO DE MENSAJES FLOTANTES
                             spawnRomanticMessages();
                         }, 800);
                     } else {
@@ -419,19 +433,38 @@
         }
 
         // ==========================================
-        // 3. MICRO-INTERACCIONES
+        // 3. MICRO-INTERACCIONES Y TRAMPA DE MÓVIL
         // ==========================================
         const btnNo = document.getElementById('btn-no');
         const btnYes = document.getElementById('btn-yes');
 
-        btnNo.addEventListener('mouseover', () => {
-            const maxX = window.innerWidth - btnNo.offsetWidth - 50;
-            const maxY = window.innerHeight - btnNo.offsetHeight - 50;
+        function moveBtnNo() {
+            const isMobile = window.innerWidth < 768;
+            // Reducir la distancia en móvil para que no se salga de la pantalla
+            const paddingX = isMobile ? 10 : 50;
+            const paddingY = isMobile ? 10 : 50;
+            
+            const maxX = window.innerWidth - btnNo.offsetWidth - paddingX;
+            const maxY = window.innerHeight - btnNo.offsetHeight - paddingY;
+            
             const x = Math.random() * maxX - (window.innerWidth / 2) + (btnNo.offsetWidth / 2);
             const y = Math.random() * maxY - (window.innerHeight / 2) + (btnNo.offsetHeight / 2);
+            
             btnNo.style.transform = `translate(${x}px, ${y}px)`;
             btnNo.style.position = 'absolute';
             btnNo.style.zIndex = '50';
+        }
+
+        // Para computadoras
+        btnNo.addEventListener('mouseover', moveBtnNo);
+        // Para celulares (evita que lo toquen)
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            moveBtnNo();
+        });
+        btnNo.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            moveBtnNo();
         });
 
         btnYes.addEventListener('click', () => {
