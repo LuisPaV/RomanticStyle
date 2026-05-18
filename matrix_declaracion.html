@@ -93,8 +93,6 @@
 </head>
 <body class="h-screen w-screen overflow-hidden font-mono relative flex items-center justify-center m-0 p-0 touch-none">
 
-    <audio id="romantic-audio" src="romantico.mp3" loop preload="auto"></audio>
-
     <!-- 1. PANTALLA DE PRE-ARRANQUE -->
     <div id="pre-boot" class="absolute inset-0 z-[60] bg-black flex items-center justify-center cursor-pointer transition-opacity duration-1000">
         <p class="text-red-600 font-mono text-sm md:text-xl font-bold animate-pulse tracking-widest text-shadow-[0_0_10px_rgba(255,0,0,0.8)] text-center px-4 leading-relaxed">
@@ -134,31 +132,28 @@
 
     <script>
         const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
+        let audioCtx = new AudioContext(); // Se crea inicialmente suspendido
         let alarmInterval;
+        let romanticBuffer = null;
         
         const preBoot = document.getElementById('pre-boot');
         const bootScreen = document.getElementById('boot-screen');
         const terminalEl = document.getElementById('main-terminal');
         const redFlash = document.getElementById('red-alert-flash');
-        const romanticAudio = document.getElementById('romantic-audio');
 
-        function unlockAudioForMobile() {
-            // Reproducimos y pausamos inmediatamente para engañar a iOS/Android y ganar permisos
-            romanticAudio.play().then(() => {
-                romanticAudio.pause();
-                romanticAudio.currentTime = 0;
-            }).catch(() => { console.log("Unlock failed but handled"); });
-        }
+        // Precargar el archivo de audio en memoria usando fetch (solución definitiva para móviles)
+        fetch('romantico.mp3')
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => { romanticBuffer = audioBuffer; })
+            .catch(e => console.log("No se pudo cargar romantico.mp3. Asegúrate de que el archivo existe y estás en un servidor local.", e));
 
         let hasBooted = false;
         preBoot.addEventListener('click', () => {
             if (hasBooted) return; // Evitar multiples clics que rompen el audio
             hasBooted = true;
 
-            if (!audioCtx) audioCtx = new AudioContext();
-            
-            unlockAudioForMobile();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
             
             preBoot.style.opacity = '0';
             setTimeout(() => { preBoot.style.display = 'none'; }, 1000);
@@ -444,20 +439,24 @@
                             document.body.classList.add('romantic-mode');
                             currentChars = romanticChars;
                             
-                            // Activar Audio Romántico
-                            romanticAudio.muted = false;
-                            romanticAudio.volume = 0;
-                            romanticAudio.currentTime = 0;
-                            let playPromise = romanticAudio.play();
-                            
-                            if (playPromise !== undefined) {
-                                playPromise.then(() => {
-                                    let vol = 0;
-                                    let fadeInterval = setInterval(() => {
-                                        if(vol < 0.9) { vol += 0.1; romanticAudio.volume = Math.min(1, vol); }
-                                        else { clearInterval(fadeInterval); }
-                                    }, 200);
-                                }).catch(e => console.log("Playback failed:", e));
+                            // Activar Audio Romántico usando Web Audio API (Inmune a bloqueos móviles)
+                            if (romanticBuffer && audioCtx) {
+                                const source = audioCtx.createBufferSource();
+                                source.buffer = romanticBuffer;
+                                source.loop = true;
+                                
+                                const gainNode = audioCtx.createGain();
+                                gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // Volumen inicial 0
+                                
+                                source.connect(gainNode);
+                                gainNode.connect(audioCtx.destination);
+                                
+                                source.start(0);
+                                
+                                // Fade In suave hasta volumen 0.9 en 2.5 segundos
+                                gainNode.gain.linearRampToValueAtTime(0.9, audioCtx.currentTime + 2.5);
+                            } else {
+                                console.log("El buffer romántico no estaba listo.");
                             }
                             
                             document.querySelector('#btn-yes span').innerText = "¡SÍ, QUIERO! 💕";
