@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Software Odontológico Perú 🇵🇪 • Premium Hub</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        clinical: {
+                            cyan: '#06b6d4',
+                            violet: '#8b5cf6',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            gold: '#fbbf24',
+                            darkBg: '#050811',
+                            cardBg: '#090f1d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050811;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(9, 15, 29, 0.65);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Gold Breathing Glow for OdonSystemDM */
+        .gold-glow-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(251, 191, 36, 0.25);
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.05);
+            animation: goldGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes goldGlow {
+            0%, 100% {
+                border-color: rgba(251, 191, 36, 0.3);
+                box-shadow: 0 0 20px rgba(251, 191, 36, 0.05);
+            }
+            50% {
+                border-color: rgba(251, 191, 36, 0.65);
+                box-shadow: 0 0 35px rgba(251, 191, 36, 0.25);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050811;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between p-4 md:p-8">
+
+    <!-- HEADER -->
+    <header class="w-full max-w-7xl mx-auto flex items-center justify-between py-5 border-b border-white/5 select-none mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-clinical-cyan/10 rounded-xl flex items-center justify-center border border-clinical-cyan/20">
+                <span class="text-xl">🦷</span>
+            </div>
+            <div>
+                <h1 class="text-sm font-bold tracking-wider text-clinical-cyan uppercase">Dental Tech Hub Perú</h1>
+                <p class="text-[10px] text-gray-500">Comparador de Sistemas y Software Odontológico en el mercado peruano</p>
+            </div>
+        </div>
+        <span class="text-2xs font-mono bg-white/5 px-3 py-1.5 rounded-full border border-white/5 text-gray-400">MAY 2026 AUDIT • ENTERPRISE SUITE EDITION</span>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-10">
+        
+        <!-- INTRO & CALCULATOR FILTER PANEL -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            <div class="lg:col-span-7 flex flex-col justify-center gap-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+                    Encuentra el Software Dental <span class="text-transparent bg-clip-text bg-gradient-to-r from-clinical-cyan to-clinical-violet">Perfecto para tu Clínica</span>
+                </h2>
+                <p class="text-sm text-gray-400 leading-relaxed max-w-xl">
+                    Compara los precios de suscripciones reales, licencias corporativas, comisiones de dentistas, facturación de la SUNAT y la prevención de pérdidas por materiales vencidos en el Perú.
+                </p>
+                <div class="flex flex-wrap gap-3 mt-2">
+                    <span class="text-3xs font-semibold px-3 py-1 bg-clinical-cyan/10 text-clinical-cyan border border-clinical-cyan/20 rounded-full uppercase tracking-wider">Odontograma 2.0</span>
+                    <span class="text-3xs font-semibold px-3 py-1 bg-clinical-violet/10 text-clinical-violet border border-clinical-violet/20 rounded-full uppercase tracking-wider">Facturación SUNAT</span>
+                    <span class="text-3xs font-semibold px-3 py-1 bg-clinical-gold/10 text-clinical-gold border border-clinical-gold/20 rounded-full uppercase tracking-wider">Inventario FEFO</span>
+                    <span class="text-3xs font-semibold px-3 py-1 bg-clinical-emerald/10 text-clinical-emerald border border-clinical-emerald/20 rounded-full uppercase tracking-wider">SignalR Tiempo Real</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Estimator Card -->
+            <div class="lg:col-span-5 glass-card rounded-3xl p-6 border border-white/5 shadow-2xl flex flex-col gap-5 justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-gray-300 uppercase tracking-widest flex items-center gap-2 mb-4">
+                        <span class="text-clinical-cyan">⚡</span> Escala de tu Consultorio
+                    </h3>
+                    
+                    <!-- Box Slider -->
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center text-xs font-semibold">
+                            <span class="text-gray-400">Tamaño del Consultorio:</span>
+                            <span id="box-count-label" class="text-clinical-cyan text-sm font-bold">1 Box Dental (Sillón)</span>
+                        </div>
+                        <input id="box-slider" type="range" min="1" max="10" step="1" value="1" class="w-full accent-clinical-cyan cursor-pointer">
+                        <span class="text-[9px] text-gray-500">La cantidad de boxes activos afecta las licencias y la rentabilidad estimada.</span>
+                    </div>
+
+                    <!-- Add-ons selection -->
+                    <div class="flex flex-col gap-3 mt-4 border-t border-white/5 pt-4">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Funcionalidades requeridas adicionales:</span>
+                        
+                        <label class="flex items-center justify-between p-2 rounded-xl bg-black/20 border border-white/5 cursor-pointer hover:border-white/10 select-none">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs">🧾</span>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-semibold">Facturación Electrónica SUNAT</span>
+                                    <span class="text-[9px] text-gray-500">Envío directo de boletas/facturas clínicas.</span>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="add-sunat" class="accent-clinical-cyan">
+                        </label>
+
+                        <label class="flex items-center justify-between p-2 rounded-xl bg-black/20 border border-white/5 cursor-pointer hover:border-white/10 select-none">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs">💬</span>
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-semibold">Mensajes WhatsApp API Automáticos</span>
+                                    <span class="text-[9px] text-gray-500">Confirmación y recordatorio automático de citas.</span>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="add-whatsapp" class="accent-clinical-cyan">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Currency Switcher Toggle -->
+                <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                    <span class="text-xs text-gray-400">Ver precios en:</span>
+                    <div class="flex p-0.5 bg-black/40 border border-white/10 rounded-xl">
+                        <button type="button" id="currency-soles" class="px-3 py-1 text-2xs font-bold rounded-lg bg-clinical-cyan text-white transition-all duration-200" onclick="setCurrency('PEN')">Soles (S/.)</button>
+                        <button type="button" id="currency-dollars" class="px-3 py-1 text-2xs font-bold rounded-lg text-gray-400 hover:text-white transition-all duration-200" onclick="setCurrency('USD')">Dólares ($)</button>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- SOFTWARE DETAILED GRID CARDS -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            
+            <!-- CANDIDATE 1: ODONSYSTEMDM (TU SOFTWARE - HIGH PRESTIGE DORADO) -->
+            <div class="gold-glow-card rounded-3xl p-5 border flex flex-col justify-between hover:border-clinical-gold/60 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-clinical-gold/15 rounded-full blur-2xl group-hover:bg-clinical-gold/25 transition-all"></div>
+                <div>
+                    <!-- Badge -->
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[8px] font-extrabold px-2 py-1 bg-clinical-gold/10 text-clinical-gold border border-clinical-gold/20 rounded-md uppercase tracking-widest animate-pulse">👑 CORPORATE ENTERPRISE SUITE</span>
+                        <span class="text-xs">🏆</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-0.5">OdonSystemDM</h3>
+                    <p class="text-[9px] text-gray-400 mb-3">Ecosistema odontológico modular masivo con arquitectura desacoplada en .NET 8.</p>
+                    
+                    <!-- Dynamic Plan Selector inside Card -->
+                    <div class="flex flex-col gap-1.5 mb-3">
+                        <label for="odon-plan-selector" class="text-[8px] uppercase tracking-widest text-clinical-gold font-bold">Plan Comercial (27 Controllers):</label>
+                        <select id="odon-plan-selector" class="w-full px-2 py-2 bg-black/60 border border-clinical-gold/30 rounded-xl text-[10px] text-clinical-gold font-bold focus:outline-none focus:border-clinical-gold transition-all cursor-pointer" onchange="changeOdonPlan()">
+                            <option value="starter">Plan Starter (S/. 199/mes Base)</option>
+                            <option value="pro" selected>Plan Clinic Pro (S/. 349/mes Base)</option>
+                            <option value="elite">Plan Elite Corporate (S/. 549/mes Base)</option>
+                            <option value="perpetual">Licencia Perpetua Local (S/. 12,000 Pago Único)</option>
+                        </select>
+                    </div>
+
+                    <!-- Pricing dynamic output -->
+                    <div class="bg-clinical-gold/5 border border-clinical-gold/20 rounded-xl p-3 mb-3 text-center">
+                        <span class="text-[8px] text-clinical-gold uppercase tracking-widest block font-bold" id="odon-pricing-title">Plan Clinic Pro</span>
+                        <span id="price-odonsystem" class="text-xl font-black text-clinical-gold block my-0.5">S/. 349.00</span>
+                        <span class="text-[8px] text-gray-500" id="odon-pricing-desc">Completo e Ilimitado Boxes</span>
+                    </div>
+
+                    <!-- Features checklist -->
+                    <ul class="flex flex-col gap-1.5 text-[11px] text-gray-300 mb-4">
+                        <li class="flex items-center gap-1.5 text-clinical-gold"><span class="text-clinical-gold">★</span> Inventario FEFO & Archivos Rad</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Odontograma 2.0 dinámico MINSA</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Liquidación de Comisiones & SOAP</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Notificación en Tiempo Real (SignalR)</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Facturación SUNAT Nativa</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Despliegue IIS Híbrido Local/Nube</li>
+                    </ul>
+                </div>
+
+                <button class="w-full py-2 bg-clinical-gold hover:bg-yellow-400 text-slate-950 rounded-lg text-center text-xs font-black transition-all duration-200">
+                    Tu Software Activo ⚡
+                </button>
+            </div>
+
+            <!-- CANDIDATE 2: DENTALINK -->
+            <div class="glass-card rounded-3xl p-5 border border-white/5 flex flex-col justify-between hover:border-blue-500/20 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+                <div>
+                    <!-- Badge -->
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[8px] font-extrabold px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md uppercase tracking-widest">Líder Regional</span>
+                        <span class="text-xs">🌐</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-0.5">Dentalink</h3>
+                    <p class="text-[9px] text-gray-500 mb-3">Software en la nube de origen chileno altamente posicionado en el Perú.</p>
+                    
+                    <!-- Pricing dynamic output -->
+                    <div class="bg-black/30 border border-white/5 rounded-xl p-3 mb-3 text-center">
+                        <span class="text-[8px] text-gray-400 uppercase tracking-widest block font-bold">Costo Estimado Mensual</span>
+                        <span id="price-dentalink" class="text-xl font-black text-white block my-0.5">S/. 185.00</span>
+                        <span class="text-[8px] text-gray-500">Plan Pro (Escalable por Box)</span>
+                    </div>
+
+                    <!-- Features checklist -->
+                    <ul class="flex flex-col gap-1.5 text-[11px] text-gray-400 mb-4">
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Odontograma 2D & 3D interactivo</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Cálculo de comisiones a dentistas</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Control de Caja y Presupuestos</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-cyan">✓</span> Conector WhatsApp (costo extra)</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Facturación SUNAT integrada</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Hosting Local (Solo Nube)</li>
+                    </ul>
+                </div>
+
+                <a href="https://www.softwaredentalink.com" target="_blank" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-center text-xs font-bold transition-all duration-200">
+                    Visitar Web 🔗
+                </a>
+            </div>
+
+            <!-- CANDIDATE 3: DOCTOCLIQ -->
+            <div class="glass-card rounded-3xl p-5 border border-white/5 flex flex-col justify-between hover:border-clinical-emerald/20 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-clinical-emerald/10 rounded-full blur-2xl group-hover:bg-clinical-emerald/20 transition-all"></div>
+                <div>
+                    <!-- Badge -->
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[8px] font-extrabold px-2 py-0.5 bg-clinical-emerald/10 text-clinical-emerald border border-clinical-emerald/20 rounded-md uppercase tracking-widest">Opción Local Fija</span>
+                        <span class="text-xs">⚡</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-0.5">Doctocliq</h3>
+                    <p class="text-[9px] text-gray-500 mb-3">Plataforma dental peruana en la nube súper intuitiva y amigable.</p>
+                    
+                    <!-- Pricing dynamic output -->
+                    <div class="bg-black/30 border border-white/5 rounded-xl p-3 mb-3 text-center">
+                        <span class="text-[8px] text-gray-400 uppercase tracking-widest block font-bold">Costo Estimado Mensual</span>
+                        <span id="price-doctocliq" class="text-xl font-black text-white block my-0.5">S/. 129.00</span>
+                        <span class="text-[8px] text-gray-500">Plan Integral (Ilimitado)</span>
+                    </div>
+
+                    <!-- Features checklist -->
+                    <ul class="flex flex-col gap-1.5 text-[11px] text-gray-400 mb-4">
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Odontograma dinámico clínico</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Liquidación de comisiones médica</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Recordatorios WhatsApp nativos</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Boletas Electrónicas SUNAT</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Inventario inteligente FEFO</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Hosting Local (Solo Nube)</li>
+                    </ul>
+                </div>
+
+                <a href="https://www.doctocliq.com" target="_blank" class="w-full py-2 bg-clinical-emerald hover:bg-emerald-500 text-white rounded-lg text-center text-xs font-bold transition-all duration-200">
+                    Visitar Web 🔗
+                </a>
+            </div>
+
+            <!-- CANDIDATE 4: DOCTORALIA PRO -->
+            <div class="glass-card rounded-3xl p-5 border border-white/5 flex flex-col justify-between hover:border-pink-500/20 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl group-hover:bg-pink-500/20 transition-all"></div>
+                <div>
+                    <!-- Badge -->
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[8px] font-extrabold px-2 py-0.5 bg-pink-500/10 text-pink-400 border border-pink-500/20 rounded-md uppercase tracking-widest">Marketing & Citas</span>
+                        <span class="text-xs">🌟</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-0.5">Doctoralia Pro</h3>
+                    <p class="text-[9px] text-gray-500 mb-3">Enfoque principal en visibilidad, posicionamiento y captación de pacientes.</p>
+                    
+                    <!-- Pricing dynamic output -->
+                    <div class="bg-black/30 border border-white/5 rounded-xl p-3 mb-3 text-center">
+                        <span class="text-[8px] text-gray-400 uppercase tracking-widest block font-bold">Costo Estimado Mensual</span>
+                        <span id="price-doctoralia" class="text-xl font-black text-white block my-0.5">S/. 390.00</span>
+                        <span class="text-[8px] text-gray-500">Plan Especialista Pro</span>
+                    </div>
+
+                    <!-- Features checklist -->
+                    <ul class="flex flex-col gap-1.5 text-[11px] text-gray-400 mb-4">
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Posicionamiento Google y Directorio</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Agenda online integrada 24/7</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Campañas de Email & SMS marketing</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Receta digital y ficha clínica</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Liquidación comisiones dentistas</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Inventario inteligente FEFO</li>
+                    </ul>
+                </div>
+
+                <a href="https://www.doctoralia.pe" target="_blank" class="w-full py-2 bg-pink-600 hover:bg-pink-500 text-white rounded-lg text-center text-xs font-bold transition-all duration-200">
+                    Visitar Web 🔗
+                </a>
+            </div>
+
+            <!-- CANDIDATE 5: CLINIKA DENTAL -->
+            <div class="glass-card rounded-3xl p-5 border border-white/5 flex flex-col justify-between hover:border-clinical-amber/20 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-clinical-amber/10 rounded-full blur-2xl group-hover:bg-clinical-amber/20 transition-all"></div>
+                <div>
+                    <!-- Badge -->
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[8px] font-extrabold px-2 py-0.5 bg-clinical-amber/10 text-clinical-amber border border-clinical-amber/20 rounded-md uppercase tracking-widest">Nativo SUNAT</span>
+                        <span class="text-xs">🇵🇪</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-0.5">Clinika Dental</h3>
+                    <p class="text-[9px] text-gray-500 mb-3">Software local offline e híbrido con fuerte integración tributaria peruana.</p>
+                    
+                    <!-- Pricing dynamic output -->
+                    <div class="bg-black/30 border border-white/5 rounded-xl p-3 mb-3 text-center">
+                        <span class="text-[8px] text-gray-400 uppercase tracking-widest block font-bold">Costo Estimado Mensual</span>
+                        <span id="price-clinika" class="text-xl font-black text-white block my-0.5">S/. 99.00</span>
+                        <span class="text-[8px] text-gray-500">Plan Local / Invoicing</span>
+                    </div>
+
+                    <!-- Features checklist -->
+                    <ul class="flex flex-col gap-1.5 text-[11px] text-gray-400 mb-4">
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Facturación electrónica integrada</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Odontograma básico homologado</li>
+                        <li class="flex items-center gap-1.5"><span class="text-clinical-emerald">✓</span> Caja chica y conciliación básica</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Aplicación en la nube móvil fluida</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Portal Autónomo de Pacientes</li>
+                        <li class="flex items-center gap-1.5 text-rose-500"><span class="text-rose-500">✗</span> Notificación Tiempo Real (SignalR)</li>
+                    </ul>
+                </div>
+
+                <a href="#" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-center text-xs font-bold transition-all duration-200">
+                    Solicitar Demo 🔗
+                </a>
+            </div>
+
+        </section>
+
+        <!-- INTERACTIVE MATRIX COMPARATIVE TABLE (17 ENTERPRISE CLINICAL AND BUSINESS MODULES BASED ON CONTROLLERS) -->
+        <section class="glass-card rounded-3xl p-6 md:p-8 border border-white/5 shadow-2xl">
+            <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                <span class="text-clinical-cyan">📊</span> Tabla Detallada de Módulos del Sistema y Comparativa
+            </h3>
+
+            <div class="overflow-x-auto w-full">
+                <table class="w-full text-left border-collapse text-xs md:text-sm font-sans">
+                    <thead>
+                        <tr class="border-b border-white/10 text-gray-400 uppercase tracking-wider text-2xs">
+                            <th class="py-4 px-4">Módulos & Funciones (Ecosistema OdonSystemDM)</th>
+                            <th class="py-4 px-4 text-clinical-gold">OdonSystemDM (Tuyo)</th>
+                            <th class="py-4 px-4 text-blue-400">Dentalink</th>
+                            <th class="py-4 px-4 text-clinical-emerald">Doctocliq</th>
+                            <th class="py-4 px-4 text-pink-400">Doctoralia Pro</th>
+                            <th class="py-4 px-4 text-clinical-amber">Clinika Dental</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        
+                        <!-- 1. Historia Clínica -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">1. Historia Clínica SOAP & Anamnesis</td>
+                            <td class="py-4 px-4 text-clinical-gold font-bold">✓ Completo (Notas SOAP estructuradas + Anamnesis Oral)</td>
+                            <td class="py-4 px-4">✓ Completo (Anamnesis clínica general)</td>
+                            <td class="py-4 px-4">✓ Completo (Ficha digital del paciente)</td>
+                            <td class="py-4 px-4 text-gray-500">Básico (Formato médico general)</td>
+                            <td class="py-4 px-4 text-gray-500">Básico (Campos estáticos)</td>
+                        </tr>
+
+                        <!-- 2. Odontograma -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">2. Odontograma 2.0 & Evolución</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Odontograma 2.0 dinámico por caras y evolución dental</td>
+                            <td class="py-4 px-4 font-bold text-clinical-cyan">✓ Avanzado 3D interactivo y evolutivo</td>
+                            <td class="py-4 px-4">✓ Evolutivo digital e interactivo</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible (Ficha simple)</td>
+                            <td class="py-4 px-4 text-gray-500">Básico (Solo marcación manual)</td>
+                        </tr>
+
+                        <!-- 3. Inventario FEFO -->
+                        <tr class="bg-clinical-gold/5">
+                            <td class="py-4 px-4 font-bold text-clinical-gold">3. Inventario Inteligente FEFO (Materiales)</td>
+                            <td class="py-4 px-4 text-clinical-gold font-extrabold">★ Único con Alertas semáforo de vencimiento por lotes</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Kardex básico físico (Sin control de caducidad)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Básico (Solo control de cantidades físicas)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Control físico manual simple</td>
+                        </tr>
+
+                        <!-- 4. Gestión de Archivos y Radiografías -->
+                        <tr class="bg-clinical-gold/5">
+                            <td class="py-4 px-4 font-bold text-clinical-gold">4. Archivos Clínicos y Radiografías Rad</td>
+                            <td class="py-4 px-4 text-clinical-gold font-bold">✓ Visor digital con zoom de radiografías panorámicas</td>
+                            <td class="py-4 px-4">✓ Básico (Carga de archivos sin visor avanzado)</td>
+                            <td class="py-4 px-4">✓ Sí (Almacenamiento básico en nube)</td>
+                            <td class="py-4 px-4">✓ Sí (Almacenamiento de archivos adjuntos)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Solo almacenamiento en disco local</td>
+                        </tr>
+
+                        <!-- 5. Liquidaciones a Odontólogos -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">5. Liquidación Automática de Comisiones</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Sí (Comisiones por tratamiento y estado de cobros)</td>
+                            <td class="py-4 px-4">✓ Sí (Configuración compleja de comisiones)</td>
+                            <td class="py-4 px-4">✓ Sí (Cálculo según estado de facturación)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4">✓ Sí (Módulo financiero básico)</td>
+                        </tr>
+
+                        <!-- 6. Facturación SUNAT -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">6. Facturación Electrónica SUNAT Nativa</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Incluido Nativo (API directa OSE/PSE sin costos extra)</td>
+                            <td class="py-4 px-4 text-amber-500">Costo extra (Requiere PSE externo + licencia)</td>
+                            <td class="py-4 px-4 text-clinical-emerald">✓ Incluido Nativo (Emisión ilimitada CPE)</td>
+                            <td class="py-4 px-4 text-rose-400">No integrado</td>
+                            <td class="py-4 px-4 text-clinical-emerald">✓ Incluido Nativo (Integración directa)</td>
+                        </tr>
+
+                        <!-- 7. Portal del Paciente -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">7. Portal de Paciente (Reservas Online)</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Sí (Protección Google reCAPTCHA v3 & Honeypot)</td>
+                            <td class="py-4 px-4">✓ Sí (Agenda online configurable)</td>
+                            <td class="py-4 px-4">✓ Sí (Link de reserva directa)</td>
+                            <td class="py-4 px-4 font-bold text-pink-400">✓ Excelente (Líder del mercado en reserva online)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 8. Notificaciones Tiempo Real -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">8. Notificaciones SignalR en Tiempo Real</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ SignalR (WebSockets instantáneos en agenda de clínica)</td>
+                            <td class="py-4 px-4 text-amber-500">✗ Parcial (Requiere refrescar manualmente)</td>
+                            <td class="py-4 px-4">✓ Sí (Notificaciones del sistema)</td>
+                            <td class="py-4 px-4">✓ Sí (Agenda coordinada)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 9. Firma Digital -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">9. Consentimientos con Firma Biométrica</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Sí (Firma en tablet/celular del paciente + templates)</td>
+                            <td class="py-4 px-4">✓ Sí (Subida de PDF firmado digitalmente)</td>
+                            <td class="py-4 px-4 text-clinical-emerald">✓ Sí (Firma biométrica integrada)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 10. Órdenes de Laboratorio -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">10. Órdenes de Laboratorio Dental</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Sí (Seguimiento de prótesis y coronas externas)</td>
+                            <td class="py-4 px-4">✓ Sí (Control de laboratorio externo)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 11. Recetario Digital -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">11. Recetario Digital Especializado</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Sí (Firma, logo, vademécum y plantillas en PDF)</td>
+                            <td class="py-4 px-4">✓ Sí (Generación de PDF de receta estándar)</td>
+                            <td class="py-4 px-4">✓ Sí (Emisión de recetas clínicas)</td>
+                            <td class="py-4 px-4">✓ Sí (Receta médica general)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 12. Caja Chica & Bancos -->
+                        <tr>
+                            <td class="py-4 px-4 font-semibold text-gray-300">12. Caja Chica, Arqueos & Egresos</td>
+                            <td class="py-4 px-4 text-clinical-emerald font-bold">✓ Sí (Arqueo automático por turnos y cobros de caja)</td>
+                            <td class="py-4 px-4">✓ Sí (Flujo de caja detallado de la clínica)</td>
+                            <td class="py-4 px-4">✓ Sí (Control de caja chica diario)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4">✓ Sí (Caja local simple)</td>
+                        </tr>
+
+                        <!-- 13. Trazabilidad e Historial -->
+                        <tr class="bg-clinical-gold/5">
+                            <td class="py-4 px-4 font-bold text-clinical-gold">13. Trazabilidad & Auditoría Interna</td>
+                            <td class="py-4 px-4 text-clinical-gold font-bold">✓ Completo (Log detallado de acciones por usuario e IP)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Básico (Solo log de creación general)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 14. Roles y Permisos -->
+                        <tr class="bg-clinical-gold/5">
+                            <td class="py-4 px-4 font-bold text-clinical-gold">14. Roles y Permisos Granulares (Filtro)</td>
+                            <td class="py-4 px-4 text-clinical-gold font-bold">✓ Completo (PermissionFilter de acceso por vista y rol)</td>
+                            <td class="py-4 px-4">✓ Sí (Roles estándar)</td>
+                            <td class="py-4 px-4">✓ Sí (Roles básicos)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible (Acceso plano)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Roles muy básicos de acceso local</td>
+                        </tr>
+
+                        <!-- 15. Dashboard Gerencial -->
+                        <tr class="bg-clinical-gold/5">
+                            <td class="py-4 px-4 font-bold text-clinical-gold">15. Dashboard de Control Gerencial</td>
+                            <td class="py-4 px-4 text-clinical-gold font-bold">✓ Sí (KPIs de rentabilidad de boxes, caja e insumos)</td>
+                            <td class="py-4 px-4">✓ Sí (Estadísticas clínicas)</td>
+                            <td class="py-4 px-4">✓ Sí (Métricas de facturación básicas)</td>
+                            <td class="py-4 px-4">✓ Sí (KPIs de captación de pacientes)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ No disponible</td>
+                        </tr>
+
+                        <!-- 16. Reportes Avanzados -->
+                        <tr class="bg-clinical-gold/5">
+                            <td class="py-4 px-4 font-bold text-clinical-gold">16. Reportes Avanzados Financieros/Tratamientos</td>
+                            <td class="py-4 px-4 text-clinical-gold font-bold">✓ Completo (25+ reportes de tratamientos y comisiones)</td>
+                            <td class="py-4 px-4 font-bold text-clinical-cyan">✓ Avanzado (Graficador y balances exportables)</td>
+                            <td class="py-4 px-4">✓ Sí (Exportable en Excel)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Básico (Solo reporte de citas)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Básico (Reporte de facturación local)</td>
+                        </tr>
+
+                        <!-- 17. Flexibilidad de Despliegue -->
+                        <tr class="bg-clinical-cyan/5">
+                            <td class="py-4 px-4 font-bold text-clinical-cyan">17. Flexibilidad de Despliegue Híbrido</td>
+                            <td class="py-4 px-4 text-clinical-cyan font-bold">✓ Híbrido (Servidor IIS Local o Nube Azure/AWS)</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Solo Nube cerrada SaaS</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Solo Nube cerrada SaaS</td>
+                            <td class="py-4 px-4 text-rose-500">✗ Solo Nube cerrada SaaS</td>
+                            <td class="py-4 px-4">Solo instalación local estática</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ROI & DECISION RECOMMENDATION PANEL -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            <!-- Interactive Simulator Details -->
+            <div class="lg:col-span-6 glass-card rounded-3xl p-6 md:p-8 border border-white/5 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-clinical-cyan">📈</span> Calculadora de Retorno de Inversión (ROI)
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-6">
+                        Estima cuánto dinero y tiempo recuperará tu clínica reduciendo inasistencias y automatizando comisiones.
+                    </p>
+
+                    <div class="flex flex-col gap-4 font-sans">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-gray-400">Inasistencias reducidas (-35% citas canceladas):</span>
+                            <span id="roi-saved-money" class="font-bold text-clinical-emerald">S/. 1,200.00 / mes</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs border-t border-white/5 pt-3">
+                            <span class="text-gray-400">Tiempo de Recepcionista Ahorrado:</span>
+                            <span id="roi-saved-time" class="font-bold text-clinical-cyan">18 Horas / mes</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs border-t border-white/5 pt-3">
+                            <span class="text-gray-400">Costo Total Anual de Licencia de Software:</span>
+                            <span id="roi-software-cost" class="font-bold text-white">S/. 4,188.00 / año</span>
+                        </div>
+                        
+                        <div class="bg-clinical-cyan/5 border border-clinical-cyan/10 rounded-2xl p-4 mt-2 text-center">
+                            <span class="text-3xs text-clinical-cyan uppercase tracking-widest block font-bold">Retorno de Inversión Neto Estimado</span>
+                            <span id="roi-net-benefit" class="text-xl font-extrabold text-clinical-cyan block mt-1">S/. 12,180.00 / año de Ahorro</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-[10px] text-gray-500 leading-relaxed mt-4">
+                    *El ROI se calcula asumiendo un ticket promedio de consulta de S/. 80, reduciendo el ausentismo del 15% al 5% gracias a los recordatorios automatizados.
+                </div>
+            </div>
+
+            <!-- Recommendation Guide -->
+            <div class="lg:col-span-6 glass-card rounded-3xl p-6 md:p-8 border border-white/5 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="text-clinical-violet">💡</span> Guía de Recomendación Rápida
+                    </h3>
+
+                    <div class="flex flex-col gap-4 font-sans text-xs">
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-clinical-gold/10 border border-clinical-gold/20 flex items-center justify-center shrink-0">
+                                <span class="text-clinical-gold font-bold">★</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-0.5">Elige OdonSystemDM si:</h4>
+                                <p class="text-gray-400 leading-relaxed text-[11px]">Buscas el máximo control de inventario FEFO de resinas y anestesias, requieres desplegar el sistema localmente en tu propio servidor IIS por seguridad, y quieres notificaciones en tiempo real vía WebSockets (SignalR) con facturación SUNAT incluida de manera nativa.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 border-t border-white/5 pt-3">
+                            <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                                <span class="text-blue-400 font-bold">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-0.5">Elige Dentalink si:</h4>
+                                <p class="text-gray-400 leading-relaxed text-[11px]">Buscas robustez clínica tradicional de trayectoria multinacional, y cuentas con una clínica de 3 o más boxes dentales sin importar pagar costos de integración extra.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 border-t border-white/5 pt-3">
+                            <div class="w-8 h-8 rounded-lg bg-clinical-emerald/10 border border-clinical-emerald/20 flex items-center justify-center shrink-0">
+                                <span class="text-clinical-emerald font-bold">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-0.5">Elige Doctocliq si:</h4>
+                                <p class="text-gray-400 leading-relaxed text-[11px]">Deseas una plataforma ágil, 100% en la nube cerrada, con facturación SUNAT y WhatsApp incluidos en un plan plano básico sin servidor local.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full max-w-7xl mx-auto text-center py-6 border-t border-white/5 text-[10px] text-gray-500 tracking-wider z-10 mt-10">
+        Simulador Comparativo de Software Odontológico • Datos recopilados de cotizaciones y planes promedio en Lima, Perú • © 2026
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        const boxSlider = document.getElementById('box-slider');
+        const boxCountLabel = document.getElementById('box-count-label');
+        
+        const addSunat = document.getElementById('add-sunat');
+        const addWhatsapp = document.getElementById('add-whatsapp');
+
+        // Price elements
+        const priceOdonSystem = document.getElementById('price-odonsystem');
+        const priceDentalink = document.getElementById('price-dentalink');
+        const priceDoctocliq = document.getElementById('price-doctocliq');
+        const priceDoctoralia = document.getElementById('price-doctoralia');
+        const priceClinika = document.getElementById('price-clinika');
+
+        // ROI elements
+        const roiSavedMoney = document.getElementById('roi-saved-money');
+        const roiSavedTime = document.getElementById('roi-saved-time');
+        const roiSoftwareCost = document.getElementById('roi-software-cost');
+        const roiNetBenefit = document.getElementById('roi-net-benefit');
+
+        let activeCurrency = 'PEN';
+        let activeOdonPlan = 'pro'; // 'starter', 'pro', 'elite', 'perpetual'
+        const usdRate = 3.75; // 1 USD = 3.75 Soles approx in Peru
+
+        // Base Prices per Box/Specialist (in PEN) - Repositioned to high-ticket premium enterprise levels
+        const BASE_PRICES = {
+            odonsystem: {
+                starter: { base: 199, perBox: 40 },
+                pro: { base: 349, perBox: 60 },
+                elite: { base: 549, perBox: 80 },
+                perpetual: { base: 12000, perBox: 0 }
+            },
+            dentalink: { base: 140, perBox: 45 },      // 140 base + 45 per active box
+            doctocliq: { base: 129, perBox: 0 },       // Unlimited boxes flat rate
+            doctoralia: { base: 390, perBox: 80 },    // Base Pro + extra specialist license
+            clinika: { base: 99, perBox: 0 }           // Flat offline/hybrid license
+        };
+
+        function formatVal(value) {
+            if (activeCurrency === 'PEN') {
+                return 'S/. ' + value.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else {
+                return '$ ' + (value / usdRate).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
+        function setCurrency(currency) {
+            activeCurrency = currency;
+            const btnSoles = document.getElementById('currency-soles');
+            const btnDollars = document.getElementById('currency-dollars');
+
+            if (currency === 'PEN') {
+                btnSoles.classList.add('bg-clinical-cyan', 'text-white');
+                btnSoles.classList.remove('text-gray-400');
+                btnDollars.classList.remove('bg-clinical-cyan', 'text-white');
+                btnDollars.classList.add('text-gray-400');
+            } else {
+                btnDollars.classList.add('bg-clinical-cyan', 'text-white');
+                btnDollars.classList.remove('text-gray-400');
+                btnSoles.classList.remove('bg-clinical-cyan', 'text-white');
+                btnSoles.classList.add('text-gray-400');
+            }
+            calculatePrices();
+        }
+
+        function changeOdonPlan() {
+            const selector = document.getElementById('odon-plan-selector');
+            activeOdonPlan = selector.value;
+
+            const odonTitle = document.getElementById('odon-pricing-title');
+            const odonDesc = document.getElementById('odon-pricing-desc');
+
+            if (activeOdonPlan === 'starter') {
+                odonTitle.innerText = "Plan Starter (Esencial)";
+                odonDesc.innerText = "Historial + SOAP + Agenda + Odontograma";
+            } else if (activeOdonPlan === 'pro') {
+                odonTitle.innerText = "Plan Clinic Pro (Operativo)";
+                odonDesc.innerText = "Inventario FEFO + Comisiones + Archivos";
+            } else if (activeOdonPlan === 'elite') {
+                odonTitle.innerText = "Plan Elite Corporate";
+                odonDesc.innerText = "SUNAT + Reservas + Reportes + Roles";
+            } else {
+                odonTitle.innerText = "Licencia Perpetua Local";
+                odonDesc.innerText = "+ S/. 400.00 / mes de soporte (SLA)";
+            }
+            calculatePrices();
+        }
+
+        function calculatePrices() {
+            const boxes = parseInt(boxSlider.value);
+            
+            // Text scale label
+            if (boxes === 1) {
+                boxCountLabel.innerText = "1 Box Dental (Sillón)";
+            } else {
+                boxCountLabel.innerText = `${boxes} Boxes Dentales (Sillones)`;
+            }
+
+            // Checkboxes Add-ons (costs in PEN)
+            const sunatAddonCost = addSunat.checked ? 40 : 0;
+            const whatsappAddonCost = addWhatsapp.checked ? 30 : 0;
+
+            // Calculating monthly prices
+            
+            // 1. OdonSystemDM calculation based on active selected plan
+            let odonTotal = 0;
+            if (activeOdonPlan !== 'perpetual') {
+                const planConf = BASE_PRICES.odonsystem[activeOdonPlan];
+                odonTotal = planConf.base + (planConf.perBox * (boxes - 1));
+            } else {
+                odonTotal = BASE_PRICES.odonsystem.perpetual.base;
+            }
+
+            // 2. Dentalink: bases + scale per box + addons if not included
+            const dentalinkTotal = BASE_PRICES.dentalink.base + (BASE_PRICES.dentalink.perBox * (boxes - 1)) + (addSunat.checked ? 35 : 0) + (addWhatsapp.checked ? 40 : 0);
+            
+            // 3. Doctocliq: flat rate! (includes SUNAT and WhatsApp)
+            const doctocliqTotal = BASE_PRICES.doctocliq.base;
+
+            // 4. Doctoralia: scales per doctor + no SUNAT possible, whatsapp included in agenda
+            const doctoraliaTotal = BASE_PRICES.doctoralia.base + (BASE_PRICES.doctoralia.perBox * Math.floor((boxes - 1) / 2)) + sunatAddonCost;
+
+            // 5. Clinika: scales slightly
+            const clinikaTotal = BASE_PRICES.clinika.base + (addWhatsapp.checked ? 30 : 0);
+
+            // Print on UI
+            if (activeOdonPlan !== 'perpetual') {
+                priceOdonSystem.innerText = formatVal(odonTotal);
+            } else {
+                priceOdonSystem.innerText = formatVal(odonTotal) + " *"; // Show S/. 12,000 flat
+            }
+            priceDentalink.innerText = formatVal(dentalinkTotal);
+            priceDoctocliq.innerText = formatVal(doctocliqTotal);
+            priceDoctoralia.innerText = formatVal(doctoraliaTotal);
+            priceClinika.innerText = formatVal(clinikaTotal);
+
+            // --- ROI CALCULATIONS (Based on scale/boxes) ---
+            const totalSavedHours = 12 + (6 * (boxes - 1));
+            // Ausentismo saved cash (Average ticket S/. 80, 15 missed appts saved per box)
+            const totalSavedMoney = (700 * boxes) + (addWhatsapp.checked ? 400 * boxes : 0);
+            
+            // Software Cost (Using active plan for calculation)
+            let softwareMonthlyCostForROI = 0;
+            let annualSoftwareCost = 0;
+
+            if (activeOdonPlan !== 'perpetual') {
+                softwareMonthlyCostForROI = odonTotal;
+                annualSoftwareCost = softwareMonthlyCostForROI * 12;
+            } else {
+                softwareMonthlyCostForROI = 400; // SLA support cost
+                annualSoftwareCost = 12000 + (400 * 12);
+            }
+
+            const annualSavings = (totalSavedMoney * 12) - (softwareMonthlyCostForROI * 12);
+
+            roiSavedMoney.innerText = 'S/. ' + totalSavedMoney.toLocaleString('es-PE', { minimumFractionDigits: 2 }) + ' / mes';
+            roiSavedTime.innerText = `${totalSavedHours} Horas / mes`;
+            roiSoftwareCost.innerText = 'S/. ' + annualSoftwareCost.toLocaleString('es-PE', { minimumFractionDigits: 2 }) + ' / año';
+            
+            if (annualSavings > 0) {
+                roiNetBenefit.innerText = 'S/. ' + annualSavings.toLocaleString('es-PE', { minimumFractionDigits: 2 }) + ' / año de Ahorro';
+                roiNetBenefit.className = "text-xl font-extrabold text-clinical-cyan block mt-1";
+            } else {
+                roiNetBenefit.innerText = 'S/. 0.00';
+            }
+        }
+
+        boxSlider.addEventListener('input', calculatePrices);
+        addSunat.addEventListener('change', calculatePrices);
+        addWhatsapp.addEventListener('change', calculatePrices);
+
+        calculatePrices();
+    </script>
+</body>
+</html>
