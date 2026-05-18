@@ -119,6 +119,11 @@
         
         <h1 id="decoder-text" class="text-lg sm:text-2xl md:text-4xl leading-snug md:leading-relaxed font-bold tracking-widest text-glow text-center mb-8 md:mb-12 min-h-[80px] flex items-center justify-center w-full break-words"></h1>
 
+        <!-- Contenedor animado de los enamorados -->
+        <div id="lovers-container" class="opacity-0 max-h-0 overflow-hidden transition-all duration-[1000ms] flex justify-center items-center">
+            <img src="pareja.png" alt="Dos enamorados tomados de la mano" class="w-48 h-48 md:w-64 md:h-64 object-contain rounded-lg border border-pink-500/20 shadow-[0_0_30px_rgba(244,63,94,0.3)] mb-8">
+        </div>
+
         <div id="actions" class="flex flex-col sm:flex-row gap-4 md:gap-8 opacity-0 transition-opacity duration-1000 w-full sm:w-auto items-center justify-center">
             <button id="btn-yes" class="btn-theme group w-auto">
                 <span class="relative z-10 font-bold transition-colors duration-200 text-sm md:text-base">Conectarme (Sí)</span>
@@ -503,23 +508,22 @@
 
             // Al quinto intento, el sistema "falla" adrede
             if (escapeCount >= 5) {
-                // Si el botón ya se había rendido y el usuario le hace clic, desaparece como humo
-                if (btnNo.innerText === "Me rindo..." && e && (e.type === 'click' || e.type === 'touchstart')) {
-                    btnNo.style.transition = 'all 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045)';
-                    btnNo.style.opacity = '0';
-                    btnNo.style.transform = 'scale(0.2)';
-                    setTimeout(() => { btnNo.style.display = 'none'; }, 400);
-                    return;
-                }
-
                 decoderEl.innerText = "¡Yo sé que quieres, dale que SÍ! 😏";
                 decoderEl.style.color = '#ff99b3';
                 decoderEl.style.textShadow = '0 0 10px rgba(255, 51, 102, 0.8)';
                 
-                // El botón "Me lo pierdo" se rinde, PERO sigue siendo clickeable
+                // El botón cambia a "Me rindo..." momentáneamente para que se vea
                 btnNo.innerText = "Me rindo...";
-                btnNo.style.opacity = '0.6';
-                btnNo.style.cursor = 'pointer';
+                btnNo.style.pointerEvents = 'none'; // Desactivar interacciones
+                
+                // Y después de casi 1 segundo, desaparece como humo
+                setTimeout(() => {
+                    btnNo.style.transition = 'all 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045)';
+                    btnNo.style.opacity = '0';
+                    btnNo.style.transform = 'scale(0.2)';
+                }, 800);
+                
+                setTimeout(() => { btnNo.style.display = 'none'; }, 1200);
                 return;
             }
 
@@ -599,6 +603,14 @@
             decoderEl.innerText = "SISTEMA COMPROMETIDO: TE AMO 💕✨";
             decoderEl.style.color = '#ffffff';
             actionsEl.style.display = 'none';
+            
+            // Animación para revelar la ilustración de los enamorados
+            const loversContainer = document.getElementById('lovers-container');
+            if (loversContainer) {
+                loversContainer.classList.remove('max-h-0');
+                loversContainer.classList.add('max-h-[300px]', 'opacity-100');
+            }
+            
             // ¡Desatar la lluvia de corazones!
             startHeartConfetti();
         });
