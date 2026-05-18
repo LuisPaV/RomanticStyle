@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Tributaria & Laboral Peruana 🇵🇪 • Premium Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        finance: {
+                            emerald: '#10b981',
+                            teal: '#14b8a6',
+                            indigo: '#6366f1',
+                            darkBg: '#090d16',
+                            cardBg: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #060913;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Donut Chart Animation */
+        .donut-segment {
+            transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060913;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between p-4 md:p-8">
+
+    <!-- HEADER -->
+    <header class="w-full max-w-7xl mx-auto flex items-center justify-between py-4 border-b border-white/5 select-none mb-8">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-finance-emerald/10 rounded-xl flex items-center justify-center border border-finance-emerald/20">
+                <span class="text-xl">🇵🇪</span>
+            </div>
+            <div>
+                <h1 class="text-sm font-bold tracking-wider text-finance-emerald uppercase">Calculadora Laboral & Tributaria</h1>
+                <p class="text-[10px] text-gray-500">Regulaciones SUNAT, SBS y MTPE (Régimen Privado General & MYPE)</p>
+            </div>
+        </div>
+        <span class="text-2xs font-mono bg-white/5 px-3 py-1.5 rounded-full border border-white/5 text-gray-400">SBS, SUNAT & MYPE COMPLIANT 2026</span>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="w-full max-w-7xl mx-auto flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-8">
+        
+        <!-- LEFT PANEL: INPUT FORM (5 cols) -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+            <div class="glass-card rounded-3xl p-6 md:p-8 border border-white/5 shadow-2xl">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="text-finance-emerald">⚙️</span> Configuración de Ingresos
+                </h2>
+
+                <form id="calc-form" class="flex flex-col gap-6" onsubmit="event.preventDefault();">
+                    
+                    <!-- Calculation Mode Selector -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Modo de Cálculo</label>
+                        <div class="grid grid-cols-2 gap-2 p-1 bg-black/40 border border-white/10 rounded-2xl">
+                            <button type="button" id="mode-gross-to-net" class="py-2.5 text-xs font-bold rounded-xl bg-finance-emerald text-white transition-all duration-200" onclick="setCalculationMode('gross-to-net')">
+                                Bruto ➔ Neto
+                            </button>
+                            <button type="button" id="mode-net-to-gross" class="py-2.5 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition-all duration-200" onclick="setCalculationMode('net-to-gross')">
+                                Neto ➔ Bruto (Gross Up)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fiscal Year selector -->
+                    <div class="flex flex-col gap-2">
+                        <label for="fiscal-year" class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Año Fiscal (UIT & RMV vigentes)</label>
+                        <select id="fiscal-year" class="w-full px-4 py-4 bg-black/40 border border-white/10 rounded-2xl text-sm text-slate-300 focus:outline-none focus:border-finance-emerald transition-all duration-200 cursor-pointer">
+                            <option value="2026" selected>Año 2026 (UIT = S/ 5,500 | RMV = S/ 1,130)</option>
+                            <option value="2025">Año 2025 (UIT = S/ 5,350 | RMV = S/ 1,130)</option>
+                            <option value="2024">Año 2024 (UIT = S/ 5,150 | RMV = S/ 1,025)</option>
+                        </select>
+                    </div>
+
+                    <!-- Labor Regime / Company Size Selector -->
+                    <div class="flex flex-col gap-2">
+                        <label for="labor-regime" class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Régimen Laboral / Tamaño de Empresa</label>
+                        <select id="labor-regime" class="w-full px-4 py-4 bg-black/40 border border-white/10 rounded-2xl text-sm text-slate-300 focus:outline-none focus:border-finance-emerald transition-all duration-200 cursor-pointer">
+                            <option value="general" selected>Régimen General (100% Beneficios - Vacaciones 30d)</option>
+                            <option value="pequena">Pequeña Empresa (MYPE - 50% CTS, 50% Gratificación, Vacaciones 15d)</option>
+                            <option value="micro">Microempresa (MYPE - 0% CTS, 0% Gratificación, Vacaciones 15d)</option>
+                        </select>
+                    </div>
+
+                    <!-- Main Salary Input (Labels/Maxes will change dynamically) -->
+                    <div class="flex flex-col gap-2">
+                        <label for="salary-gross" id="salary-input-label" class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Sueldo Bruto Mensual</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold font-mono">S/.</span>
+                            <input type="number" id="salary-gross" min="0" value="5000" class="w-full pl-12 pr-4 py-4 bg-black/40 border border-white/10 rounded-2xl text-lg font-bold text-slate-100 focus:outline-none focus:border-finance-emerald transition-all duration-200" placeholder="0.00">
+                        </div>
+                        <input id="salary-slider" type="range" min="1000" max="30000" step="100" value="5000" class="w-full accent-finance-emerald cursor-pointer mt-2">
+                    </div>
+
+                    <!-- Asignación Familiar Checkbox -->
+                    <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-semibold text-slate-300">Asignación Familiar (10% de RMV)</span>
+                            <span class="text-[10px] text-gray-500" id="asig-fam-desc">Hijos menores a cargo (+S/. 113.00)</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="apply-asig-fam" class="sr-only peer">
+                            <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-300 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-finance-emerald peer-checked:after:bg-white"></div>
+                        </label>
+                    </div>
+
+                    <!-- Pension System Deduction -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Sistema de Pensiones (Aporte SBS)</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="flex flex-col items-center justify-center p-3 border border-white/10 rounded-2xl bg-black/20 cursor-pointer hover:bg-white/5 transition-all duration-200 select-none [&:has(input:checked)]:border-finance-emerald [&:has(input:checked)]:bg-finance-emerald/10">
+                                <input type="radio" name="pension" value="afp" checked class="hidden">
+                                <span class="text-sm font-bold">AFP</span>
+                                <span class="text-[9px] text-gray-400 mt-1">13.44% SBS</span>
+                            </label>
+                            <label class="flex flex-col items-center justify-center p-3 border border-white/10 rounded-2xl bg-black/20 cursor-pointer hover:bg-white/5 transition-all duration-200 select-none [&:has(input:checked)]:border-finance-emerald [&:has(input:checked)]:bg-finance-emerald/10">
+                                <input type="radio" name="pension" value="onp" class="hidden">
+                                <span class="text-sm font-bold">ONP</span>
+                                <span class="text-[9px] text-gray-400 mt-1">13.00% Fijo</span>
+                            </label>
+                            <label class="flex flex-col items-center justify-center p-3 border border-white/10 rounded-2xl bg-black/20 cursor-pointer hover:bg-white/5 transition-all duration-200 select-none [&:has(input:checked)]:border-finance-emerald [&:has(input:checked)]:bg-finance-emerald/10">
+                                <input type="radio" name="pension" value="none" class="hidden">
+                                <span class="text-sm font-bold">Ninguno</span>
+                                <span class="text-[9px] text-gray-400 mt-1">Sin Aporte</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: DASHBOARD RESULTS (7 cols) -->
+        <section class="lg:col-span-7 flex flex-col gap-6 relative">
+            
+            <!-- Skeleton Loader -->
+            <div id="skeleton-loader" class="absolute inset-0 z-30 glass-card rounded-3xl p-8 flex flex-col justify-center items-center gap-4 transition-all duration-500 opacity-0 pointer-events-none">
+                <div class="w-14 h-14 border-4 border-t-finance-emerald border-white/10 rounded-full animate-spin"></div>
+                <p class="text-sm text-gray-400 tracking-wider font-semibold animate-pulse">Procesando deducciones de ley...</p>
+            </div>
+
+            <!-- Dashboard Card -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 border border-white/5 shadow-2xl flex flex-col gap-6">
+                
+                <!-- Main Salary Pill output -->
+                <div class="flex flex-col md:flex-row justify-between items-center bg-black/40 border border-white/5 p-6 rounded-2xl gap-6">
+                    <div class="flex flex-col gap-1 text-center md:text-left">
+                        <span class="text-xs font-bold text-finance-emerald tracking-widest uppercase" id="output-salary-title">Sueldo Neto Recibido</span>
+                        <span class="text-3xl md:text-4xl font-extrabold text-white" id="net-salary-val">S/. 4,150.00</span>
+                        <span class="text-[10px] text-gray-500" id="output-salary-desc">Monto disponible mensual después de deducciones de ley</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center px-6 py-3 bg-finance-emerald/10 border border-finance-emerald/20 rounded-xl">
+                        <span class="text-2xs text-finance-teal uppercase tracking-widest font-bold" id="output-ratio-title">Porcentaje Neto</span>
+                        <span class="text-xl font-bold text-white mt-1" id="net-percentage">83.0%</span>
+                    </div>
+                </div>
+
+                <!-- Financial Breakdown Section -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center border-t border-white/5 pt-6">
+                    
+                    <!-- Dynamic Donut Chart (6 cols) -->
+                    <div class="md:col-span-6 flex flex-col items-center gap-4">
+                        <div class="relative w-40 h-40">
+                            <!-- SVG Donut Chart -->
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 42 42">
+                                <circle class="donut-ring" cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(255,255,255,0.05)" stroke-width="4.5"></circle>
+                                
+                                <!-- Segments -->
+                                <circle id="segment-net" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#10b981" stroke-width="4.5" stroke-dasharray="83 17" stroke-dashoffset="0"></circle>
+                                <circle id="segment-pension" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#6366f1" stroke-width="4.5" stroke-dasharray="12 88" stroke-dashoffset="-83"></circle>
+                                <circle id="segment-tax" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#f43f5e" stroke-width="4.5" stroke-dasharray="5 95" stroke-dashoffset="-95"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center select-none pointer-events-none">
+                                <span class="text-xs text-gray-500 uppercase tracking-widest font-bold" id="donut-total-title">Total Bruto</span>
+                                <span id="donut-total" class="text-sm font-extrabold text-white">S/. 5,000</span>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="grid grid-cols-3 gap-2 w-full text-center text-3xs md:text-2xs font-semibold tracking-wider uppercase">
+                            <div class="flex flex-col items-center border border-white/5 bg-black/20 p-2 rounded-xl">
+                                <div class="w-2.5 h-2.5 bg-finance-emerald rounded-full mb-1"></div>
+                                <span class="text-gray-400">Neto</span>
+                                <span id="legend-net-p" class="font-bold text-white mt-0.5">83%</span>
+                            </div>
+                            <div class="flex flex-col items-center border border-white/5 bg-black/20 p-2 rounded-xl">
+                                <div class="w-2.5 h-2.5 bg-finance-indigo rounded-full mb-1"></div>
+                                <span class="text-gray-400">Jubilación</span>
+                                <span id="legend-pension-p" class="font-bold text-white mt-0.5">12%</span>
+                            </div>
+                            <div class="flex flex-col items-center border border-white/5 bg-black/20 p-2 rounded-xl">
+                                <div class="w-2.5 h-2.5 bg-rose-500 rounded-full mb-1"></div>
+                                <span class="text-gray-400">Impuestos</span>
+                                <span id="legend-tax-p" class="font-bold text-white mt-0.5">5%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Table Details (6 cols) -->
+                    <div class="md:col-span-6 flex flex-col gap-4 font-sans text-xs md:text-sm">
+                        <h3 class="text-xs font-bold text-gray-400 tracking-widest uppercase border-b border-white/5 pb-2">Detalles Mensuales</h3>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Sueldo Bruto Total:</span>
+                            <span id="detail-gross" class="font-bold">S/. 5,000.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-3xs text-gray-500 pb-1" id="detail-base-info">
+                            <span>Sueldo Base + Asignación Familiar</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-white/5 pt-2">
+                            <span class="text-gray-400 flex items-center gap-1.5">
+                                <div class="w-2 h-2 bg-finance-indigo rounded-full"></div>
+                                Jubilación (Aporte SBS):
+                            </span>
+                            <span id="detail-pension" class="font-bold text-finance-indigo">-S/. 600.00</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-white/5 pt-2">
+                            <span class="text-gray-400 flex items-center gap-1.5">
+                                <div class="w-2 h-2 bg-rose-500 rounded-full"></div>
+                                Renta de 5ta (SUNAT):
+                            </span>
+                            <span id="detail-tax" class="font-bold text-rose-400">-S/. 250.00</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-white/5 pt-2 text-sm md:text-base font-extrabold text-finance-emerald">
+                            <span>Sueldo Neto:</span>
+                            <span id="detail-net">S/. 4,150.00</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BENEFICIOS SOCIALES ADICIONALES (EsSalud, CTS, Gratificaciones) -->
+                <div class="border-t border-white/5 pt-6">
+                    <h3 class="text-xs font-bold text-gray-400 tracking-widest uppercase border-b border-white/5 pb-3 mb-4">Beneficios Sociales Adicionales (Leyes PE)</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-sans">
+                        <!-- Gratificación Card -->
+                        <div class="flex flex-col gap-1 border border-white/5 bg-black/30 p-4 rounded-2xl relative overflow-hidden group hover:border-pink-500/20 transition-all duration-200">
+                            <div class="flex justify-between items-start">
+                                <span class="text-3xs text-pink-400 uppercase tracking-widest font-bold">Gratificación Anual</span>
+                                <span class="text-xs">🎁</span>
+                            </div>
+                            <span id="ben-gratis" class="text-sm font-extrabold text-white mt-1">S/. 10,900.00</span>
+                            <span class="text-[9px] text-gray-500 mt-1 leading-relaxed" id="desc-gratis">Gratificaciones de Julio y Diciembre + 9% de Bonificación Extraordinaria. Exento de AFP. Afecto a Quinta Renta SUNAT.</span>
+                        </div>
+                        
+                        <!-- CTS Card -->
+                        <div class="flex flex-col gap-1 border border-white/5 bg-black/30 p-4 rounded-2xl relative overflow-hidden group hover:border-teal-500/20 transition-all duration-200">
+                            <div class="flex justify-between items-start">
+                                <span class="text-3xs text-teal-400 uppercase tracking-widest font-bold">CTS Proyectada</span>
+                                <span class="text-xs">💰</span>
+                            </div>
+                            <span id="ben-cts" class="text-sm font-extrabold text-white mt-1">S/. 5,833.33</span>
+                            <span class="text-[9px] text-gray-500 mt-1 leading-relaxed" id="desc-cts">Compensación por Tiempo de Servicios. Depósitos de Mayo y Noviembre en entidad bancaria. Totalmente libre de impuestos.</span>
+                        </div>
+
+                        <!-- Seguro de Salud Card -->
+                        <div class="flex flex-col gap-1 border border-white/5 bg-black/30 p-4 rounded-2xl relative overflow-hidden group hover:border-finance-indigo/20 transition-all duration-200">
+                            <div class="flex justify-between items-start">
+                                <span class="text-3xs text-finance-indigo uppercase tracking-widest font-bold">Aporte EsSalud (Empleador)</span>
+                                <span class="text-xs">🏥</span>
+                            </div>
+                            <span id="ben-essalud" class="text-sm font-extrabold text-white mt-1">S/. 450.00 / mes</span>
+                            <span class="text-[9px] text-gray-500 mt-1 leading-relaxed" id="desc-essalud">Aporte del 9% mensual íntegramente financiado por la empresa para tu seguro de salud EsSalud (tope mínimo basado en la RMV).</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW COMPONENT: COSTO TOTAL DE LA PLANILLA (EMPLOYER PERSPECTIVE) -->
+                <div class="border-t border-white/5 pt-6 bg-gradient-to-r from-finance-indigo/5 to-transparent p-4 rounded-2xl border border-finance-indigo/10">
+                    <h3 class="text-xs font-bold text-finance-indigo tracking-widest uppercase border-b border-finance-indigo/20 pb-3 mb-4 flex items-center justify-between">
+                        <span>📊 Perspectiva de Costo Laboral (Empleador)</span>
+                        <span class="text-[9px] text-gray-400 normal-case font-medium">¿Cuánto le cuesta al empleador contratarte?</span>
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-6 flex flex-col gap-3 font-sans text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Sueldo Bruto Total:</span>
+                                <span id="emp-gross" class="font-bold">S/. 5,000.00</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-white/5 pt-1.5">
+                                <span class="text-gray-400">Provisiones CTS (Mensualizadas):</span>
+                                <span id="emp-cts" class="font-semibold text-gray-300">S/. 486.11</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-white/5 pt-1.5">
+                                <span class="text-gray-400">Provisiones Gratificaciones (Mensualizadas + 9%):</span>
+                                <span id="emp-gratis" class="font-semibold text-gray-300">S/. 908.33</span>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-white/5 pt-1.5">
+                                <span class="text-gray-400">Seguro de Salud (EsSalud 9%):</span>
+                                <span id="emp-health" class="font-semibold text-gray-300">S/. 450.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Big Comparison Gauge -->
+                        <div class="md:col-span-6 flex flex-col items-center justify-center p-4 bg-black/40 border border-white/5 rounded-2xl gap-2 text-center">
+                            <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Costo de Planilla Mensual de la Empresa</span>
+                            <span id="emp-total-monthly" class="text-2xl font-extrabold text-finance-indigo">S/. 6,844.44</span>
+                            
+                            <div class="w-full bg-white/5 rounded-full h-1.5 mt-2 overflow-hidden relative">
+                                <div id="emp-ratio-bar" class="bg-finance-indigo h-full" style="width: 73%"></div>
+                            </div>
+                            <span class="text-[9px] text-gray-400 mt-1 leading-relaxed">
+                                Tu Sueldo Neto de bolsillo representa el <strong id="emp-pocket-percent" class="text-finance-emerald">60.6%</strong> del costo real del empleador.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Annual Summary Section -->
+                <div class="border-t border-white/5 pt-6">
+                    <h3 class="text-xs font-bold text-gray-400 tracking-widest uppercase border-b border-white/5 pb-3 mb-4">Resumen Anual Proyectado (Líquido Percibido + CTS)</h3>
+                    
+                    <div class="grid grid-cols-3 gap-4 text-center font-sans">
+                        <div class="flex flex-col gap-1 border border-white/5 bg-black/20 p-3 rounded-2xl">
+                            <span class="text-3xs text-gray-500 uppercase tracking-widest font-bold">Ingresos Anuales Brutos</span>
+                            <span id="annual-gross" class="text-xs md:text-sm font-bold">S/. 70,000.00</span>
+                        </div>
+                        <div class="flex flex-col gap-1 border border-white/5 bg-black/20 p-3 rounded-2xl">
+                            <span class="text-3xs text-gray-500 uppercase tracking-widest font-bold font-bold text-rose-500">Impuestos Totales Renta</span>
+                            <span id="annual-tax" class="text-xs md:text-sm font-bold text-rose-400">S/. 3,500.00</span>
+                        </div>
+                        <div class="flex flex-col gap-1 border border-white/5 bg-black/20 p-3 rounded-2xl">
+                            <span class="text-3xs text-gray-500 uppercase tracking-widest font-bold text-finance-emerald">Neto Líquido + Beneficios</span>
+                            <span id="annual-net" class="text-xs md:text-sm font-bold text-finance-emerald">S/. 58,100.00</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full max-w-7xl mx-auto text-center py-4 border-t border-white/5 text-[10px] text-gray-500 tracking-wider z-10">
+        Simulador Tributario de Rentas de Trabajo • Valores calculados bajo las normativas vigentes SUNAT, SBS y MTPE del Perú • © 2026
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        const salaryGrossInput = document.getElementById('salary-gross');
+        const salarySlider = document.getElementById('salary-slider');
+        const fiscalYearSelect = document.getElementById('fiscal-year');
+        const laborRegimeSelect = document.getElementById('labor-regime');
+        const applyAsigFamCheck = document.getElementById('apply-asig-fam');
+        const skeletonLoader = document.getElementById('skeleton-loader');
+
+        const netSalaryVal = document.getElementById('net-salary-val');
+        const netPercentage = document.getElementById('net-percentage');
+        const donutTotal = document.getElementById('donut-total');
+        
+        const detailGross = document.getElementById('detail-gross');
+        const detailBaseInfo = document.getElementById('detail-base-info');
+        const detailPension = document.getElementById('detail-pension');
+        const detailTax = document.getElementById('detail-tax');
+        const detailNet = document.getElementById('detail-net');
+
+        const benGratis = document.getElementById('ben-gratis');
+        const benCts = document.getElementById('ben-cts');
+        const benEssalud = document.getElementById('ben-essalud');
+
+        // Employer Projections
+        const empGross = document.getElementById('emp-gross');
+        const empCts = document.getElementById('emp-cts');
+        const empGratis = document.getElementById('emp-gratis');
+        const empHealth = document.getElementById('emp-health');
+        const empTotalMonthly = document.getElementById('emp-total-monthly');
+        const empRatioBar = document.getElementById('emp-ratio-bar');
+        const empPocketPercent = document.getElementById('emp-pocket-percent');
+
+        const annualGross = document.getElementById('annual-gross');
+        const annualTax = document.getElementById('annual-tax');
+        const annualNet = document.getElementById('annual-net');
+
+        const legendNetP = document.getElementById('legend-net-p');
+        const legendPensionP = document.getElementById('legend-pension-p');
+        const legendTaxP = document.getElementById('legend-tax-p');
+
+        const segmentNet = document.getElementById('segment-net');
+        const segmentPension = document.getElementById('segment-pension');
+        const segmentTax = document.getElementById('segment-tax');
+
+        let calculationMode = 'gross-to-net';
+
+        // --- REGULATORY REFERENCE TABLES ---
+        const REGULATORY_TABLE = {
+            "2026": { uit: 5500, rmv: 1130, asigFam: 113.00 },
+            "2025": { uit: 5350, rmv: 1130, asigFam: 113.00 },
+            "2024": { uit: 5150, rmv: 1025, asigFam: 102.50 }
+        };
+
+        function getActiveConfig() {
+            const year = fiscalYearSelect.value;
+            return REGULATORY_TABLE[year];
+        }
+
+        function formatCurrency(val) {
+            return 'S/. ' + val.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function setCalculationMode(mode) {
+            calculationMode = mode;
+            const btnGtoN = document.getElementById('mode-gross-to-net');
+            const btnNtoG = document.getElementById('mode-net-to-gross');
+            const labelInput = document.getElementById('salary-input-label');
+            const slider = document.getElementById('salary-slider');
+
+            const outTitle = document.getElementById('output-salary-title');
+            const outDesc = document.getElementById('output-salary-desc');
+            const ratioTitle = document.getElementById('output-ratio-title');
+            const donutTitle = document.getElementById('donut-total-title');
+
+            if (mode === 'gross-to-net') {
+                btnGtoN.classList.add('bg-finance-emerald', 'text-white');
+                btnGtoN.classList.remove('text-gray-400');
+                btnNtoG.classList.remove('bg-finance-emerald', 'text-white');
+                btnNtoG.classList.add('text-gray-400');
+                labelInput.innerText = 'Sueldo Bruto Mensual (Base)';
+                
+                outTitle.innerText = 'Sueldo Neto Recibido';
+                outDesc.innerText = 'Monto disponible mensual después de deducciones de ley';
+                ratioTitle.innerText = 'Porcentaje Neto';
+                donutTitle.innerText = 'Total Bruto';
+
+                slider.min = 1000;
+                slider.max = 30000;
+            } else {
+                btnNtoG.classList.add('bg-finance-emerald', 'text-white');
+                btnNtoG.classList.remove('text-gray-400');
+                btnGtoN.classList.remove('bg-finance-emerald', 'text-white');
+                btnGtoN.classList.add('text-gray-400');
+                labelInput.innerText = 'Sueldo Neto Deseado';
+
+                outTitle.innerText = 'Sueldo Bruto Requerido';
+                outDesc.innerText = 'Monto contractual necesario para recibir el neto solicitado';
+                ratioTitle.innerText = 'Carga Adicional';
+                donutTitle.innerText = 'Total Neto';
+
+                slider.min = 800;
+                slider.max = 25000;
+            }
+            updateCalculations();
+        }
+
+        // Modular function to calculate Net from Gross, fully SUNAT & Labor Regime compliant
+        function calculateNetForGivenGross(monthlyGrossBase, applyAsigFam, pensionType, config, regime) {
+            const asignacionFamiliar = applyAsigFam ? config.asigFam : 0;
+            const monthlyGross = monthlyGrossBase + asignacionFamiliar;
+
+            // 1. PENSION DEDUCTIONS (SBS Rates)
+            let pensionRate = 0;
+            if (pensionType === 'afp') pensionRate = 0.1344;
+            else if (pensionType === 'onp') pensionRate = 0.1300;
+
+            const monthlyPension = monthlyGross * pensionRate;
+
+            // 2. REGIME BENEFIT COEFFICIENTS
+            // general: 100% CTS, 100% Gratificación
+            // pequena: 50% CTS, 50% Gratificación
+            // micro: 0% CTS, 0% Gratificación
+            let regimeGratisMult = 2; // 2 sueldos al año
+            if (regime === 'pequena') regimeGratisMult = 1.0; // 0.5 + 0.5
+            else if (regime === 'micro') regimeGratisMult = 0;
+
+            // 3. INCOME TAX (Renta de 5ta - SUNAT)
+            const annualBaseSalaries = monthlyGross * 12;
+            const annualGratificacionesBase = monthlyGross * regimeGratisMult;
+            const annualGratificacionesBono = annualGratificacionesBase * 0.09;
+            const annualGrossSUNAT = annualBaseSalaries + annualGratificacionesBase + annualGratificacionesBono;
+
+            const deduction7UIT = 7 * config.uit;
+            const taxableIncome = Math.max(0, annualGrossSUNAT - deduction7UIT);
+
+            const limit1 = 5 * config.uit;
+            const limit2 = 20 * config.uit;
+            const limit3 = 35 * config.uit;
+            const limit4 = 45 * config.uit;
+
+            let remaining = taxableIncome;
+            let annualTaxVal = 0;
+
+            const b1 = Math.min(remaining, limit1);
+            annualTaxVal += b1 * 0.08;
+            remaining -= b1;
+
+            if (remaining > 0) {
+                const b2 = Math.min(remaining, limit2 - limit1);
+                annualTaxVal += b2 * 0.14;
+                remaining -= b2;
+            }
+            if (remaining > 0) {
+                const b3 = Math.min(remaining, limit3 - limit2);
+                annualTaxVal += b3 * 0.17;
+                remaining -= b3;
+            }
+            if (remaining > 0) {
+                const b4 = Math.min(remaining, limit4 - limit3);
+                annualTaxVal += b4 * 0.20;
+                remaining -= b4;
+            }
+            if (remaining > 0) {
+                annualTaxVal += remaining * 0.30;
+            }
+
+            const monthlyTax = annualTaxVal / 12;
+
+            return {
+                grossTotal: monthlyGross,
+                grossBase: monthlyGrossBase,
+                asigFamVal: asignacionFamiliar,
+                net: Math.max(0, monthlyGross - monthlyPension - monthlyTax),
+                pension: monthlyPension,
+                tax: monthlyTax,
+                annualGross: annualGrossSUNAT,
+                annualTax: annualTaxVal
+            };
+        }
+
+        // Numerical approximation algorithm (Binary Search Solver)
+        function calculateGrossFromNet(targetNet, applyAsigFam, pensionType, config, regime) {
+            if (targetNet <= 0) return 0;
+
+            let low = targetNet;
+            let high = targetNet * 4;
+            let iterations = 0;
+            const precision = 0.001;
+
+            while (high - low > precision && iterations < 100) {
+                let mid = (low + high) / 2;
+                let calc = calculateNetForGivenGross(mid, applyAsigFam, pensionType, config, regime);
+                if (calc.net < targetNet) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+                iterations++;
+            }
+            return (low + high) / 2;
+        }
+
+        function runCalculations() {
+            const inputValue = parseFloat(salaryGrossInput.value) || 0;
+            const config = getActiveConfig();
+            const regime = laborRegimeSelect.value;
+            const applyAsigFam = applyAsigFamCheck.checked;
+            const pensionType = document.querySelector('input[name="pension"]:checked').value;
+
+            // Update Asignación familiar description dynamically based on active config
+            document.getElementById('asig-fam-desc').innerText = `Hijos menores a cargo (+${formatCurrency(config.asigFam)})`;
+
+            let monthlyGrossBase = 0;
+            let monthlyGrossTotal = 0;
+            let asignacionFamiliar = 0;
+            let monthlyNet = 0;
+            let monthlyPension = 0;
+            let monthlyTax = 0;
+            let annualGrossVal = 0;
+            let annualTaxVal = 0;
+
+            if (calculationMode === 'gross-to-net') {
+                monthlyGrossBase = inputValue;
+                const calc = calculateNetForGivenGross(monthlyGrossBase, applyAsigFam, pensionType, config, regime);
+                monthlyGrossTotal = calc.grossTotal;
+                asignacionFamiliar = calc.asigFamVal;
+                monthlyNet = calc.net;
+                monthlyPension = calc.pension;
+                monthlyTax = calc.tax;
+                annualGrossVal = calc.annualGross;
+                annualTaxVal = calc.annualTax;
+            } else {
+                monthlyNet = inputValue;
+                monthlyGrossBase = calculateGrossFromNet(monthlyNet, applyAsigFam, pensionType, config, regime);
+                
+                const calc = calculateNetForGivenGross(monthlyGrossBase, applyAsigFam, pensionType, config, regime);
+                monthlyGrossTotal = calc.grossTotal;
+                asignacionFamiliar = calc.asigFamVal;
+                monthlyPension = calc.pension;
+                monthlyTax = calc.tax;
+                annualGrossVal = calc.annualGross;
+                annualTaxVal = calc.annualTax;
+            }
+
+            // --- MULTIPLIERS BASED ON SELECTED REGIME ---
+            let ctsFactor = 1.0; // 100%
+            let gratisFactor = 2.0; // July & December full sueldos
+            let essaludFactor = 0.09; // 9% EsSalud for General/Pequeña
+
+            if (regime === 'pequena') {
+                ctsFactor = 0.5;      // 50% CTS
+                gratisFactor = 1.0;   // 50% Gratificación
+            } else if (regime === 'micro') {
+                ctsFactor = 0;        // No CTS
+                gratisFactor = 0;     // No Gratificación
+            }
+
+            // --- LEGAL BENEFITS Projections ---
+            
+            // 1. Seguro de Salud (EsSalud)
+            const essaludBase = Math.max(monthlyGrossTotal, config.rmv);
+            const monthlyEsSalud = essaludBase * essaludFactor;
+            
+            // 2. Gratificaciones
+            const annualGratisBase = (monthlyGrossTotal * gratisFactor);
+            const annualGratisBonus = annualGratisBase * 0.09;
+            const annualGratisTotal = annualGratisBase + annualGratisBonus;
+
+            // 3. CTS
+            const monthlyCtsBase = (monthlyGrossTotal + (monthlyGrossTotal / 6)) / 12;
+            const monthlyCts = monthlyCtsBase * ctsFactor;
+            const annualCtsTotal = monthlyCts * 12;
+
+            // 4. PERSPECTIVA DE COSTO LABORAL (EMPLEADOR) - MENSUALIZADO
+            const monthlyGratisProvid = (monthlyGrossTotal * (gratisFactor / 12)) * 1.09;
+            const totalMonthlyEmployerCost = monthlyGrossTotal + monthlyCts + monthlyGratisProvid + monthlyEsSalud;
+
+            const netPercentageVal = monthlyGrossTotal > 0 ? (monthlyNet / monthlyGrossTotal) * 100 : 0;
+            const pensionPercentageVal = monthlyGrossTotal > 0 ? (monthlyPension / monthlyGrossTotal) * 100 : 0;
+            const taxPercentageVal = monthlyGrossTotal > 0 ? (monthlyTax / monthlyGrossTotal) * 100 : 0;
+
+            // Real liquid net received by worker = 12 net base monthly salaries + total annual Gratificaciones + total annual CTS
+            const totalAnnualLiquidNetAndBenefits = (monthlyNet * 12) + annualGratisTotal + annualCtsTotal;
+
+            // Update UI Outputs
+            if (calculationMode === 'gross-to-net') {
+                netSalaryVal.innerText = formatCurrency(monthlyNet);
+                netPercentage.innerText = `${netPercentageVal.toFixed(1)}%`;
+                donutTotal.innerText = `S/. ${Math.round(monthlyGrossTotal).toLocaleString()}`;
+            } else {
+                netSalaryVal.innerText = formatCurrency(monthlyGrossTotal);
+                netPercentage.innerText = `+${(100 - netPercentageVal).toFixed(1)}%`;
+                donutTotal.innerText = `S/. ${Math.round(monthlyNet).toLocaleString()}`;
+            }
+
+            detailGross.innerText = formatCurrency(monthlyGrossTotal);
+            detailBaseInfo.innerHTML = `Sueldo Base (${formatCurrency(monthlyGrossBase)}) ${applyAsigFam ? `+ Asig. Familiar (${formatCurrency(asignacionFamiliar)})` : ''}`;
+            detailPension.innerText = `-${formatCurrency(monthlyPension)}`;
+            detailTax.innerText = `-${formatCurrency(monthlyTax)}`;
+            detailNet.innerText = formatCurrency(monthlyNet);
+
+            // Update Benefits Cards with dynamic texts based on selected regime
+            benGratis.innerText = formatCurrency(annualGratisTotal);
+            benCts.innerText = formatCurrency(annualCtsTotal);
+            benEssalud.innerText = `${formatCurrency(monthlyEsSalud)} / mes`;
+
+            // Adjust descriptions according to regime
+            if (regime === 'general') {
+                document.getElementById('desc-gratis').innerText = "Gratificaciones completas de Julio y Diciembre (1 sueldo base + 9% bono de EsSalud por cada una). Exento de AFP.";
+                document.getElementById('desc-cts').innerText = "CTS completa (1.16 sueldos al año). Depósitos de Mayo y Noviembre en cuenta bancaria. Libre de AFP e impuesto.";
+                document.getElementById('desc-essalud').innerText = "Aporte mensual del 9% del sueldo bruto financiado en su totalidad por tu empleador a EsSalud.";
+            } else if (regime === 'pequena') {
+                document.getElementById('desc-gratis').innerText = "Media Gratificación en Julio y Media en Diciembre (50% de un sueldo bruto + 9% bono de EsSalud).";
+                document.getElementById('desc-cts').innerText = "Media CTS (15 días de salario al año, aprox 50% de la CTS regular). Depósitos semestrales.";
+                document.getElementById('desc-essalud').innerText = "Seguro de EsSalud (9% mensual) pagado en su totalidad por el empleador (tope mínimo en RMV).";
+            } else {
+                document.getElementById('desc-gratis').innerText = "Sin Gratificaciones legales en el régimen de Microempresa (0% beneficios al año).";
+                document.getElementById('desc-cts').innerText = "Sin Compensación por Tiempo de Servicios (CTS) en el régimen de Microempresa (0% al año).";
+                document.getElementById('desc-essalud').innerText = "Por ley, en Microempresa el empleador puede afiliarte a EsSalud (9%) o al SIS (flat subsidio).";
+            }
+
+            // Update Employer perspective cards
+            empGross.innerText = formatCurrency(monthlyGrossTotal);
+            empCts.innerText = formatCurrency(monthlyCts);
+            empGratis.innerText = formatCurrency(monthlyGratisProvid);
+            empHealth.innerText = formatCurrency(monthlyEsSalud);
+            empTotalMonthly.innerText = formatCurrency(totalMonthlyEmployerCost);
+
+            const ratioPercent = totalMonthlyEmployerCost > 0 ? (monthlyNet / totalMonthlyEmployerCost) * 100 : 0;
+            empPocketPercent.innerText = `${ratioPercent.toFixed(1)}%`;
+            empRatioBar.style.width = `${ratioPercent.toFixed(0)}%`;
+
+            annualGross.innerText = formatCurrency(annualGrossVal);
+            annualTax.innerText = formatCurrency(annualTaxVal);
+            annualNet.innerText = formatCurrency(totalAnnualLiquidNetAndBenefits);
+
+            legendNetP.innerText = `${netPercentageVal.toFixed(0)}%`;
+            legendPensionP.innerText = `${pensionPercentageVal.toFixed(0)}%`;
+            legendTaxP.innerText = `${taxPercentageVal.toFixed(0)}%`;
+
+            const netStroke = netPercentageVal;
+            const pensionStroke = pensionPercentageVal;
+            const taxStroke = taxPercentageVal;
+
+            segmentNet.setAttribute('stroke-dasharray', `${netStroke} ${100 - netStroke}`);
+            segmentPension.setAttribute('stroke-dasharray', `${pensionStroke} ${100 - pensionStroke}`);
+            segmentPension.setAttribute('stroke-dashoffset', `-${netStroke}`);
+            segmentTax.setAttribute('stroke-dasharray', `${taxStroke} ${100 - taxStroke}`);
+            segmentTax.setAttribute('stroke-dashoffset', `-${netStroke + pensionStroke}`);
+        }
+
+        let calcTimeout = null;
+        function updateCalculations() {
+            skeletonLoader.classList.remove('pointer-events-none');
+            skeletonLoader.classList.add('opacity-100');
+
+            if (calcTimeout) clearTimeout(calcTimeout);
+            calcTimeout = setTimeout(() => {
+                runCalculations();
+                skeletonLoader.classList.remove('opacity-100');
+                skeletonLoader.classList.add('pointer-events-none');
+            }, 300);
+        }
+
+        salaryGrossInput.addEventListener('input', () => { salarySlider.value = salaryGrossInput.value; updateCalculations(); });
+        salarySlider.addEventListener('input', () => { salaryGrossInput.value = salarySlider.value; updateCalculations(); });
+        fiscalYearSelect.addEventListener('change', updateCalculations);
+        laborRegimeSelect.addEventListener('change', updateCalculations);
+        applyAsigFamCheck.addEventListener('change', updateCalculations);
+        document.querySelectorAll('input[name="pension"]').forEach(r => r.addEventListener('change', updateCalculations));
+
+        runCalculations();
+    </script>
+</body>
+</html>
