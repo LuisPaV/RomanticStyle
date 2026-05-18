@@ -141,12 +141,18 @@
         const terminalEl = document.getElementById('main-terminal');
         const redFlash = document.getElementById('red-alert-flash');
 
-        // Precargar el archivo de audio en memoria usando fetch (solución definitiva para móviles)
+        // Precargar el archivo de audio usando la sintaxis antigua (Callbacks) para máxima compatibilidad con Safari iOS
         fetch('romantico.mp3')
             .then(response => response.arrayBuffer())
-            .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
-            .then(audioBuffer => { romanticBuffer = audioBuffer; })
-            .catch(e => console.log("No se pudo cargar romantico.mp3. Asegúrate de que el archivo existe y estás en un servidor local.", e));
+            .then(arrayBuffer => {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                audioCtx.decodeAudioData(arrayBuffer, function(buffer) {
+                    romanticBuffer = buffer;
+                }, function(e) {
+                    console.log("Error decodificando audio en iOS:", e);
+                });
+            })
+            .catch(e => console.log("No se pudo cargar romantico.mp3.", e));
 
         let hasBooted = false;
         preBoot.addEventListener('click', () => {
@@ -527,23 +533,24 @@
             btnNo.style.margin = '0';
             void btnNo.offsetWidth; // FORZAR REFLOW MÓVIL
 
-            // SOLUCIÓN CLAVE: Mover al body
-            if (btnNo.parentNode !== document.body) {
-                document.body.appendChild(btnNo);
+            // SOLUCIÓN DEFINITIVA: Confinar el botón DENTRO de la caja de cristal (main-terminal)
+            // Así garantizamos 100% que jamás se salga de la pantalla porque la caja siempre es visible.
+            const terminal = document.getElementById('main-terminal');
+            if (btnNo.parentNode !== terminal) {
+                terminal.appendChild(btnNo);
             }
 
-            const isMobile = window.innerWidth < 768;
-            const paddingX = isMobile ? 20 : 50;
-            const paddingY = isMobile ? 20 : 50;
+            const padding = 15;
             
-            // Usamos innerWidth porque position:fixed SIEMPRE respeta el Layout Viewport
-            const maxX = window.innerWidth - btnNo.offsetWidth - (paddingX * 2);
-            const maxY = window.innerHeight - btnNo.offsetHeight - (paddingY * 2);
+            // Calculamos el espacio libre DENTRO de la terminal de cristal
+            const maxX = terminal.clientWidth - btnNo.offsetWidth - (padding * 2);
+            const maxY = terminal.clientHeight - btnNo.offsetHeight - (padding * 2);
             
-            const x = paddingX + (Math.random() * Math.max(0, maxX));
-            const y = paddingY + (Math.random() * Math.max(0, maxY));
+            const x = padding + (Math.random() * Math.max(0, maxX));
+            const y = padding + (Math.random() * Math.max(0, maxY));
             
-            btnNo.style.position = 'fixed';
+            // Usamos position: absolute que lo confina a la caja padre (main-terminal)
+            btnNo.style.position = 'absolute';
             btnNo.style.left = `${x}px`;
             btnNo.style.top = `${y}px`;
             btnNo.style.transform = 'none'; 
