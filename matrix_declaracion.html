@@ -537,24 +537,39 @@
             btnNo.style.margin = '0';
             void btnNo.offsetWidth; // FORZAR REFLOW MÓVIL
 
-            // SOLUCIÓN DEFINITIVA: Confinar el botón DENTRO de la caja de cristal (main-terminal)
-            // Así garantizamos 100% que jamás se salga de la pantalla porque la caja siempre es visible.
-            const terminal = document.getElementById('main-terminal');
-            if (btnNo.parentNode !== terminal) {
-                terminal.appendChild(btnNo);
+            // SOLUCIÓN CLAVE: Mover al body para que brinque libremente por toda la pantalla (fuera del cuadro)
+            // Esto evita que el "transform" de la terminal distorsione las coordenadas del fixed
+            if (btnNo.parentNode !== document.body) {
+                document.body.appendChild(btnNo);
             }
 
-            const padding = 15;
+            const isMobile = window.innerWidth < 768;
+            const paddingX = isMobile ? 15 : 40;
+            const paddingY = isMobile ? 15 : 40;
             
-            // Calculamos el espacio libre DENTRO de la terminal de cristal
-            const maxX = terminal.clientWidth - btnNo.offsetWidth - (padding * 2);
-            const maxY = terminal.clientHeight - btnNo.offsetHeight - (padding * 2);
+            // Medimos ancho y alto reales del botón
+            const btnWidth = btnNo.offsetWidth || 130;
+            const btnHeight = btnNo.offsetHeight || 45;
+
+            // Calculamos los rangos máximos seguros en la pantalla entera
+            const maxX = window.innerWidth - btnWidth - (paddingX * 2);
+            const maxY = window.innerHeight - btnHeight - (paddingY * 2);
             
-            const x = padding + (Math.random() * Math.max(0, maxX));
-            const y = padding + (Math.random() * Math.max(0, maxY));
+            // Generar posición aleatoria
+            let x = paddingX + (Math.random() * Math.max(0, maxX));
+            let y = paddingY + (Math.random() * Math.max(0, maxY));
             
-            // Usamos position: absolute que lo confina a la caja padre (main-terminal)
-            btnNo.style.position = 'absolute';
+            // Doble seguro matemático (Clamp) para confinarlo estrictamente dentro de la pantalla
+            const minXBound = paddingX;
+            const maxXBound = window.innerWidth - btnWidth - paddingX;
+            const minYBound = paddingY;
+            const maxYBound = window.innerHeight - btnHeight - paddingY;
+
+            x = Math.max(minXBound, Math.min(x, maxXBound));
+            y = Math.max(minYBound, Math.min(y, maxYBound));
+            
+            // Aplicamos fixed y coordenadas
+            btnNo.style.position = 'fixed';
             btnNo.style.left = `${x}px`;
             btnNo.style.top = `${y}px`;
             btnNo.style.transform = 'none'; 
