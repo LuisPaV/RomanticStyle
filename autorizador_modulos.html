@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="es" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Módulos y Planes de Contrato • OdonSystemDM</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        clinical: {
+                            cyan: '#06b6d4',
+                            violet: '#8b5cf6',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            gold: '#fbbf24',
+                            rose: '#f43f5e',
+                            darkBg: '#030712',
+                            cardBg: '#090f1d'
+                        }
+                    },
+                    fontSize: {
+                        '2xs': '0.65rem',
+                        '3xs': '0.55rem'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.07) 0px, transparent 40%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.07) 0px, transparent 40%),
+                radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.45);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.6);
+        }
+
+        /* Border Gradients para los planes */
+        .plan-selected-starter {
+            border: 1px solid rgba(6, 182, 212, 0.45);
+            box-shadow: 0 0 20px -5px rgba(6, 182, 212, 0.2);
+        }
+        .plan-selected-pro {
+            border: 1px solid rgba(139, 92, 246, 0.45);
+            box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.2);
+        }
+        .plan-selected-elite {
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.2);
+        }
+        .plan-selected-perpetual {
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            box-shadow: 0 0 20px -5px rgba(251, 191, 36, 0.2);
+            animation: perpetualGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes perpetualGlow {
+            0%, 100% {
+                border-color: rgba(251, 191, 36, 0.45);
+                box-shadow: 0 0 20px -5px rgba(251, 191, 36, 0.2);
+            }
+            50% {
+                border-color: rgba(251, 191, 36, 0.7);
+                box-shadow: 0 0 30px -3px rgba(251, 191, 36, 0.35);
+            }
+        }
+
+        /* Custom Scrollbar for dynamic container */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Smooth page loading transitions */
+        .btn-tab {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .switch-bg {
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Disable user scaling inside inputs to prevent iOS zoom */
+        input, select, textarea {
+            font-size: 16px !important; /* Prevents auto zoom in iOS Safari */
+        }
+        @media (min-width: 768px) {
+            input, select, textarea {
+                font-size: 0.75rem !important; /* Back to normal sizes on desktops */
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between p-4 md:p-8 max-w-[100vw] overflow-x-hidden">
+
+    <!-- HEADER DE ALTO NIVEL RESPONSIVE -->
+    <header class="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between py-5 border-b border-white/5 mb-6 md:mb-8 gap-4">
+        <div class="flex items-center gap-3.5 self-start lg:self-center">
+            <div class="w-10 h-10 md:w-12 md:h-12 bg-clinical-cyan/10 rounded-xl md:rounded-2xl flex items-center justify-center border border-clinical-cyan/20 shadow-lg shrink-0">
+                <span class="text-xl md:text-2xl" id="header-icon">🛡️</span>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-base md:text-lg font-bold tracking-tight text-white" id="header-title">OdonSystemDM</h1>
+                    <span class="text-[9px] font-semibold px-2 py-0.5 bg-clinical-cyan/10 text-clinical-cyan border border-clinical-cyan/20 rounded-md shrink-0">V3.0 CLIENTE</span>
+                </div>
+                <p class="text-[10px] md:text-xs text-gray-400" id="header-subtitle">Módulos Autorizados según el Plan de Contratación</p>
+            </div>
+        </div>
+        
+        <!-- SELECTOR COMERCIAL VS DESARROLLADOR -->
+        <div class="flex items-center gap-1.5 bg-black/45 p-1 rounded-2xl border border-white/10 relative w-full lg:w-auto justify-between max-w-xs self-center lg:self-auto">
+            <div id="mode-pill" class="absolute top-1 bottom-1 w-[138px] bg-clinical-cyan/25 border border-clinical-cyan/35 rounded-xl switch-bg left-1"></div>
+            
+            <button onclick="setUIMode('commercial')" id="btn-mode-commercial" class="relative z-10 w-[138px] py-1.5 md:py-2 text-center text-[10px] md:text-2xs font-bold text-white transition-all select-none flex items-center justify-center gap-1.5">
+                <span>👥</span> Vista Cliente
+            </button>
+            
+            <button onclick="setUIMode('tech')" id="btn-mode-tech" class="relative z-10 w-[138px] py-1.5 md:py-2 text-center text-[10px] md:text-2xs font-bold text-gray-400 transition-all select-none flex items-center justify-center gap-1.5">
+                <span>💻</span> Vista Técnica
+            </button>
+        </div>
+    </header>
+
+    <!-- CUERPO PRINCIPAL -->
+    <main class="w-full max-w-7xl mx-auto flex-grow flex flex-col gap-6 md:gap-8">
+        
+        <!-- SECCIÓN DE SELECCIÓN DE PLAN Y CONTROLADORES -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
+            
+            <!-- PANEL IZQUIERDO: SELECCIÓN DE PLANES CON COSTOS -->
+            <div class="lg:col-span-7 flex flex-col justify-between gap-5 md:gap-6">
+                <div>
+                    <span class="text-[10px] md:text-xs font-bold text-clinical-cyan uppercase tracking-widest block mb-1 md:mb-2" id="selector-tag">SELECCIONADOR DE PLAN CONTRATADO</span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight leading-none text-white mb-3" id="main-headline">
+                        Elige tu Plan de Suscripción <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-clinical-cyan via-clinical-violet to-clinical-emerald">Mapeo de Módulos en Tiempo Real</span>
+                    </h2>
+                    <p class="text-xs md:text-sm text-gray-400 max-w-xl leading-relaxed" id="main-description">
+                        Selecciona un plan de contrato para visualizar de forma instantánea a qué herramientas, módulos y flujos clínicos tendrá acceso tu clínica odontológica de manera inmediata.
+                    </p>
+                </div>
+
+                <!-- SELECTOR DE PLANES EN FORMATO TABS PREMIUM RESPONSIVE -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 bg-black/35 p-1.5 rounded-2xl border border-white/5">
+                    <button onclick="selectPlan('starter')" id="btn-starter" class="btn-tab p-2 md:p-3 rounded-xl flex flex-col items-center gap-0.5 md:gap-1 bg-white/5 border border-white/5 hover:bg-white/10 text-slate-300">
+                        <span class="text-[10px] md:text-xs font-black uppercase tracking-wider">Starter</span>
+                        <span class="text-[8px] md:text-3xs text-gray-500">Esencial Clínico</span>
+                        <span class="text-[10px] md:text-xs font-bold text-clinical-cyan mt-0.5">S/. 199/mes</span>
+                    </button>
+                    <button onclick="selectPlan('pro')" id="btn-pro" class="btn-tab p-2 md:p-3 rounded-xl flex flex-col items-center gap-0.5 md:gap-1 bg-white/5 border border-white/5 hover:bg-white/10 text-slate-300">
+                        <span class="text-[10px] md:text-xs font-black uppercase tracking-wider">Clinic Pro</span>
+                        <span class="text-[8px] md:text-3xs text-gray-500">Operación Completa</span>
+                        <span class="text-[10px] md:text-xs font-bold text-clinical-violet mt-0.5">S/. 349/mes</span>
+                    </button>
+                    <button onclick="selectPlan('elite')" id="btn-elite" class="btn-tab p-2 md:p-3 rounded-xl flex flex-col items-center gap-0.5 md:gap-1 bg-white/5 border border-white/5 hover:bg-white/10 text-slate-300">
+                        <span class="text-[10px] md:text-xs font-black uppercase tracking-wider">Elite Corp</span>
+                        <span class="text-[8px] md:text-3xs text-gray-500">SaaS Multi-Sede</span>
+                        <span class="text-[10px] md:text-xs font-bold text-clinical-emerald mt-0.5">S/. 549/mes</span>
+                    </button>
+                    <button onclick="selectPlan('perpetual')" id="btn-perpetual" class="btn-tab p-2 md:p-3 rounded-xl flex flex-col items-center gap-0.5 md:gap-1 bg-white/5 border border-white/5 hover:bg-white/10 text-slate-300">
+                        <span class="text-[10px] md:text-xs font-black uppercase tracking-wider">Perpetual</span>
+                        <span class="text-[8px] md:text-3xs text-gray-500">Licencia en IIS</span>
+                        <span class="text-[10px] md:text-xs font-bold text-clinical-gold mt-0.5">S/. 12,000</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PANEL DERECHO: DETALLES DE PRECIOS Y COTIZADOR DINÁMICO -->
+            <div class="lg:col-span-5 glass-card rounded-2xl md:rounded-3xl p-5 md:p-6 border border-white/5 flex flex-col gap-5 md:gap-6 justify-between">
+                <div>
+                    <h3 class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-3.5">
+                        <span class="text-clinical-cyan">⚡</span> Cotizador & Configuración de Licencia
+                    </h3>
+
+                    <!-- Configuración del Plan -->
+                    <div class="flex flex-col gap-4">
+                        <!-- Boxes/Sillones Dentales -->
+                        <div class="flex flex-col gap-1.5">
+                            <div class="flex justify-between items-center text-2xs md:text-xs">
+                                <span class="text-gray-400 font-semibold" id="lbl-box-title">Sillones Clínicos (Boxes):</span>
+                                <span id="slider-label" class="text-clinical-cyan font-bold">1 Box Activo</span>
+                            </div>
+                            <input id="slider-boxes" type="range" min="1" max="15" step="1" value="1" oninput="updatePricing()" class="w-full accent-clinical-cyan cursor-pointer h-2 bg-gray-900 rounded-lg appearance-none">
+                        </div>
+
+                        <!-- Add-ons comerciales -->
+                        <div class="flex flex-col gap-2 mt-1 md:mt-2">
+                            <span class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider">Integraciones Adicionales:</span>
+                            
+                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-black/45 border border-white/5 cursor-pointer hover:border-white/10 select-none transition-all duration-200">
+                                <div class="flex items-center gap-2.5 pr-2">
+                                    <span class="text-xs shrink-0">🧾</span>
+                                    <div class="flex flex-col">
+                                        <span class="text-[11px] md:text-xs font-semibold leading-tight">Facturación Electrónica Directa</span>
+                                        <span class="text-[9px] md:text-3xs text-gray-500 leading-normal">Integración nativa con PSE/OSE SUNAT.</span>
+                                    </div>
+                                </div>
+                                <input type="checkbox" id="chk-sunat" onchange="updatePricing()" class="accent-clinical-cyan w-4 h-4 rounded shrink-0">
+                            </label>
+
+                            <label class="flex items-center justify-between p-2.5 rounded-xl bg-black/45 border border-white/5 cursor-pointer hover:border-white/10 select-none transition-all duration-200">
+                                <div class="flex items-center gap-2.5 pr-2">
+                                    <span class="text-xs shrink-0">💬</span>
+                                    <div class="flex flex-col">
+                                        <span class="text-[11px] md:text-xs font-semibold leading-tight">Recordatorios por WhatsApp API</span>
+                                        <span class="text-[9px] md:text-3xs text-gray-500 leading-normal">Mensajería automatizada de citas en tiempo real.</span>
+                                    </div>
+                                </div>
+                                <input type="checkbox" id="chk-whatsapp" onchange="updatePricing()" class="accent-clinical-cyan w-4 h-4 rounded shrink-0">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salida del Precio Total -->
+                <div class="border-t border-white/5 pt-4 flex flex-col gap-2">
+                    <div class="flex justify-between items-baseline gap-2">
+                        <span class="text-2xs md:text-xs text-gray-400" id="lbl-period">Costo Mensual Estimado:</span>
+                        <div class="text-right">
+                            <span id="price-total" class="text-xl md:text-2xl font-black text-white">S/. 199.00</span>
+                            <span class="text-[8px] md:text-3xs text-gray-500 block leading-tight mt-0.5" id="lbl-tax-info">Incluye IGV local</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- SECCIÓN DE BÚSQUEDA Y FILTRADO RESPONSIVE -->
+        <section class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-black/25 p-4 rounded-2xl border border-white/5">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                <span class="text-2xs font-bold text-gray-400 uppercase tracking-widest shrink-0 self-start sm:self-center" id="search-title">Buscar Función:</span>
+                <div class="relative w-full sm:w-72 md:w-80">
+                    <!-- Configurando fontSize a 16px en mobile evita zoom automático en Safari -->
+                    <input type="text" id="search-box" oninput="filterModules()" placeholder="Ej. Odontograma, SOAP, Factura, Cita..." class="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-sm md:text-xs text-slate-100 placeholder-gray-500 focus:outline-none focus:border-clinical-cyan transition-all">
+                    <span class="absolute right-3 top-2.5 text-xs text-gray-500">🔍</span>
+                </div>
+            </div>
+            
+            <!-- Badges organizados para envolver correctamente en mobile -->
+            <div class="flex flex-wrap items-center gap-x-3.5 gap-y-2 text-[9px] md:text-3xs font-semibold tracking-wider text-gray-400 border-t border-white/5 pt-3 lg:border-t-0 lg:pt-0">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-clinical-cyan/20 border border-clinical-cyan/40"></span> STARTER</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-clinical-violet/20 border border-clinical-violet/40"></span> CLINIC PRO</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-clinical-emerald/20 border border-clinical-emerald/40"></span> ELITE CORP</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-clinical-gold/20 border border-clinical-gold/40"></span> PERPETUAL</span>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE GRID DE MÓDULOS -->
+        <section class="relative">
+            <!-- Esqueleto de Carga (Skeleton Loader) para simular consultas -->
+            <div id="skeleton-loader" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 absolute inset-0 z-10 bg-clinical-darkBg/90">
+                <div class="bg-white/5 rounded-2xl p-5 border border-white/5 animate-pulse flex flex-col justify-between h-44">
+                    <div class="flex flex-col gap-3">
+                        <div class="h-3.5 bg-white/10 rounded w-1/3"></div>
+                        <div class="h-5.5 bg-white/10 rounded w-2/3"></div>
+                        <div class="h-2.5 bg-white/10 rounded w-full"></div>
+                        <div class="h-2.5 bg-white/10 rounded w-4/5"></div>
+                    </div>
+                    <div class="h-8 bg-white/10 rounded w-full mt-4"></div>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-5 border border-white/5 animate-pulse flex flex-col justify-between h-44">
+                    <div class="flex flex-col gap-3">
+                        <div class="h-3.5 bg-white/10 rounded w-1/3"></div>
+                        <div class="h-5.5 bg-white/10 rounded w-2/3"></div>
+                        <div class="h-2.5 bg-white/10 rounded w-full"></div>
+                        <div class="h-2.5 bg-white/10 rounded w-4/5"></div>
+                    </div>
+                    <div class="h-8 bg-white/10 rounded w-full mt-4"></div>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-5 border border-white/5 animate-pulse flex flex-col justify-between h-44">
+                    <div class="flex flex-col gap-3">
+                        <div class="h-3.5 bg-white/10 rounded w-1/3"></div>
+                        <div class="h-5.5 bg-white/10 rounded w-2/3"></div>
+                        <div class="h-2.5 bg-white/10 rounded w-full"></div>
+                        <div class="h-2.5 bg-white/10 rounded w-4/5"></div>
+                    </div>
+                    <div class="h-8 bg-white/10 rounded w-full mt-4"></div>
+                </div>
+            </div>
+
+            <!-- Grid de Módulos Reales -->
+            <div id="modules-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 min-h-[400px]">
+                <!-- Se inyecta dinámicamente mediante JS -->
+            </div>
+        </section>
+
+        <!-- TABLA COMPARATIVA CONSOLIDADA -->
+        <section class="glass-card rounded-2xl md:rounded-3xl p-5 md:p-8 border border-white/5 shadow-2xl overflow-hidden mt-4">
+            <h3 class="text-sm md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2">
+                <span class="text-clinical-cyan">📋</span> Matriz Comparativa General de los Planes
+            </h3>
+            <div class="overflow-x-auto w-full -mx-5 px-5 md:-mx-8 md:px-8" style="-webkit-overflow-scrolling: touch;">
+                <table class="w-full text-left border-collapse text-2xs md:text-sm min-w-[640px]">
+                    <thead>
+                        <tr class="border-b border-white/10 text-gray-500 uppercase tracking-wider text-[9px] md:text-[10px]">
+                            <th class="py-3.5 px-4 font-bold">Módulo Ecosistema</th>
+                            <th class="py-3.5 px-4 font-bold text-clinical-cyan">Starter</th>
+                            <th class="py-3.5 px-4 font-bold text-clinical-violet">Clinic Pro</th>
+                            <th class="py-3.5 px-4 font-bold text-clinical-emerald">Elite Corp</th>
+                            <th class="py-3.5 px-4 font-bold text-clinical-gold">Perpetual</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-gray-300 font-sans">
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Gestión de Agenda y Citas</td>
+                            <td class="py-3 px-4 text-clinical-cyan">Básico (Estático)</td>
+                            <td class="py-3 px-4 text-clinical-violet font-semibold">Avanzado (SignalR)</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">Ilimitado (SignalR)</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Local Completo</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Historia Clínica & Anamnesis</td>
+                            <td class="py-3 px-4 text-clinical-cyan">Ficha General</td>
+                            <td class="py-3 px-4 text-clinical-violet font-semibold">SOAP Especializada</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">SOAP + Documental</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Completo</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Odontograma Interactivo</td>
+                            <td class="py-3 px-4 text-gray-500">1D Simple</td>
+                            <td class="py-3 px-4 text-clinical-violet font-semibold">2.0 por Caras</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">2.0 Multi-Historial</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">2.0 Ilimitado</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Consentimientos Informados</td>
+                            <td class="py-3 px-4 text-gray-500">Impresión simple</td>
+                            <td class="py-3 px-4 text-clinical-violet font-semibold">Firma Biométrica</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">Firma + Custom Templates</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Custom Ilimitado</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Inventario de Materiales</td>
+                            <td class="py-3 px-4 text-gray-500">No incluido</td>
+                            <td class="py-3 px-4 text-gray-500">Stock Simple</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">Inteligente FEFO</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Inteligente FEFO</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Facturación Electrónica SUNAT</td>
+                            <td class="py-3 px-4 text-gray-500">Costo extra</td>
+                            <td class="py-3 px-4 text-gray-500">Costo extra</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">Nativo Integrado</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Nativo Integrado</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Portal de Reservas Online</td>
+                            <td class="py-3 px-4 text-gray-500">No incluido</td>
+                            <td class="py-3 px-4 text-gray-500">No incluido</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">Sí (reCAPTCHA v3)</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Sí (reCAPTCHA v3)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold text-white">Auditoría & Trazabilidad</td>
+                            <td class="py-3 px-4 text-gray-500">Logs de Login</td>
+                            <td class="py-3 px-4 text-gray-500">Logs de Acceso</td>
+                            <td class="py-3 px-4 text-clinical-emerald font-semibold">Log Total por IP/Acción</td>
+                            <td class="py-3 px-4 text-clinical-gold font-semibold">Log Total por IP/Acción</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Indicador sutil de scroll en mobile -->
+            <div class="text-center text-[9px] text-gray-500 mt-3 md:hidden">
+                ← Desliza lateralmente para ver la tabla completa →
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full max-w-7xl mx-auto text-center py-6 border-t border-white/5 text-[9px] text-gray-600 tracking-wider mt-8">
+        OdonSystemDM © 2026 • Catálogo Comercial y de Licencias de DentalSaaS.Cliente • Lima, Perú
+    </footer>
+
+    <!-- DETALLE TÉCNICO MODAL (DRAWER CENTRAL) RESPONSIVE -->
+    <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden transition-all duration-300 opacity-0">
+        <!-- Agregado max-h-[90vh] y overflow-y-auto para evitar desbordamiento en pantallas pequeñas de smartphones -->
+        <div class="bg-clinical-cardBg border border-white/10 w-full max-w-lg rounded-2xl md:rounded-3xl p-5 md:p-6 shadow-2xl flex flex-col gap-4 justify-between relative transform scale-95 transition-all duration-300 max-h-[90vh] overflow-y-auto">
+            <!-- Botón Cerrar -->
+            <button onclick="closeModal()" class="absolute right-4 top-4 w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all text-xs z-30">✕</button>
+
+            <div class="flex flex-col gap-3">
+                <span id="modal-plan-badge" class="text-3xs font-extrabold uppercase tracking-widest px-2.5 py-0.5 bg-clinical-cyan/10 text-clinical-cyan border border-clinical-cyan/20 rounded-md self-start shrink-0">Starter</span>
+                
+                <h4 id="modal-title" class="text-base md:text-xl font-bold text-white leading-tight pr-6">Gestión de Agenda y Citas</h4>
+                
+                <!-- Caja Técnica (Solo visible en Vista Técnica) -->
+                <div id="modal-tech-box" class="flex flex-col gap-1 bg-black/45 rounded-xl p-3 border border-white/5 mt-1 hidden">
+                    <span class="text-[9px] text-gray-500 uppercase tracking-wider font-bold">Controlador C# .NET Core</span>
+                    <code id="modal-controller" class="text-2xs text-clinical-cyan font-mono font-semibold break-all">AgendaController.cs</code>
+                </div>
+
+                <!-- Caja Comercial (Visible en Vista Cliente) -->
+                <div id="modal-comm-box" class="flex flex-col gap-1 bg-clinical-cyan/5 rounded-xl p-3 border border-clinical-cyan/20 mt-1">
+                    <span class="text-[9px] text-clinical-cyan uppercase tracking-wider font-bold">Ventaja Comercial para tu Clínica</span>
+                    <p id="modal-comm-benefit" class="text-2xs text-gray-300 leading-relaxed font-medium">Incrementa la productividad de los dentistas un 35% y reduce ausencias innecesarias de pacientes.</p>
+                </div>
+
+                <p id="modal-desc" class="text-2xs md:text-xs text-gray-400 leading-relaxed mt-1">
+                    Administra y programa las citas de la clínica mediante un calendario estructurado. Permite vistas de personal por día, semana y mes.
+                </p>
+
+                <!-- Especificaciones Técnicas o Características Comerciales -->
+                <div class="flex flex-col gap-2 mt-1">
+                    <span id="modal-list-title" class="text-[9px] text-gray-500 uppercase tracking-widest font-extrabold">Especificaciones Técnicas:</span>
+                    <ul class="flex flex-col gap-1 text-[10px] md:text-2xs text-gray-300 pl-4 list-disc leading-relaxed" id="modal-spec-list">
+                        <!-- Carga dinámica -->
+                    </ul>
+                </div>
+
+                <!-- Database Info (Solo Vista Técnica) -->
+                <div id="modal-db-box" class="flex flex-col gap-1 bg-clinical-emerald/5 border border-clinical-emerald/20 rounded-xl p-3 mt-1 hidden">
+                    <span class="text-[9px] text-clinical-emerald uppercase tracking-wider font-bold">Base de Datos / Scripts</span>
+                    <span id="modal-db-info" class="text-2xs text-gray-300 break-words">Tabla: <code class="text-clinical-emerald font-mono">Cita</code></span>
+                </div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl text-center text-xs font-bold transition-all border border-white/10 mt-4 shrink-0">
+                Entendido, Cerrar Detalle
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DE CONTROL Y LÓGICA DINÁMICA -->
+    <script>
+        let uiMode = 'commercial';
+
+        // Mapeo detallado de todos los módulos reales del sistema (con datos comerciales y técnicos desacoplados)
+        const ALL_MODULES = [
+            {
+                id: "agenda",
+                name: "Agenda Digital de Sillones",
+                controller: "AgendaController.cs",
+                category: "clínico",
+                planMin: "starter",
+                desc: "Agenda dental estructurada que organiza de forma visual e intuitiva la carga diaria de trabajo por doctor y sillón odontológico.",
+                tech: [
+                    "Acoplado con FullCalendar JS en Frontend.",
+                    "Sincronización manual en plan Starter.",
+                    "Actualización e inyección mediante IServicioCita."
+                ],
+                db: "Tabla: Cita, Dentista | Script: Inicial",
+                commercial: {
+                    badge: "Organización Eficiente",
+                    benefit: "Evita la superposición de horarios y organiza la atención diaria en menos de un minuto.",
+                    features: [
+                        "Visualización rápida por día, semana o mes.",
+                        "Configuración de horarios laborales personalizados por dentista.",
+                        "Identificación de sillones clínicos disponibles en tiempo real."
+                    ]
+                }
+            },
+            {
+                id: "cita",
+                name: "Citas Inteligentes en Tiempo Real",
+                controller: "CitaController.cs",
+                category: "clínico",
+                planMin: "pro",
+                desc: "Motor inteligente de citas de última generación con notificaciones instantáneas y sistema de arrastre rápido (Drag & Drop).",
+                tech: [
+                    "Implementa SignalR Hubs para notificaciones bidireccionales.",
+                    "Control de estados clínicos (Confirmado, Pendiente, Cancelado).",
+                    "Validación dinámica de disponibilidad horaria por doctor."
+                ],
+                db: "Tablas: Cita, Dentista, Paciente | Script: Inicial",
+                commercial: {
+                    badge: "Productividad Extrema",
+                    benefit: "Ahorra más de 12 horas semanales en llamadas telefónicas automatizando el estado de la agenda.",
+                    features: [
+                        "Arrastra y mueve citas instantáneamente para reprogramar.",
+                        "Notificaciones de actualización en tiempo real en la pantalla de recepción.",
+                        "Estados visuales por colores según avance del tratamiento."
+                    ]
+                }
+            },
+            {
+                id: "solicitud_turno",
+                name: "Pre-reserva de Turnos en Web",
+                controller: "SolicitudTurnoController.cs",
+                category: "portal",
+                planMin: "elite",
+                desc: "Recepción de solicitudes externas de turnos por parte de los pacientes de forma segura y autónoma desde su propia web corporativa.",
+                tech: [
+                    "Integrado con notificaciones de recepción.",
+                    "Flujo de confirmación con envío de correo.",
+                    "Google reCAPTCHA v3 para mitigar bots."
+                ],
+                db: "Tabla: SolicitudTurno | Script: migracion_portal_turnos.sql",
+                commercial: {
+                    badge: "Autonomía 24/7",
+                    benefit: "Tu consultorio recibe solicitudes de turnos en automático incluso fuera de horario de atención.",
+                    features: [
+                        "Enlace personalizado para integrar en su Web o WhatsApp.",
+                        "Buzón de recepción ágil para confirmar o reprogramar en un clic.",
+                        "Validación automática de pacientes nuevos vs. existentes."
+                    ]
+                }
+            },
+            {
+                id: "paciente",
+                name: "Ficha Maestra de Pacientes",
+                controller: "PacienteController.cs",
+                category: "clínico",
+                planMin: "starter",
+                desc: "Expediente maestro del paciente con historial de contacto, búsquedas inteligentes y almacenamiento seguro de datos personales.",
+                tech: [
+                    "Búsqueda por DNI optimizada con índices SQL Server.",
+                    "Auditoría integrada en creación y actualización de fichas.",
+                    "Generación automática de códigos de historia clínica."
+                ],
+                db: "Tabla: Paciente | Script: fix_sp_paciente.sql",
+                commercial: {
+                    badge: "Cero Papel",
+                    benefit: "Localiza cualquier expediente de paciente en menos de 2 segundos mediante búsqueda inteligente.",
+                    features: [
+                        "Búsqueda rápida por DNI, Nombre o Código Clínico.",
+                        "Registro completo de apoderados y contactos de emergencia.",
+                        "Cumplimiento total con regulaciones de protección de datos."
+                    ]
+                }
+            },
+            {
+                id: "anamnesis",
+                name: "Cuestionario de Salud Anamnesis",
+                controller: "AnamnesisController.cs",
+                category: "clínico",
+                planMin: "starter",
+                desc: "Formularios integrales de antecedentes de salud del paciente (diabetes, alergias, coagulopatías, hábitos de higiene dental).",
+                tech: [
+                    "Esquema de preguntas dinámicas parametrizables.",
+                    "Control de alertas críticas visibles en cabecera clínica.",
+                    "Campos obligatorios según normativas locales de salud."
+                ],
+                db: "Tabla: Anamnesis, AlertaMedica | Script: migracion_anamnesis.sql",
+                commercial: {
+                    badge: "Seguridad Médica",
+                    benefit: "Protege a tu clínica de emergencias médicas alertando de forma visual patologías críticas.",
+                    features: [
+                        "Alertas destacadas automáticas (ej. Alergia a Penicilina, Hipertensión).",
+                        "Cuestionario de antecedentes médicos y hábitos bucales.",
+                        "Historial de cambios de salud a través de las consultas."
+                    ]
+                }
+            },
+            {
+                id: "historia",
+                name: "Historia Clínica Cronológica",
+                controller: "HistoriaController.cs",
+                category: "clínico",
+                planMin: "starter",
+                desc: "Línea de tiempo unificada del paciente donde se registran atenciones, recetas, odontogramas y notas previas de manera segura.",
+                tech: [
+                    "Generación cronológica descendente de las intervenciones.",
+                    "Filtros de búsqueda avanzada por tipo de acto médico.",
+                    "Mapeo con HistoriaClinicaViewModel para renderizado óptimo."
+                ],
+                db: "Tabla: HistoriaClinica, RegistroAtencion | Script: Inicial",
+                commercial: {
+                    badge: "Historial Completo",
+                    benefit: "Ten una visión panorámica de toda la evolución del paciente organizada temporalmente en una única pantalla.",
+                    features: [
+                        "Línea de tiempo automatizada con todas las visitas históricas.",
+                        "Filtros de búsqueda rápida para treatments, radiografías o recetas.",
+                        "Acceso inmediato al expediente completo desde el sillón dental."
+                    ]
+                }
+            },
+            {
+                id: "consulta",
+                name: "Consulta Especializada SOAP",
+                controller: "ConsultaController.cs",
+                category: "clínico",
+                planMin: "pro",
+                desc: "Registro profesional estructurado de consultas bajo estándar internacional SOAP (Subjetivo, Objetivo, Análisis, Plan) con notas estructuradas.",
+                tech: [
+                    "Campos separados para diagnóstico y tratamiento sugerido.",
+                    "Firma digital del médico asignado a la sesión.",
+                    "Carga asíncrona de diagnósticos CIE-10."
+                ],
+                db: "Tabla: ConsultaSOAP | Script: migracion_notas_soap.sql",
+                commercial: {
+                    badge: "Calidad de Diagnóstico",
+                    benefit: "Estandariza los reportes clínicos de tus doctores con notas SOAP de máxima rigurosidad y precisión.",
+                    features: [
+                        "Estructura SOAP obligatoria que eleva la formalidad de la atención.",
+                        "Registro detallado de síntomas, hallazgos, diagnóstico y plan de acción.",
+                        "Historial de notas del tratamiento con un solo clic."
+                    ]
+                }
+            },
+            {
+                id: "odontograma",
+                name: "Odontograma Gráfico 2.0",
+                controller: "OdontogramaController.cs",
+                category: "clínico",
+                planMin: "pro",
+                desc: "Mapeo gráfico dental de alta definición para el registro de afecciones, restauraciones y tratamientos pieza por pieza y cara por cara.",
+                tech: [
+                    "Renderizado HTML5 Canvas / SVG ultra interactivo.",
+                    "Trazabilidad histórica de restauraciones y afecciones por diente.",
+                    "Exportación a PDF en alta definición para adjuntar en historia clínica."
+                ],
+                db: "Tabla: PiezaDental, EstadoPieza | Script: Inicial",
+                commercial: {
+                    badge: "Tecnología Visual Wow",
+                    benefit: "Sorprende a tus pacientes mostrándoles interactivamente el estado y evolución de sus caries y tratamientos.",
+                    features: [
+                        "Marcación táctil en tablet/computadora cara por cara de las 32 piezas dentales.",
+                        "Esquema visual homologado según la norma técnica local.",
+                        "Historial rápido de evolución por cada diente específico."
+                    ]
+                }
+            },
+            {
+                id: "consentimiento",
+                name: "Consentimientos con Firma Biométrica",
+                controller: "ConsentimientoController.cs",
+                category: "apoyo",
+                planMin: "pro",
+                desc: "Generación de plantillas legales predefinidas y firma directa en pantalla de consentimientos informados dentales.",
+                tech: [
+                    "Generación dinámica de contratos en PDF con campos de combinación.",
+                    "Captura de firma biométrica digital en dispositivos tablet/mobile.",
+                    "Control de versiones de términos legales aprobados."
+                ],
+                db: "Tabla: Consentimiento, FirmaDigital | Script: Inicial",
+                commercial: {
+                    badge: "Respaldo Legal Completo",
+                    benefit: "Evita reclamos legales firmando los consentimientos de implantes y extracciones directamente desde una tablet.",
+                    features: [
+                        "Plantillas pre-configuradas (Cirugías, Ortodoncia, Endodoncia).",
+                        "Firma digital biométrica en pantalla con dedo o lápiz óptico.",
+                        "Guardado automático en PDF en la historia clínica del paciente."
+                    ]
+                }
+            },
+            {
+                id: "receta",
+                name: "Recetario Digital Clínico",
+                controller: "RecetaController.cs",
+                category: "apoyo",
+                planMin: "starter",
+                desc: "Emisión de prescripciones y recetas médicas detalladas, con dosificación, marcas registradas y logos clínicos integrados.",
+                tech: [
+                    "Formato de exportación en PDF de alta fidelidad.",
+                    "Acceso rápido a vademécum de medicamentos precargados.",
+                    "Firma automática del doctor pre-configurada."
+                ],
+                db: "Tabla: RecetaMedica | Script: Inicial",
+                commercial: {
+                    badge: "Fácil Prescripción",
+                    benefit: "Emite recetas claras y profesionales con el logo de tu clínica en segundos, eliminando errores de escritura.",
+                    features: [
+                        "Impresión de recetas en formato PDF de alta calidad.",
+                        "Buscador rápido de medicamentos con dosificaciones predefinidas.",
+                        "Historial completo de medicamentos prescritos al paciente."
+                    ]
+                }
+            },
+            {
+                id: "orden_lab",
+                name: "Seguimiento de Laboratorio Dental",
+                controller: "OrdenLabController.cs",
+                category: "apoyo",
+                planMin: "pro",
+                desc: "Seguimiento riguroso de trabajos de laboratorio externos (prótesis, coronas, férulas) con fecha de envío y entrega.",
+                tech: [
+                    "Flujo de estados (Enviado, Recibido, Ajustado, Aprobado).",
+                    "Alertas automáticas de retraso de laboratorios contratados.",
+                    "Registro detallado de especificaciones de materiales y colorímetros."
+                ],
+                db: "Tabla: OrdenLaboratorio | Script: migracion_ordenes_lab.sql",
+                commercial: {
+                    badge: "Cero Retrasos",
+                    benefit: "Controla los tiempos de entrega de coronas y prótesis para que tus pacientes nunca lleguen a una cita sin su material.",
+                    features: [
+                        "Alertas visuales de trabajos próximos a vencer.",
+                        "Registro de colorímetro y especificaciones técnicas detalladas.",
+                        "Control de costos y pagos asociados a laboratorios externos."
+                    ]
+                }
+            },
+            {
+                id: "archivo",
+                name: "Visor de Radiografías Panorámicas",
+                controller: "ArchivoController.cs",
+                category: "apoyo",
+                planMin: "pro",
+                desc: "Almacenamiento y visualizador web con zoom y contrastes para radiografías panorámicas, fotos intraorales y PDFs del paciente.",
+                tech: [
+                    "Carga optimizada de imágenes DICOM / JPG / PNG.",
+                    "Control de compresión y seguridad en servidor IIS.",
+                    "Caché en memoria para carga ultrarrápida."
+                ],
+                db: "Tabla: ArchivoAdjunto | Script: migracion_archivos.sql",
+                commercial: {
+                    badge: "Diagnóstico de Precisión",
+                    benefit: "Muestra y analiza radiografías dentales directamente en el box de atención sin softwares externos.",
+                    features: [
+                        "Almacenamiento ilimitado de imágenes clínicas por paciente.",
+                        "Visor con herramientas de zoom para visualización al detalle.",
+                        "Compatible con formatos de radiografías digitales estándar."
+                    ]
+                }
+            },
+            {
+                id: "factura",
+                name: "Facturación Electrónica SUNAT",
+                controller: "FacturaController.cs",
+                category: "financiero",
+                planMin: "elite",
+                desc: "Emisión y envío automático de Boletas, Facturas y Notas de Crédito directas al OSE/SUNAT en formato digital XML/PDF.",
+                tech: [
+                    "Firma digital del XML con certificado del cliente.",
+                    "Manejo de reintentos y almacenamiento de CDR (Constancia de Recepción).",
+                    "Impresión de ticket en formatos térmicos de 80mm."
+                ],
+                db: "Tabla: ComprobantePago, CDR | Script: migracion_sunat.sql",
+                commercial: {
+                    badge: "Cumplimiento Legal Directo",
+                    benefit: "Reduce multas tributarias emitiendo comprobantes oficiales validados ante SUNAT en un solo clic.",
+                    features: [
+                        "Generación instantánea de boletas y facturas al cobrar tratamientos.",
+                        "Envío directo al OSE/SUNAT sin recurrir a plataformas externas.",
+                        "Formato optimizado para ticketera térmica de recepción o PDF."
+                    ]
+                }
+            },
+            {
+                id: "plan_trat",
+                name: "Presupuestos y Planes de Pago",
+                controller: "PlanController.cs",
+                category: "financiero",
+                planMin: "starter",
+                desc: "Presupuestos y fases de tratamientos clínicos del paciente, con cotizaciones específicas y autorización de cobro.",
+                tech: [
+                    "Estructura por fases clínicas (Saneamiento, Cirugía, Estética).",
+                    "Copia e historial de presupuestos rechazados o aprobados.",
+                    "Liquidación con abonos asíncronos."
+                ],
+                db: "Tabla: PlanTratamiento, DetallePlan | Script: Inicial",
+                commercial: {
+                    badge: "Facilidad de Cierre comercial",
+                    benefit: "Incrementa el porcentaje de aceptación de tratamientos entregando presupuestos claros y financiables en fases.",
+                    features: [
+                        "División de tratamientos por fases lógicas y citas sugeridas.",
+                        "Impresión premium de presupuestos con firma de aceptación del paciente.",
+                        "Control de saldos abonados, financiados y saldos pendientes."
+                    ]
+                }
+            },
+            {
+                id: "comision",
+                name: "Comisiones y Pagos a Dentistas",
+                controller: "ComisionController.cs",
+                category: "financiero",
+                planMin: "pro",
+                desc: "Cálculo de comisiones de doctores basándose en los tratamientos pagados o realizados por cada box asignado.",
+                tech: [
+                    "Configuración por porcentajes fijos o tarifas variables por procedimiento.",
+                    "Reporte exportable detallado por doctor y fecha.",
+                    "Trazabilidad contable de saldos pagados y pendientes."
+                ],
+                db: "Tabla: ComisionDentista, Liquidacion | Script: migracion_abonos.sql",
+                commercial: {
+                    badge: "Cuentas Claras",
+                    benefit: "Elimina los errores de fin de mes y las discusiones con tus doctores liquidando honorarios automáticamente.",
+                    features: [
+                        "Cálculo configurable por cobro efectivo o por tratamiento realizado.",
+                        "Porcentajes de ganancia personalizados por cada doctor o procedimiento.",
+                        "Reportes listos para descargar y liquidar pagos de honorarios."
+                    ]
+                }
+            },
+            {
+                id: "inventario",
+                name: "Inventario Inteligente de Materiales (FEFO)",
+                controller: "InventarioController.cs",
+                category: "financiero",
+                planMin: "elite",
+                desc: "Control de stock de resinas y anestesias con alertas de caducidad temprana aplicando el método FEFO (First Expired, First Out).",
+                tech: [
+                    "Alertas visuales semáforo según proximidad de fecha de vencimiento.",
+                    "Kardex automatizado de entradas y salidas por box clínico.",
+                    "Valorización de stock remanente en tiempo real."
+                ],
+                db: "Tabla: Producto, LoteProducto | Script: Inicial",
+                commercial: {
+                    badge: "Cero Desperdicios",
+                    benefit: "Ahorra miles de soles evitando que resinas, blanqueamientos y anestésicos venzan sin ser utilizados en el box.",
+                    features: [
+                        "Alertas semáforo de vencimiento por lotes de productos.",
+                        "Salida sugerida inteligente priorizando el material más próximo a caducar.",
+                        "Alertas automáticas cuando el stock de un insumo crítico es mínimo."
+                    ]
+                }
+            },
+            {
+                id: "portal",
+                name: "Portal de Reservas del Paciente",
+                controller: "PortalController.cs",
+                category: "portal",
+                planMin: "elite",
+                desc: "Página web de acceso libre adaptada a la marca de la clínica para que los pacientes soliciten citas 24/7 de manera automatizada.",
+                tech: [
+                    "Google reCAPTCHA v3 transparente implementado en el formulario.",
+                    "Honeypot invisible para desvío silencioso de bots maliciosos.",
+                    "WebSockets con notificaciones instantáneas de solicitud en el panel clínico."
+                ],
+                db: "Tabla: SolicitudTurno, ConfiguracionWeb | Script: migracion_portal_turnos.sql",
+                commercial: {
+                    badge: "Captación Automática",
+                    benefit: "Multiplica tus canales de venta permitiendo que los pacientes agenden sus propias citas directamente desde tus redes sociales.",
+                    features: [
+                        "Portal autogestionable con el logotipo y colores de tu clínica.",
+                        "Filtro antispam invisible con Google reCAPTCHA v3 integrado.",
+                        "Notificación instantánea en recepción para validar la solicitud en tiempo real."
+                    ]
+                }
+            },
+            {
+                id: "auditoria",
+                name: "Trazabilidad de Acciones del Sistema",
+                controller: "AuditoriaController.cs",
+                category: "seguridad",
+                planMin: "elite",
+                desc: "Bitácora detallada que registra toda acción crítica (eliminación, edición, creación) junto con la IP y usuario responsable.",
+                tech: [
+                    "Log estructurado guardado en formato JSON en base de datos.",
+                    "Filtro de auditoría asíncrono para no afectar la velocidad del backend.",
+                    "Visualización exclusiva para administradores del plan Elite."
+                ],
+                db: "Tabla: LogAuditoria | Script: Inicial",
+                commercial: {
+                    badge: "Seguridad y Auditoría",
+                    benefit: "Audita y mantén el control total de los movimientos de caja, agendas y borrado de citas de tu personal.",
+                    features: [
+                        "Registro de modificaciones críticas (quién modificó un cobro o eliminó una cita).",
+                        "Registro de dirección IP y hora exacta del movimiento.",
+                        "Panel de control exclusivo para el director médico o administrador."
+                    ]
+                }
+            },
+            {
+                id: "permiso",
+                name: "Control de Roles y Permisos",
+                controller: "PermisoController.cs",
+                category: "seguridad",
+                planMin: "elite",
+                desc: "Configurador granular de permisos de lectura, creación, edición y eliminación de cada rol del sistema.",
+                tech: [
+                    "Validación por PermissionFilter en cada llamado de endpoint C#.",
+                    "Soporte para jerarquías complejas y usuarios temporales.",
+                    "Caché inteligente por rol de 10 minutos en memoria."
+                ],
+                db: "Tabla: Permiso, Rol | Script: migrar_permisos.sql",
+                commercial: {
+                    badge: "Seguridad de Datos",
+                    benefit: "Restringe de forma segura qué pantallas y datos pueden ver tus recepcionistas, asistentes y odontólogos.",
+                    features: [
+                        "Perfiles de acceso personalizados (Administrador, Recepción, Dentista).",
+                        "Permisos granulares (ej. Recepción solo cobra, no elimina presupuestos).",
+                        "Bloqueo inmediato de pantallas no autorizadas por rol."
+                    ]
+                }
+            },
+            {
+                id: "dashboard",
+                name: "Tablero de Control del Negocio (KPIs)",
+                controller: "DashboardController.cs",
+                category: "reporte",
+                planMin: "starter",
+                desc: "Panel inicial con KPIs rápidos del día (citas programadas, tratamientos facturados, cumpleaños del paciente).",
+                tech: [
+                    "Consultas agregadas de alto rendimiento (as-no-tracking).",
+                    "Gráficos interactivos de barra y circulares para cobros.",
+                    "Exento de PermissionFilter por ser utilitario general."
+                ],
+                db: "Tablas varias de cobros y citas | Script: Inicial",
+                commercial: {
+                    badge: "Métricas Clave",
+                    benefit: "Conoce el estado diario y financiero de tu clínica apenas inicies tu jornada de trabajo.",
+                    features: [
+                        "Gráficos interactivos de cobros diarios y mensuales.",
+                        "Resumen veloz de pacientes atendidos, citas confirmadas e inasistencias.",
+                        "Alertas del día (ej. cumpleaños de pacientes para fidelización)."
+                    ]
+                }
+            },
+            {
+                id: "reporte",
+                name: "Reportes Gerenciales y Financieros",
+                controller: "ReporteController.cs",
+                category: "reporte",
+                planMin: "pro",
+                desc: "Emisión de más de 25 reportes de tratamientos, estados de cobros, deudas de pacientes y liquidaciones de cajas.",
+                tech: [
+                    "Exportación nativa ultra-rápida a planillas de Excel (EPPlus).",
+                    "Filtros avanzados combinados por doctor, fecha, tipo y box.",
+                    "Procedimientos almacenados complejos optimizados para reportes masivos."
+                ],
+                db: "Tablas varias del sistema | Script: Inicial",
+                commercial: {
+                    badge: "Toma de Decisiones",
+                    benefit: "Analiza el crecimiento de tu negocio descargando reportes contables y operativos listos para Excel.",
+                    features: [
+                        "Reportes financieros detallados de ingresos, gastos y arqueos de caja.",
+                        "Métricas de efectividad de doctores y sillones dentales (Boxes).",
+                        "Descargas de bases de datos de pacientes en formato Excel en 1 segundo."
+                    ]
+                }
+            }
+        ];
+
+        let selectedPlan = 'pro'; 
+        let boxes = 1;
+        let isSunatChecked = false;
+        let isWhatsappChecked = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setUIMode('commercial'); 
+            selectPlan('pro');
+            updatePricing();
+        });
+
+        function setUIMode(mode) {
+            uiMode = mode;
+            const btnComm = document.getElementById('btn-mode-commercial');
+            const btnTech = document.getElementById('btn-mode-tech');
+            const pill = document.getElementById('mode-pill');
+
+            if (mode === 'commercial') {
+                pill.style.transform = 'translateX(0px)';
+                btnComm.classList.add('text-white');
+                btnComm.classList.remove('text-gray-400');
+                btnTech.classList.add('text-gray-400');
+                btnTech.classList.remove('text-white');
+
+                document.getElementById('header-icon').innerText = "🦷";
+                document.getElementById('header-title').innerText = "Matriz de Soluciones DentalSaaS";
+                document.getElementById('header-subtitle').innerText = "Visualizador interactivo de módulos contratados";
+                document.getElementById('selector-tag').innerText = "SELECCIONA TU NIVEL DE CLÍNICA";
+                document.getElementById('main-headline').innerHTML = `Elige tu Plan de Suscripción <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-clinical-cyan via-clinical-violet to-clinical-emerald text-xl md:text-3xl font-extrabold">Módulos que Impulsan tu Éxito</span>`;
+                document.getElementById('main-description').innerText = "Descubre qué funciones y ventajas operativas tendrá tu clínica odontológica con cada plan. Selecciona los sillones clínicos y add-ons para calcular tu costo mensual estimado.";
+                document.getElementById('lbl-box-title').innerText = "Sillones Clínicos (Boxes):";
+                document.getElementById('search-title').innerText = "Buscar Módulo:";
+            } else {
+                pill.style.transform = 'translateX(142px)'; // Ajustado a 142px para el nuevo ancho de botón
+                btnTech.classList.add('text-white');
+                btnTech.classList.remove('text-gray-400');
+                btnComm.classList.add('text-gray-400');
+                btnComm.classList.remove('text-white');
+
+                document.getElementById('header-icon').innerText = "⚙️";
+                document.getElementById('header-title').innerText = "DentalSaaS.Cliente System Map";
+                document.getElementById('header-subtitle').innerText = "Matriz de Autorización de Controladores y Permisos de Ecosistema C#";
+                document.getElementById('selector-tag').innerText = "SaaS CONTRACT PLAN SELECTOR";
+                document.getElementById('main-headline').innerHTML = `Define el Acceso de tu Ecosistema <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-clinical-cyan via-clinical-violet to-clinical-emerald text-xl md:text-3xl font-extrabold">Autorización de Controladores y Endpoints</span>`;
+                document.getElementById('main-description').innerText = "Mapeo directo con los controladores C# .NET Core 8 de la Capa.Web, Middleware de seguridad PermissionFilter y procedimientos SQL de la base de datos.";
+                document.getElementById('lbl-box-title').innerText = "Boxes Dentales (Sillones):";
+                document.getElementById('search-title').innerText = "Buscar Controller:";
+            }
+
+            renderModules();
+        }
+
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            
+            const plans = ['starter', 'pro', 'elite', 'perpetual'];
+            plans.forEach(p => {
+                const btn = document.getElementById(`btn-${p}`);
+                if (p === plan) {
+                    btn.className = `btn-tab p-2.5 md:p-3 rounded-xl flex flex-col items-center gap-0.5 md:gap-1 text-white bg-white/10 plan-selected-${p}`;
+                } else {
+                    btn.className = 'btn-tab p-2.5 md:p-3 rounded-xl flex flex-col items-center gap-0.5 md:gap-1 bg-white/5 border border-white/5 hover:bg-white/10 text-slate-300';
+                }
+            });
+
+            const skeleton = document.getElementById('skeleton-loader');
+            const container = document.getElementById('modules-container');
+            
+            skeleton.classList.remove('hidden');
+            container.classList.add('opacity-30');
+
+            setTimeout(() => {
+                skeleton.classList.add('hidden');
+                container.classList.remove('opacity-30');
+                renderModules();
+            }, 250);
+
+            if (plan === 'elite' || plan === 'perpetual') {
+                document.getElementById('chk-sunat').checked = true;
+                document.getElementById('chk-whatsapp').checked = true;
+            } else {
+                document.getElementById('chk-sunat').checked = false;
+                document.getElementById('chk-whatsapp').checked = false;
+            }
+
+            updatePricing();
+        }
+
+        function renderModules() {
+            const container = document.getElementById('modules-container');
+            const search = document.getElementById('search-box').value.toLowerCase();
+            
+            container.innerHTML = '';
+
+            const plansOrder = ['starter', 'pro', 'elite', 'perpetual'];
+            const currentPlanIndex = plansOrder.indexOf(selectedPlan);
+
+            const filtered = ALL_MODULES.filter(m => {
+                const matchesSearch = m.name.toLowerCase().includes(search) || 
+                                     m.controller.toLowerCase().includes(search) ||
+                                     m.desc.toLowerCase().includes(search) ||
+                                     (m.commercial && m.commercial.badge.toLowerCase().includes(search));
+                return matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-gray-500 flex flex-col items-center gap-3">
+                        <span class="text-3xl">📂</span>
+                        <p class="text-xs md:text-sm font-semibold">No se encontraron módulos con ese término</p>
+                        <p class="text-[10px] md:text-xs text-gray-600">Intenta buscar otro término clínico como Odontograma, Receta, Cita</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(m => {
+                const planMinIndex = plansOrder.indexOf(m.planMin);
+                const isAuthorized = currentPlanIndex >= planMinIndex;
+                
+                let badgeClass = '';
+                let borderSelectedClass = '';
+                if (m.planMin === 'starter') {
+                    badgeClass = 'bg-clinical-cyan/10 text-clinical-cyan border-clinical-cyan/20';
+                    borderSelectedClass = isAuthorized ? 'hover:border-clinical-cyan/40' : '';
+                } else if (m.planMin === 'pro') {
+                    badgeClass = 'bg-clinical-violet/10 text-clinical-violet border-clinical-violet/20';
+                    borderSelectedClass = isAuthorized ? 'hover:border-clinical-violet/40' : '';
+                } else if (m.planMin === 'elite') {
+                    badgeClass = 'bg-clinical-emerald/10 text-clinical-emerald border-clinical-emerald/20';
+                    borderSelectedClass = isAuthorized ? 'hover:border-clinical-emerald/40' : '';
+                } else {
+                    badgeClass = 'bg-clinical-gold/10 text-clinical-gold border-clinical-gold/20';
+                    borderSelectedClass = isAuthorized ? 'hover:border-clinical-gold/40' : '';
+                }
+
+                const authBadge = isAuthorized 
+                    ? `<span class="text-[9px] font-bold text-clinical-emerald bg-clinical-emerald/10 border border-clinical-emerald/20 px-2 py-0.5 rounded-full flex items-center gap-1">✓ Incluido</span>`
+                    : `<span class="text-[9px] font-bold text-clinical-rose bg-clinical-rose/10 border border-clinical-rose/20 px-2 py-0.5 rounded-full flex items-center gap-1">✕ Bloqueado</span>`;
+
+                const lockOverlay = isAuthorized 
+                    ? '' 
+                    : `<div class="absolute inset-0 bg-black/70 backdrop-blur-[1px] flex flex-col items-center justify-center text-center p-4 z-10 select-none">
+                         <span class="text-xl mb-1">🔒</span>
+                         <span class="text-[9px] uppercase tracking-wider font-extrabold text-clinical-rose">Requiere Plan ${m.planMin === 'pro' ? 'Clinic Pro' : m.planMin === 'elite' ? 'Elite Corp' : m.planMin.toUpperCase()}</span>
+                       </div>`;
+
+                const subheaderInfo = (uiMode === 'commercial')
+                    ? `<span class="text-[9px] font-bold text-clinical-cyan bg-clinical-cyan/5 px-2 py-0.5 rounded border border-clinical-cyan/10 self-start uppercase tracking-wider">${m.commercial.badge}</span>`
+                    : `<code class="text-[9px] text-gray-500 font-mono block mt-0.5">${m.controller}</code>`;
+
+                const cardHtml = `
+                    <div class="glass-card rounded-xl md:rounded-2xl p-4 md:p-5 border border-white/5 flex flex-col justify-between h-48 relative overflow-hidden group select-none ${borderSelectedClass}">
+                        ${lockOverlay}
+                        <div class="relative z-0">
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="text-3xs font-mono font-bold tracking-widest px-2 py-0.5 rounded border uppercase ${badgeClass}">${m.planMin === 'pro' ? 'Clinic Pro' : m.planMin === 'elite' ? 'Elite Corp' : m.planMin}</span>
+                                ${authBadge}
+                            </div>
+                            <h4 class="text-xs md:text-sm font-bold text-white group-hover:text-clinical-cyan transition-all line-clamp-1">${m.name}</h4>
+                            <div class="mt-1">${subheaderInfo}</div>
+                            <p class="text-3xs md:text-2xs text-gray-400 leading-relaxed mt-2 line-clamp-2">${m.desc}</p>
+                        </div>
+                        <button onclick="openModal('${m.id}')" class="w-full py-1.5 bg-white/5 group-hover:bg-white/10 border border-white/5 hover:border-white/10 text-white rounded-lg text-center text-3xs font-black tracking-wider transition-all mt-4 z-20">
+                            ${uiMode === 'commercial' ? 'VER VENTAJAS CLÍNICAS 📈' : 'VER FICHA TÉCNICA ⚙️'}
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        function filterModules() {
+            renderModules();
+        }
+
+        function updatePricing() {
+            boxes = parseInt(document.getElementById('slider-boxes').value);
+            document.getElementById('slider-label').innerText = boxes === 1 ? "1 Box Dental" : `${boxes} Boxes (Sillones)`;
+
+            isSunatChecked = document.getElementById('chk-sunat').checked;
+            isWhatsappChecked = document.getElementById('chk-whatsapp').checked;
+
+            const BASE_COSTS = {
+                starter: 199,
+                pro: 349,
+                elite: 549,
+                perpetual: 12000
+            };
+
+            const perBoxCost = {
+                starter: 30,
+                pro: 45,
+                elite: 60,
+                perpetual: 0
+            };
+
+            let total = BASE_COSTS[selectedPlan];
+            
+            if (boxes > 1 && selectedPlan !== 'perpetual') {
+                total += (boxes - 1) * perBoxCost[selectedPlan];
+            }
+
+            if (isSunatChecked && selectedPlan !== 'elite' && selectedPlan !== 'perpetual') {
+                total += 45; 
+            }
+            if (isWhatsappChecked && selectedPlan !== 'elite' && selectedPlan !== 'perpetual') {
+                total += 35; 
+            }
+
+            const totalFormatted = total.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
+            if (selectedPlan === 'perpetual') {
+                document.getElementById('price-total').innerText = `S/. ${totalFormatted}`;
+                document.getElementById('lbl-period').innerText = "Licencia Local Única:";
+                document.getElementById('lbl-tax-info').innerText = "Pago único, soporte anual en IIS local S/. 1,500";
+            } else {
+                document.getElementById('price-total').innerText = `S/. ${totalFormatted} / mes`;
+                document.getElementById('lbl-period').innerText = "Costo Mensual Estimado:";
+                document.getElementById('lbl-tax-info').innerText = "Facturación recurrente mensual, incluye IGV";
+            }
+        }
+
+        function openModal(moduleId) {
+            const m = ALL_MODULES.find(x => x.id === moduleId);
+            if (!m) return;
+
+            document.getElementById('modal-title').innerText = m.name;
+            document.getElementById('modal-desc').innerText = m.desc;
+
+            const badge = document.getElementById('modal-plan-badge');
+            badge.innerText = `Plan Mínimo: ${m.planMin === 'pro' ? 'Clinic Pro' : m.planMin === 'elite' ? 'Elite Corp' : m.planMin.toUpperCase()}`;
+            
+            let colorClass = '';
+            if (m.planMin === 'starter') colorClass = 'bg-clinical-cyan/15 text-clinical-cyan border-clinical-cyan/30';
+            else if (m.planMin === 'pro') colorClass = 'bg-clinical-violet/15 text-clinical-violet border-clinical-violet/30';
+            else if (m.planMin === 'elite') colorClass = 'bg-clinical-emerald/15 text-clinical-emerald border-clinical-emerald/30';
+            else colorClass = 'bg-clinical-gold/15 text-clinical-gold border-clinical-gold/30';
+            badge.className = `text-3xs font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded border self-start ${colorClass}`;
+
+            const listTitle = document.getElementById('modal-list-title');
+            const specList = document.getElementById('modal-spec-list');
+            specList.innerHTML = '';
+
+            const techBox = document.getElementById('modal-tech-box');
+            const commBox = document.getElementById('modal-comm-box');
+            const dbBox = document.getElementById('modal-db-box');
+
+            if (uiMode === 'commercial') {
+                techBox.classList.add('hidden');
+                dbBox.classList.add('hidden');
+                commBox.classList.remove('hidden');
+
+                document.getElementById('modal-comm-benefit').innerText = m.commercial.benefit;
+                listTitle.innerText = "Características Clave del Servicio:";
+
+                m.commercial.features.forEach(feat => {
+                    const li = document.createElement('li');
+                    li.innerText = feat;
+                    specList.appendChild(li);
+                });
+            } else {
+                commBox.classList.add('hidden');
+                techBox.classList.remove('hidden');
+                dbBox.classList.remove('hidden');
+
+                document.getElementById('modal-controller').innerText = m.controller;
+                document.getElementById('modal-db-info').innerText = m.db;
+                listTitle.innerText = "Especificaciones Técnicas del Backend:";
+
+                m.tech.forEach(t => {
+                    const li = document.createElement('li');
+                    li.innerText = t;
+                    specList.appendChild(li);
+                });
+            }
+
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+            }, 50);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 250);
+        }
+    </script>
+</body>
+</html>
