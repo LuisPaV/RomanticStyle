@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Danza de las Almas • Sintonía Eterna ✨</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        romance: {
+                            obsidian: '#05020c',
+                            amethyst: '#140728',
+                            rose: '#ec4899',
+                            roseDark: '#be185d',
+                            gold: '#d4af37',
+                            goldDark: '#aa8410',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-panel {
+                background: rgba(10, 5, 20, 0.45);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            .glass-panel-glow {
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(236, 72, 153, 0.05);
+            }
+            .metallic-text {
+                background: linear-gradient(135deg, #fff 30%, #d4af37 70%, #aa8410 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+    </style>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #05020c;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Twinkling star animation */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Ambient glowing auroras */
+        .aurora {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+            mix-blend-mode: screen;
+            transition: all 0.5s ease-out;
+        }
+
+        /* Grain overlay for vintage cinematic feel */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Audio progress bar custom styles */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d4af37;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        /* Skeleton loader style */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="w-full h-full select-none relative overflow-hidden flex flex-col justify-between items-center text-white font-sans">
+
+    <!-- Cinema grain effect -->
+    <svg class="hidden">
+        <filter id="grainy">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
+            <feColorMatrix type="saturate" values="0"/>
+        </filter>
+    </svg>
+    <div class="grain" style="filter: url(#grainy)"></div>
+
+    <!-- Ambient glowing auroras (bass responsive) -->
+    <div id="aurora-left" class="aurora w-[600px] h-[600px] bg-purple-900/40 -left-48 -top-48"></div>
+    <div id="aurora-right" class="aurora w-[500px] h-[500px] bg-pink-900/30 -right-36 top-1/3"></div>
+    <div id="aurora-center" class="aurora w-[800px] h-[400px] bg-fuchsia-900/20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+
+    <!-- Background music asset -->
+    <audio id="romantic-audio" loop preload="auto">
+        <source src="romantico.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Canvas for primary animations (Sky, Moon, Dancers, Reflection, Ripples, Particles) -->
+    <canvas id="stage" class="absolute inset-0 w-full h-full z-10 cursor-pointer"></canvas>
+
+    <!-- TOP HEADER OVERLAY (Ethereal Title) -->
+    <header class="w-full text-center pt-6 sm:pt-8 md:pt-12 z-20 pointer-events-none select-none px-4">
+        <span class="block text-[0.55rem] sm:text-[0.65rem] tracking-[0.25em] sm:tracking-[0.35em] uppercase text-romance-gold/80 mb-1.5 sm:mb-2 font-medium">Sinfonía en la Penumbra</span>
+        <h1 class="font-serif text-2xl sm:text-3xl md:text-5xl font-light tracking-tight leading-none metallic-text select-none">
+            Danza de las Almas
+        </h1>
+        <div class="flex items-center gap-3 mt-2 sm:mt-3 mx-auto w-24 sm:w-32 justify-center opacity-40">
+            <div class="w-6 sm:w-8 h-px bg-gradient-to-r from-transparent to-romance-gold"></div>
+            <div class="w-1.5 h-1.5 bg-romance-gold rotate-45 shrink-0"></div>
+            <div class="w-6 sm:w-8 h-px bg-gradient-to-l from-transparent to-romance-gold"></div>
+        </div>
+    </header>
+
+    <!-- POETRY OVERLAY (Appears after interaction) -->
+    <div id="poetry-box" class="absolute left-1/2 top-[18%] sm:top-[22%] -translate-x-1/2 z-20 text-center w-[min(540px,90%)] pointer-events-none transition-all duration-[1500ms] opacity-0 translate-y-4">
+        <p id="poetry-text" class="font-serif italic text-base sm:text-lg md:text-xl text-pink-200/90 leading-relaxed drop-shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all duration-500">
+            "Bajo el manto de la noche estrellada, el mundo entero se desvanece..."
+        </p>
+        <span id="poetry-author" class="block font-sans text-[0.55rem] sm:text-[0.65rem] tracking-[0.2em] uppercase text-romance-gold/60 mt-2 sm:mt-3 font-medium transition-all duration-500">
+            Sintonía Eterna
+        </span>
+    </div>
+
+    <!-- INITIAL SCREEN (Premium Audio Unlocker Overlay) -->
+    <div id="unlock-overlay" class="absolute inset-0 z-40 bg-[#05020c]/95 flex flex-col items-center justify-center p-4 text-center transition-all duration-1000">
+        <div class="glass-panel glass-panel-glow max-w-[min(450px,92%)] w-full p-6 sm:p-8 md:p-12 rounded-[24px] sm:rounded-[32px] border border-white/10 flex flex-col items-center relative overflow-hidden">
+            <!-- Decorative Corners -->
+            <div class="absolute top-4 left-4 w-6 h-6 border-t border-l border-romance-gold/30"></div>
+            <div class="absolute top-4 right-4 w-6 h-6 border-t border-r border-romance-gold/30"></div>
+            <div class="absolute bottom-4 left-4 w-6 h-6 border-b border-l border-romance-gold/30"></div>
+            <div class="absolute bottom-4 right-4 w-6 h-6 border-b border-r border-romance-gold/30"></div>
+
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-romance-gold/20 flex items-center justify-center mb-5 sm:mb-6 bg-romance-amethyst/30 relative">
+                <span class="text-2xl sm:text-3xl animate-pulse">✨</span>
+                <div class="absolute inset-0 rounded-full border border-romance-rose/20 animate-ping"></div>
+            </div>
+
+            <h2 class="font-serif text-2xl sm:text-3xl font-light mb-3 sm:mb-4 leading-tight">
+                El Ritmo del <span class="italic text-romance-gold">Amor</span>
+            </h2>
+            <p class="font-sans text-xs md:text-sm text-gray-400 mb-6 sm:mb-8 leading-relaxed max-w-sm text-justify">
+                Una experiencia audiovisual interactiva. Las almas de luz bailarán en perfecta sincronía física al ritmo y las frecuencias de una melodía romántica.
+            </p>
+
+            <button id="btn-unlock" class="relative group px-8 py-3.5 sm:px-10 sm:py-4 bg-gradient-to-r from-romance-roseDark/30 to-romance-amethyst/80 hover:from-romance-roseDark/50 hover:to-romance-amethyst border border-romance-gold/40 text-romance-gold font-sans font-semibold text-xs tracking-[0.2em] rounded-full uppercase transition-all duration-300 shadow-[0_10px_30px_rgba(236,72,153,0.15)] hover:shadow-[0_15px_40px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 active:translate-y-0">
+                <span class="relative z-10 flex items-center gap-2">
+                    Iniciar Danza <span class="text-sm">🎻</span>
+                </span>
+                <div class="absolute inset-0 rounded-full bg-romance-gold/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN UI CONTROLS (Footer Glass Panel) -->
+    <footer id="ui-controls" class="w-full max-w-2xl px-4 sm:px-6 pb-6 md:pb-12 z-20 pointer-events-auto transition-all duration-[1500ms] opacity-0 translate-y-8">
+        <div class="glass-panel glass-panel-glow p-3.5 sm:p-4 md:p-6 rounded-[20px] sm:rounded-[28px] flex flex-col gap-3 sm:gap-4 relative">
+            
+            <!-- Inset border design element -->
+            <div class="absolute inset-2 sm:inset-2.5 border border-white/5 rounded-[16px] sm:rounded-[20px] pointer-events-none"></div>
+
+            <!-- Upper Row: Playing Info and Progress -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 relative z-10">
+                
+                <!-- Track info with loading skeletons -->
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <div id="playing-artwork" class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl border border-white/10 flex items-center justify-center bg-romance-amethyst/40 shrink-0 relative overflow-hidden group">
+                        <span class="text-lg sm:text-xl">🎶</span>
+                        <div id="artwork-pulse" class="absolute inset-0 bg-romance-rose/20 opacity-0 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="flex flex-col gap-0.5 sm:gap-1 select-none">
+                        <span id="track-title" class="text-[10px] sm:text-xs font-semibold tracking-wider text-romance-gold uppercase">Melodía Romántica</span>
+                        <div id="track-status-skeleton" class="skeleton w-24 sm:w-32 h-3.5 rounded hidden"></div>
+                        <span id="track-status" class="text-[9px] sm:text-[10px] text-gray-400 font-medium">Sintonía en reposo</span>
+                    </div>
+                </div>
+
+                <!-- Custom slider for Audio Progress -->
+                <div class="flex items-center gap-2 sm:gap-3 w-full md:w-3/5">
+                    <span id="current-time" class="font-mono text-[9px] sm:text-[10px] text-gray-400 w-8 text-right">0:00</span>
+                    <input id="progress-bar" type="range" min="0" max="100" value="0" class="w-full h-1 bg-white/10 rounded-full appearance-none outline-none accent-romance-gold cursor-pointer transition-all duration-200">
+                    <span id="duration-time" class="font-mono text-[9px] sm:text-[10px] text-gray-400 w-8">0:00</span>
+                </div>
+            </div>
+
+            <!-- Lower Row: Core Actions -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 mt-0.5 border-t border-white/5 pt-3 sm:pt-4 relative z-10">
+                
+                <!-- Audio controls -->
+                <div class="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-4">
+                    <!-- Elegant Circular Play Button -->
+                    <button id="btn-play-pause" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-romance-gold to-romance-goldDark hover:from-white hover:to-romance-gold border border-romance-gold/30 flex items-center justify-center text-romance-obsidian transition-all duration-300 shadow-[0_4px_15px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_25px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 shrink-0">
+                        <svg id="play-svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 sm:w-5 sm:h-5 ml-0.5"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="pause-svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 sm:w-5 sm:h-5 hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+
+                    <!-- Volume slider widget -->
+                    <div class="flex items-center gap-2 group/volume">
+                        <span class="text-xs text-gray-400 select-none">🔊</span>
+                        <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.8" class="w-14 sm:w-16 h-1 bg-white/10 rounded-full appearance-none outline-none accent-romance-rose cursor-pointer transition-all duration-200">
+                    </div>
+                </div>
+
+                <!-- Interactive Trigger (Launches Sparkles from Couple) -->
+                <button id="btn-spark" class="w-full sm:w-auto px-5 py-2 sm:px-6 sm:py-2.5 bg-romance-rose/10 hover:bg-romance-rose/20 border border-romance-rose/30 hover:border-romance-rose/50 active:scale-95 text-romance-rose text-[10px] sm:text-xs font-semibold tracking-wider uppercase rounded-full transition-all duration-200 flex items-center justify-center gap-2">
+                    <span>Provocar Destello 💖</span>
+                </button>
+            </div>
+        </div>
+        
+        <p class="text-center text-[8px] sm:text-[9px] text-gray-500 mt-3 sm:mt-4 select-none tracking-widest uppercase">
+            Interactúa: Pulsa en la pantalla para sembrar estrellas fugaces o mover la brisa
+        </p>
+    </footer>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        // DOM Elements
+        const stage = document.getElementById('stage');
+        const ctx = stage.getContext('2d');
+        const audio = document.getElementById('romantic-audio');
+        const btnUnlock = document.getElementById('btn-unlock');
+        const unlockOverlay = document.getElementById('unlock-overlay');
+        const uiControls = document.getElementById('ui-controls');
+        
+        const btnPlayPause = document.getElementById('btn-play-pause');
+        const playSvg = document.getElementById('play-svg');
+        const pauseSvg = document.getElementById('pause-svg');
+        const progressBar = document.getElementById('progress-bar');
+        const volumeSlider = document.getElementById('volume-slider');
+        
+        const currentTimeText = document.getElementById('current-time');
+        const durationTimeText = document.getElementById('duration-time');
+        const trackStatus = document.getElementById('track-status');
+        const trackStatusSkeleton = document.getElementById('track-status-skeleton');
+        const artworkPulse = document.getElementById('artwork-pulse');
+        const btnSpark = document.getElementById('btn-spark');
+        
+        const poetryBox = document.getElementById('poetry-box');
+        const poetryText = document.getElementById('poetry-text');
+        
+        // Auroras for reactive glow
+        const auroraLeft = document.getElementById('aurora-left');
+        const auroraRight = document.getElementById('aurora-right');
+        const auroraCenter = document.getElementById('aurora-center');
+
+        // Web Audio Variables
+        let audioCtx = null;
+        let analyser = null;
+        let sourceNode = null;
+        let audioDataArray = null;
+        let isAudioSetup = false;
+
+        // Synchronized Song Lyrics Database (Time-tagged lyrics for perfect karaoke-like rendering)
+        const lyrics = [
+            { time: 0, text: "🎶 (Sinfonía instrumental... Las almas despiertan) 🎶" },
+            { time: 6, text: "En el silencio profundo de la noche..." },
+            { time: 12, text: "...se escucha el murmullo de tu respiración." },
+            { time: 18, text: "Cada latido es una nota en el viento..." },
+            { time: 24, text: "...que guía mis pasos hacia tu dirección." },
+            { time: 31, text: "Y danzamos, flotando sobre el agua..." },
+            { time: 38, text: "...dos almas fundidas en un solo destello." },
+            { time: 45, text: "No hay tiempo ni distancia que nos separe..." },
+            { time: 52, text: "...porque este amor es lo único puro y bello." },
+            { time: 60, text: "Bajo el destello cósmico de la luna..." },
+            { time: 67, text: "...veo el reflejo eterno de tu mirada." },
+            { time: 74, text: "Giremos juntos una vez más, mi vida..." },
+            { time: 81, text: "...en esta melodía de luz dorada." },
+            { time: 88, text: "🎻 (Solo de violín... Las estelas se entrelazan) 🎻" },
+            { time: 100, text: "Tus manos son mi refugio eterno..." },
+            { time: 107, text: "...y tu risa, mi estrella polar." },
+            { time: 114, text: "Déjate llevar al compás del vals..." },
+            { time: 121, text: "...hacia el infinito donde reina nuestro amar." },
+            { time: 128, text: "Y danzamos, flotando sobre el agua..." },
+            { time: 135, text: "...dos almas fundidas en un solo destello." },
+            { time: 142, text: "No hay tiempo ni distancia que nos separe..." },
+            { time: 149, text: "...porque este amor es lo único puro y bello." },
+            { time: 157, text: "En el silencio de la eternidad..." },
+            { time: 164, text: "...nuestra danza nunca se detendrá." }
+        ];
+
+        // Couple Image setup
+        const coupleImg = new Image();
+        coupleImg.src = 'pareja.png';
+        let coupleLoaded = false;
+        coupleImg.onload        // Interactive Abstract Dancing Light Wisps (Replacing human silhouettes with glowing spirits!)
+        function drawDancingCoupleInteractive(cCtx, scale, time, bass, mid, treble, volume) {
+            cCtx.save();
+            
+            const danceSpeed = time;
+            
+            // ── 1. MATHEMATICAL 3D ORBIT & DEPTH CONFIGURATION ──
+            const orbitAngle = danceSpeed * 1.3;
+            const cosT = Math.cos(orbitAngle);
+            const sinT = Math.sin(orbitAngle);
+            
+            // Radio de la órbita (ensanchado sutilmente por el bajo musical)
+            const orbitRadius = (22 * scale) + (bass * 6.5);
+            
+            const wisp1X = cosT * orbitRadius;
+            const wisp1Z = sinT * orbitRadius; // Z > 0 al frente, Z < 0 detrás
+            
+            const wisp2X = -wisp1X;
+            const wisp2Z = -wisp1Z;
+            
+            // Altura del vals (compás "Rise & Fall")
+            const verticalBob = Math.abs(Math.sin(danceSpeed * 2.0)) * -(6.0 * scale + bass * 6.0);
+            
+            // Balanceos de torso independientes desfasados (simulados en la inclinación de las estelas)
+            const wisp1Sway = Math.sin(danceSpeed) * (0.04 + mid * 0.05);
+            const wisp2Sway = Math.sin(danceSpeed + 0.85) * (0.05 + mid * 0.06);
+            
+            // ── 2. DIBUJAR ESTELAS DE LUZ (RECONSTRUCCIÓN MATEMÁTICA EXACTA EN ESPACIO DE DERIVA) ──
+            const platformY = stage.height * 0.5;
+            const floatTimeCurr = danceSpeed * (0.005 / 0.024);
+            const driftXCurr = Math.sin(floatTimeCurr) * (stage.width * 0.38);
+            const targetMinY = stage.height * 0.12;
+            const targetMaxY = stage.height * 0.45;
+            const floatCenterY = (targetMinY + targetMaxY) / 2;
+            const floatAmpY = (targetMaxY - targetMinY) / 2;
+            const driftYCurr = (floatCenterY - platformY) + Math.cos(floatTimeCurr * 1.45) * floatAmpY;
+
+            const trailSteps = 42; // Estela más larga
+            const dt = 0.042; // Mayor amplitud temporal de la estela
+
+            // DIBUJAR ESTELA DEL ESPÍRITU 1 (Azul/Violeta - Ahusada con Ondas de Energía)
+            cCtx.save();
+            cCtx.globalCompositeOperation = 'screen';
+            cCtx.lineCap = 'round';
+            cCtx.lineJoin = 'round';
+            
+            // Generar el camino (path) de la estela
+            const points1 = [];
+            for (let i = trailSteps - 1; i >= 0; i--) {
+                const tPrev = danceSpeed - i * dt;
+                const cosPrev = Math.cos(tPrev * 1.3);
+                
+                const orbitRadiusPrev = (22 * scale) + (bass * 6.5);
+                const xPrev = cosPrev * orbitRadiusPrev;
+                const yPrev = Math.abs(Math.sin(tPrev * 2.0)) * -(6.0 * scale + bass * 6.0);
+                
+                const floatTimePrev = tPrev * (0.005 / 0.024);
+                const driftXPrev = Math.sin(floatTimePrev) * (stage.width * 0.38);
+                const driftYPrev = (floatCenterY - platformY) + Math.cos(floatTimePrev * 1.45) * floatAmpY;
+                
+                const rx = xPrev + (driftXPrev - driftXCurr);
+                const ry = yPrev + (driftYPrev - driftYCurr);
+                points1.push({ x: rx, y: ry });
+            }
+
+            // Capa 1: Resplandor grueso tapered con pulsaciones de onda de energía viajeras
+            for (let i = 1; i < points1.length; i++) {
+                const p1 = points1[i - 1];
+                const p2 = points1[i];
+                const r = i / (points1.length - 1);
+                
+                // Onda senoidal dinámica viajando a lo largo del filamento
+                const wavePulse = 1.0 + 0.28 * Math.sin(r * 18 - danceSpeed * 12);
+                
+                cCtx.beginPath();
+                cCtx.moveTo(p1.x, p1.y);
+                cCtx.lineTo(p2.x, p2.y);
+                cCtx.strokeStyle = `rgba(139, 92, 246, ${Math.pow(r, 1.8) * 0.4})`;
+                cCtx.lineWidth = 14 * scale * Math.pow(r, 1.2) * wavePulse;
+                cCtx.stroke();
+            }
+
+            // Capa 2: Núcleo neón fino brillante tapered
+            for (let i = 1; i < points1.length; i++) {
+                const p1 = points1[i - 1];
+                const p2 = points1[i];
+                const r = i / (points1.length - 1);
+                const wavePulse = 1.0 + 0.15 * Math.sin(r * 18 - danceSpeed * 12);
+                
+                cCtx.beginPath();
+                cCtx.moveTo(p1.x, p1.y);
+                cCtx.lineTo(p2.x, p2.y);
+                cCtx.strokeStyle = `rgba(255, 255, 255, ${Math.pow(r, 1.4) * 0.95})`;
+                cCtx.lineWidth = 3.0 * scale * Math.pow(r, 0.8) * wavePulse;
+                cCtx.stroke();
+            }
+            cCtx.restore();
+
+            // DIBUJAR ESTELA DEL ESPÍRITU 2 (Rosa/Dorado - Ahusada con Ondas de Energía)
+            cCtx.save();
+            cCtx.globalCompositeOperation = 'screen';
+            cCtx.lineCap = 'round';
+            cCtx.lineJoin = 'round';
+            
+            const points2 = [];
+            for (let i = trailSteps - 1; i >= 0; i--) {
+                const tPrev = danceSpeed - i * dt;
+                const cosPrev = -Math.cos(tPrev * 1.3); // Opuesta
+                
+                const orbitRadiusPrev = (22 * scale) + (bass * 6.5);
+                const xPrev = cosPrev * orbitRadiusPrev;
+                const yPrev = Math.abs(Math.sin(tPrev * 2.0)) * -(6.0 * scale + bass * 6.0);
+                
+                const floatTimePrev = tPrev * (0.005 / 0.024);
+                const driftXPrev = Math.sin(floatTimePrev) * (stage.width * 0.38);
+                const driftYPrev = (floatCenterY - platformY) + Math.cos(floatTimePrev * 1.45) * floatAmpY;
+                
+                const rx = xPrev + (driftXPrev - driftXCurr);
+                const ry = yPrev + (driftYPrev - driftYCurr);
+                points2.push({ x: rx, y: ry });
+            }
+
+            // Capa 1: Resplandor grueso tapered con pulsaciones de onda de energía viajeras
+            for (let i = 1; i < points2.length; i++) {
+                const p1 = points2[i - 1];
+                const p2 = points2[i];
+                const r = i / (points2.length - 1);
+                const wavePulse = 1.0 + 0.28 * Math.sin(r * 18 - danceSpeed * 12);
+                
+                cCtx.beginPath();
+                cCtx.moveTo(p1.x, p1.y);
+                cCtx.lineTo(p2.x, p2.y);
+                cCtx.strokeStyle = `rgba(236, 72, 153, ${Math.pow(r, 1.8) * 0.4})`;
+                cCtx.lineWidth = 14 * scale * Math.pow(r, 1.2) * wavePulse;
+                cCtx.stroke();
+            }
+
+            // Capa 2: Núcleo neón fino brillante tapered
+            for (let i = 1; i < points2.length; i++) {
+                const p1 = points2[i - 1];
+                const p2 = points2[i];
+                const r = i / (points2.length - 1);
+                const wavePulse = 1.0 + 0.15 * Math.sin(r * 18 - danceSpeed * 12);
+                
+                cCtx.beginPath();
+                cCtx.moveTo(p1.x, p1.y);
+                cCtx.lineTo(p2.x, p2.y);
+                cCtx.strokeStyle = `rgba(255, 255, 255, ${Math.pow(r, 1.4) * 0.95})`;
+                cCtx.lineWidth = 3.0 * scale * Math.pow(r, 0.8) * wavePulse;
+                cCtx.stroke();
+            }
+            cCtx.restore();
+
+            // ── 3. DIBUJAR LOS HILOS DE CONEXIÓN ENERGÉTICA (Interlace) ──
+            cCtx.save();
+            cCtx.globalCompositeOperation = 'screen';
+            cCtx.strokeStyle = `rgba(255, 255, 255, ${0.15 + treble * 0.15})`;
+            cCtx.lineWidth = 0.8;
+            cCtx.beginPath();
+            cCtx.moveTo(wisp1X, verticalBob);
+            // Curva que fluctúa con la música entre ambos espíritus
+            const ctrlX = (wisp1X + wisp2X) / 2 + Math.sin(danceSpeed * 6)*15*scale;
+            const ctrlY = verticalBob - 30 * scale - Math.cos(danceSpeed * 4)*10*scale;
+            cCtx.quadraticCurveTo(ctrlX, ctrlY, wisp2X, verticalBob);
+            cCtx.stroke();
+            cCtx.restore();
+
+            // ── 4. FUNCIONES DE DIBUJO PARA CADA ALMA DE LUZ (PLASMA DE NUEVA GENERACIÓN) ──
+            
+            // ESPÍRITU 1: ALMA COSMICA AZUL (Varonil - Pulsación grave)
+            function drawWisp1() {
+                cCtx.save();
+                cCtx.translate(wisp1X, verticalBob);
+                cCtx.rotate(wisp1Sway);
+                
+                cCtx.globalCompositeOperation = 'screen';
+                
+                const pulseRadius = (16 * scale) + (bass * 12 * scale);
+                
+                // 1. Blooming Halo (Gran resplandor exterior)
+                const bloomRadius = pulseRadius * (2.8 + Math.sin(danceSpeed * 5) * 0.2);
+                const outGrad = cCtx.createRadialGradient(0, 0, 0, 0, 0, bloomRadius);
+                outGrad.addColorStop(0, 'rgba(59, 130, 246, 0.65)');
+                outGrad.addColorStop(0.3, 'rgba(139, 92, 246, 0.35)');
+                outGrad.addColorStop(0.7, 'rgba(59, 130, 246, 0.08)');
+                outGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                cCtx.fillStyle = outGrad;
+                cCtx.beginPath();
+                cCtx.arc(0, 0, bloomRadius, 0, Math.PI * 2);
+                cCtx.fill();
+
+                // 1.5. Capa de Aberración Cromática (Prisma de color desplazado por alta frecuencia)
+                const chromaticShift = 1.8 * treble * scale;
+                const shiftX = Math.cos(danceSpeed * 7) * chromaticShift;
+                const shiftY = Math.sin(danceSpeed * 7) * chromaticShift;
+                const midGrad = cCtx.createRadialGradient(shiftX, shiftY, 0, shiftX, shiftY, pulseRadius * 1.5);
+                midGrad.addColorStop(0, 'rgba(0, 242, 254, 0.55)'); // Resplandor cian iridiscente
+                midGrad.addColorStop(0.5, 'rgba(139, 92, 246, 0.25)');
+                midGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                cCtx.fillStyle = midGrad;
+                cCtx.beginPath();
+                cCtx.arc(shiftX, shiftY, pulseRadius * 1.5, 0, Math.PI * 2);
+                cCtx.fill();
+                
+                // 2. Núcleo brillante ultra-intenso
+                const innerGrad = cCtx.createRadialGradient(0, 0, 0, 0, 0, pulseRadius * 0.85);
+                innerGrad.addColorStop(0, '#ffffff');
+                innerGrad.addColorStop(0.15, '#e0f2fe'); 
+                innerGrad.addColorStop(0.4, '#3b82f6'); 
+                innerGrad.addColorStop(0.7, 'rgba(139, 92, 246, 0.85)');
+                innerGrad.addColorStop(1, 'rgba(59, 130, 246, 0)');
+                cCtx.fillStyle = innerGrad;
+                cCtx.beginPath();
+                cCtx.arc(0, 0, pulseRadius * 0.85, 0, Math.PI * 2);
+                cCtx.fill();
+                
+                // 3. Satélites Danzantes con micro-estelas (Tapered Sub-trails)
+                const satNum = 3;
+                for (let i = 0; i < satNum; i++) {
+                    const baseSatAngle = (danceSpeed * 5.2) + (i * (Math.PI * 2 / satNum));
+                    const satRadius = pulseRadius * (1.15 + Math.sin(danceSpeed * 1.8 + i) * 0.12);
+                    
+                    // Dibujar sub-partículas con cola para crear la micro-estela de cometa
+                    for (let j = 4; j >= 0; j--) {
+                        const subAngle = baseSatAngle - j * 0.07;
+                        const subX = Math.cos(subAngle) * satRadius;
+                        const subY = Math.sin(subAngle) * satRadius * 0.45;
+                        const subSize = (3.5 * scale) * (1 - j * 0.18);
+                        const subAlpha = (1.0 - j * 0.2) * (0.85 + Math.sin(danceSpeed * 8) * 0.15);
+                        
+                        const satGrad = cCtx.createRadialGradient(subX, subY, 0, subX, subY, subSize * 1.5);
+                        satGrad.addColorStop(0, '#ffffff');
+                        satGrad.addColorStop(0.3, '#60a5fa');
+                        satGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                        cCtx.fillStyle = satGrad;
+                        cCtx.save();
+                        cCtx.globalAlpha = subAlpha;
+                        cCtx.beginPath();
+                        cCtx.arc(subX, subY, subSize, 0, Math.PI*2);
+                        cCtx.fill();
+                        cCtx.restore();
+                    }
+                }
+                
+                cCtx.restore();
+            }
+            
+            // ESPÍRITU 2: ALMA CELESTIAL ROSA-DORADA (Femenil - Pulsación agudo)
+            function drawWisp2() {
+                cCtx.save();
+                cCtx.translate(wisp2X, verticalBob);
+                cCtx.rotate(wisp2Sway);
+                
+                cCtx.globalCompositeOperation = 'screen';
+                
+                const pulseRadius = (15 * scale) + (treble * 12 * scale);
+                
+                // 1. Blooming Halo (Gran resplandor exterior)
+                const bloomRadius = pulseRadius * (2.8 + Math.cos(danceSpeed * 5) * 0.2);
+                const outGrad = cCtx.createRadialGradient(0, 0, 0, 0, 0, bloomRadius);
+                outGrad.addColorStop(0, 'rgba(236, 72, 153, 0.65)'); 
+                outGrad.addColorStop(0.3, 'rgba(212, 175, 55, 0.35)'); 
+                outGrad.addColorStop(0.7, 'rgba(236, 72, 153, 0.08)');
+                outGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                cCtx.fillStyle = outGrad;
+                cCtx.beginPath();
+                cCtx.arc(0, 0, bloomRadius, 0, Math.PI * 2);
+                cCtx.fill();
+
+                // 1.5. Capa de Aberración Cromática (Prisma de color desplazado por baja frecuencia)
+                const chromaticShift = 1.8 * bass * scale;
+                const shiftX = Math.cos(danceSpeed * -7) * chromaticShift;
+                const shiftY = Math.sin(danceSpeed * -7) * chromaticShift;
+                const midGrad = cCtx.createRadialGradient(shiftX, shiftY, 0, shiftX, shiftY, pulseRadius * 1.5);
+                midGrad.addColorStop(0, 'rgba(254, 240, 138, 0.55)'); // Resplandor dorado/amarillo iridiscente
+                midGrad.addColorStop(0.5, 'rgba(236, 72, 153, 0.25)');
+                midGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                cCtx.fillStyle = midGrad;
+                cCtx.beginPath();
+                cCtx.arc(shiftX, shiftY, pulseRadius * 1.5, 0, Math.PI * 2);
+                cCtx.fill();
+                
+                // 2. Núcleo brillante ultra-intenso
+                const innerGrad = cCtx.createRadialGradient(0, 0, 0, 0, 0, pulseRadius * 0.85);
+                innerGrad.addColorStop(0, '#ffffff');
+                innerGrad.addColorStop(0.15, '#fce7f3'); 
+                innerGrad.addColorStop(0.4, '#db2777'); 
+                innerGrad.addColorStop(0.7, 'rgba(212, 175, 55, 0.85)'); 
+                innerGrad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+                cCtx.fillStyle = innerGrad;
+                cCtx.beginPath();
+                cCtx.arc(0, 0, pulseRadius * 0.85, 0, Math.PI * 2);
+                cCtx.fill();
+                
+                // 3. Satélites Danzantes con micro-estelas (Tapered Sub-trails)
+                const satNum = 3;
+                for (let i = 0; i < satNum; i++) {
+                    const baseSatAngle = -(danceSpeed * 4.8) + (i * (Math.PI * 2 / satNum));
+                    const satRadius = pulseRadius * (1.15 + Math.cos(danceSpeed * 1.5 + i) * 0.12);
+                    
+                    // Dibujar sub-partículas con cola opuesta
+                    for (let j = 4; j >= 0; j--) {
+                        const subAngle = baseSatAngle - j * -0.07; 
+                        const subX = Math.cos(subAngle) * satRadius;
+                        const subY = Math.sin(subAngle) * satRadius * 0.45;
+                        const subSize = (3.5 * scale) * (1 - j * 0.18);
+                        const subAlpha = (1.0 - j * 0.2) * (0.85 + Math.sin(danceSpeed * 8) * 0.15);
+                        
+                        const satGrad = cCtx.createRadialGradient(subX, subY, 0, subX, subY, subSize * 1.5);
+                        satGrad.addColorStop(0, '#ffffff');
+                        satGrad.addColorStop(0.3, '#fbcfe8');
+                        satGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                        cCtx.fillStyle = satGrad;
+                        cCtx.save();
+                        cCtx.globalAlpha = subAlpha;
+                        cCtx.beginPath();
+                        cCtx.arc(subX, subY, subSize, 0, Math.PI*2);
+                        cCtx.fill();
+                        cCtx.restore();
+                    }
+                }
+                
+                cCtx.restore();
+            }
+            
+            // ── 5. ORDENAMIENTO POR PROFUNDIDAD (Z-SORTING ORBITAL) ──
+            const wisp1Behind = (wisp1Z < wisp2Z);
+            
+            if (wisp1Behind) {
+                drawWisp1();
+                drawWisp2();
+            } else {
+                drawWisp2();
+                drawWisp1();
+            }
+            
+            // ── 6. CHISPA DE INTIMIDAD / FUSIÓN LUMINOSA ACUÁTICA ──
+            const proximity = Math.abs(wisp1X - wisp2X);
+            if (proximity < 25 * scale) {
+                cCtx.save();
+                cCtx.translate(0, verticalBob);
+                cCtx.globalCompositeOperation = 'screen';
+                
+                // Destello fulgurante
+                const flashRadius = (20 * scale) + (volume * 15 * scale);
+                const sparkGrad = cCtx.createRadialGradient(0, 0, 0, 0, 0, flashRadius);
+                sparkGrad.addColorStop(0, '#ffffff');
+                sparkGrad.addColorStop(0.2, '#fef08a'); // Amarillo pálido
+                sparkGrad.addColorStop(0.5, 'rgba(212, 175, 55, 0.65)');
+                sparkGrad.addColorStop(1, 'rgba(212, 175, 55, 0)');
+                cCtx.fillStyle = sparkGrad;
+                cCtx.beginPath();
+                cCtx.arc(0, 0, flashRadius, 0, Math.PI * 2);
+                cCtx.fill();
+                
+                // Micro-chispas de stardust radiales espontáneas
+                const sparkles = 10;
+                for (let i = 0; i < sparkles; i++) {
+                    const angle = (frameCount * 0.05) + i * (Math.PI * 2 / sparkles);
+                    const speed = 10 * scale + Math.sin(frameCount * 0.2 + i) * 6 * scale;
+                    const spX = Math.cos(angle) * speed;
+                    const spY = Math.sin(angle) * speed * 0.8;
+                    
+                    cCtx.fillStyle = `rgba(255, 255, 255, ${0.6 + Math.sin(frameCount * 0.1)*0.4})`;
+                    cCtx.beginPath();
+                    cCtx.arc(spX, spY, 1.5 * scale, 0, Math.PI*2);
+                    cCtx.fill();
+                }
+                cCtx.restore();
+            }
+            
+            cCtx.restore();
+        }
+
+        // Particle System variables
+        let particles = [];
+        const maxParticles = 160;
+        let stars = [];
+        const starCount = 140;
+        let waveRipples = [];
+
+        // Interactive mouse tracking
+        let mouse = { x: null, y: null, active: false, targetX: 0 };
+
+        // Handle Stage Resizing with Retina/High-DPI Support
+        function resizeStage() {
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Set backing store dimensions
+            stage.width = window.innerWidth * dpr;
+            stage.height = window.innerHeight * dpr;
+            
+            // Set style dimensions (CSS pixels)
+            stage.style.width = window.innerWidth + 'px';
+            stage.style.height = window.innerHeight + 'px';
+            
+            // Reset and apply DPR scale for vector shapes and lines
+            ctx.resetTransform();
+            ctx.scale(dpr, dpr);
+            
+            initStars();
+        }
+        window.addEventListener('resize', resizeStage);
+        resizeStage();
+
+        // Initialize Parallax Starfield using logical viewport coordinates
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight * 0.5, // Only in sky area
+                    size: Math.random() * 1.5 + 0.3,
+                    opacity: Math.random() * 0.8 + 0.2,
+                    speed: 0.005 + Math.random() * 0.015,
+                    phase: Math.random() * Math.PI * 2,
+                    parallax: 0.1 + Math.random() * 0.3
+                });
+            }
+        }
+        initStars();
+
+        // Custom Particle Class
+        class SparkleParticle {
+            constructor(x, y, colorType = 'rose') {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 2.8;
+                this.vy = -Math.random() * 1.8 - 0.5;
+                this.size = Math.random() * 3 + 1.2;
+                this.alpha = 1;
+                this.decay = 0.006 + Math.random() * 0.012;
+                this.colorType = colorType;
+                
+                // Sway frequency
+                this.swaySpeed = 0.02 + Math.random() * 0.03;
+                this.swayPhase = Math.random() * Math.PI * 2;
+                this.swayAmp = 0.3 + Math.random() * 0.8;
+            }
+
+            update(freqScale = 1.0) {
+                this.x += this.vx + Math.sin(this.swayPhase) * this.swayAmp * freqScale;
+                this.y += this.vy * freqScale;
+                this.swayPhase += this.swaySpeed;
+                this.alpha -= this.decay;
+            }
+
+            draw(cCtx) {
+                cCtx.save();
+                cCtx.globalAlpha = this.alpha;
+                cCtx.beginPath();
+                
+                // Color spectrum
+                let fillStyle;
+                if (this.colorType === 'gold') {
+                    cCtx.shadowColor = 'rgba(212, 175, 55, 0.7)';
+                    fillStyle = '#fff9e6';
+                } else if (this.colorType === 'white') {
+                    cCtx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                    fillStyle = '#ffffff';
+                } else {
+                    cCtx.shadowColor = 'rgba(236, 72, 153, 0.7)';
+                    fillStyle = '#ffe6f0';
+                }
+
+                cCtx.shadowBlur = this.size * 2.8;
+                cCtx.fillStyle = fillStyle;
+                
+                // Draw elegant star/heart shape
+                if (Math.random() < 0.25) {
+                    // Golden/Rose diamond spark
+                    cCtx.moveTo(this.x, this.y - this.size * 1.5);
+                    cCtx.lineTo(this.x + this.size, this.y);
+                    cCtx.lineTo(this.x, this.y + this.size * 1.5);
+                    cCtx.lineTo(this.x - this.size, this.y);
+                    cCtx.closePath();
+                    cCtx.fill();
+                } else {
+                    cCtx.arc(this.x, this.y, this.size * 0.8, 0, Math.PI * 2);
+                    cCtx.fill();
+                }
+
+                cCtx.restore();
+            }
+        }
+
+        // Spawn a burst of heart sparkles
+        function spawnSparkBurst(x, y, count = 20, colorType = 'rose') {
+            for (let i = 0; i < count; i++) {
+                const particle = new SparkleParticle(x + (Math.random() - 0.5) * 40, y - Math.random() * 15, colorType);
+                // Extra blast speed
+                particle.vx *= 1.8;
+                particle.vy *= 1.5;
+                particles.push(particle);
+            }
+        }
+
+        // Setup real-time audio node mapping
+        function setupAudioNodes() {
+            if (isAudioSetup) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                
+                // Create Node chain
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                audioDataArray = new Uint8Array(bufferLength);
+                
+                sourceNode = audioCtx.createMediaElementSource(audio);
+                sourceNode.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                
+                isAudioSetup = true;
+            } catch (e) {
+                console.error("No se pudo iniciar el AudioContext:", e);
+            }
+        }
+
+        // Synced Lyric Engine: Tracks actual player clock and triggers smooth transitions
+        let activeLyricIndex = -1;
+
+        function updateLyrics(currentTime) {
+            let index = -1;
+            // Find current active lyric line based on timeline
+            for (let i = 0; i < lyrics.length; i++) {
+                if (currentTime >= lyrics[i].time) {
+                    index = i;
+                } else {
+                    break;
+                }
+            }
+
+            if (index !== -1 && index !== activeLyricIndex) {
+                activeLyricIndex = index;
+                const currentLyric = lyrics[index];
+                const nextLyric = lyrics[index + 1] ? lyrics[index + 1] : null;
+
+                // Animate components smoothly
+                poetryText.style.opacity = '0';
+                poetryText.style.transform = 'translateY(-4px)';
+                
+                const authorEl = document.getElementById('poetry-author');
+                if (authorEl) {
+                    authorEl.style.opacity = '0';
+                }
+
+                setTimeout(() => {
+                    poetryText.innerHTML = `"${currentLyric.text}"`;
+                    
+                    if (authorEl) {
+                        if (nextLyric) {
+                            // Show premium subtitle pre-cueing of the next lyrics line
+                            authorEl.innerHTML = `<span class="text-romance-rose/50 lowercase">siguiente:</span> "${nextLyric.text}"`;
+                        } else {
+                            authorEl.innerHTML = "Sintonía Eterna";
+                        }
+                    }
+
+                    // Fade back in beautifully
+                    poetryText.style.opacity = '1';
+                    poetryText.style.transform = 'translateY(0)';
+                    if (authorEl) {
+                        authorEl.style.opacity = '1';
+                    }
+                }, 420);
+            }
+        }
+
+        // Poetry show activation function
+        function startPoetryShow() {
+            // Show initial lyric container with dynamic slide
+            poetryBox.style.opacity = '1';
+            poetryBox.style.transform = 'translate(-50%, 0) translateY(0)';
+            
+            // Set initial state immediately based on audio current time
+            updateLyrics(audio.currentTime);
+        }
+
+        // Unlock audio & launch experience
+        btnUnlock.addEventListener('click', () => {
+            setupAudioNodes();
+            
+            // Hide Initial Overlay beautifully
+            unlockOverlay.style.opacity = '0';
+            setTimeout(() => {
+                unlockOverlay.style.display = 'none';
+                
+                // Start playback immediately
+                audio.play().then(() => {
+                    updatePlayBtnIcons(true);
+                    trackStatus.innerText = "Reproduciendo";
+                }).catch(err => {
+                    console.log("Autoplay blocked, user needs to click play button");
+                    trackStatus.innerText = "Listo para iniciar";
+                });
+
+                // Display main UI controls with transition
+                uiControls.style.opacity = '1';
+                uiControls.style.transform = 'translateY(0)';
+                
+                // Start poetic cycle
+                startPoetryShow();
+            }, 1000);
+        });
+
+        // Trigger manual burst when clicking button
+        btnSpark.addEventListener('click', () => {
+            const centerX = stage.width / 2;
+            const centerY = stage.height * 0.5; // Platform height (Centrada verticalmente)
+            spawnSparkBurst(centerX, centerY, 35, 'gold');
+            spawnSparkBurst(centerX - 15, centerY, 15, 'white');
+            
+            // Audio micro-sigh if AudioContext active
+            if (audioCtx && audioCtx.state === 'running') {
+                const triggerOsc = audioCtx.createOscillator();
+                const triggerGain = audioCtx.createGain();
+                
+                triggerOsc.type = 'triangle';
+                triggerOsc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                triggerOsc.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 0.8);
+                
+                triggerGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                triggerGain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.2);
+                triggerGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+                
+                triggerOsc.connect(triggerGain);
+                triggerGain.connect(audioCtx.destination);
+                
+                triggerOsc.start();
+                triggerOsc.stop(audioCtx.currentTime + 0.9);
+            }
+        });
+
+        // Play Pause Core logic
+        btnPlayPause.addEventListener('click', () => {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            if (audio.paused) {
+                audio.play().then(() => {
+                    updatePlayBtnIcons(true);
+                    trackStatus.innerText = "Reproduciendo";
+                });
+            } else {
+                audio.pause();
+                updatePlayBtnIcons(false);
+                trackStatus.innerText = "En pausa";
+            }
+        });
+
+        function updatePlayBtnIcons(isPlaying) {
+            if (isPlaying) {
+                playSvg.classList.add('hidden');
+                pauseSvg.classList.remove('hidden');
+                artworkPulse.classList.add('opacity-100');
+            } else {
+                playSvg.classList.remove('hidden');
+                pauseSvg.classList.add('hidden');
+                artworkPulse.classList.remove('opacity-100');
+            }
+        }
+
+        // Volume controller
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = parseFloat(e.target.value);
+        });
+
+        // Update progress bar as audio plays (Updates lyrics dynamically)
+        audio.addEventListener('timeupdate', () => {
+            if (!isNaN(audio.duration)) {
+                const pct = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = pct;
+                
+                // Format times
+                currentTimeText.innerText = formatTime(audio.currentTime);
+                durationTimeText.innerText = formatTime(audio.duration);
+
+                // Dynamically update active song lyrics
+                updateLyrics(audio.currentTime);
+            }
+        });
+
+        // Handle direct seek from progress bar (Instantly updates lyrics timeline)
+        progressBar.addEventListener('input', (e) => {
+            if (!isNaN(audio.duration)) {
+                const targetTime = (parseFloat(e.target.value) / 100) * audio.duration;
+                audio.currentTime = targetTime;
+                
+                // Force instant lyric update on scrub
+                updateLyrics(targetTime);
+            }
+        });
+
+        function formatTime(secs) {
+            const mins = Math.floor(secs / 60);
+            const remainingSecs = Math.floor(secs % 60);
+            return `${mins}:${remainingSecs < 10 ? '0' : ''}${remainingSecs}`;
+        }
+
+        // Track cursor movements over stage for interactive parallax breeze
+        stage.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.active = true;
+            // Target offset for breeze simulation (-1 to 1)
+            mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+        });
+
+        stage.addEventListener('mouseleave', () => {
+            mouse.active = false;
+            mouse.targetX = 0;
+        });
+
+        // Add shooting star burst on canvas click
+        stage.addEventListener('mousedown', (e) => {
+            if (e.clientY < window.innerHeight * 0.5) {
+                // Spawn sparkles directly at click location
+                spawnSparkBurst(e.clientX, e.clientY, 15, 'white');
+            }
+        });
+
+        // ── MOBILE TOUCH EVENT SUPPORT ──
+        function handleTouch(e) {
+            if (e.touches && e.touches.length > 0) {
+                const touch = e.touches[0];
+                const rect = stage.getBoundingClientRect();
+                mouse.x = touch.clientX - rect.left;
+                mouse.y = touch.clientY - rect.top;
+                mouse.active = true;
+                mouse.targetX = (mouse.x / window.innerWidth) * 2 - 1;
+            }
+        }
+
+        stage.addEventListener('touchstart', (e) => {
+            handleTouch(e);
+            
+            // Spawn tap sparkles directly at touch location if above water line
+            const touch = e.touches[0];
+            const rect = stage.getBoundingClientRect();
+            const touchY = touch.clientY - rect.top;
+            const touchX = touch.clientX - rect.left;
+            if (touchY < window.innerHeight * 0.5) {
+                spawnSparkBurst(touchX, touchY, 12, 'white');
+            }
+        });
+
+        stage.addEventListener('touchmove', (e) => {
+            handleTouch(e);
+            // Prevent default vertical scrolling when swiping on the dancer canvas
+            if (e.cancelable) e.preventDefault();
+        }, { passive: false });
+
+        stage.addEventListener('touchend', () => {
+            mouse.active = false;
+            mouse.targetX = 0;
+        });
+
+        // ────────────────────────────────────────────────────────
+        // CORE RENDERING ENGINE & PHYSICAL SIMULATION LOOP
+        // ────────────────────────────────────────────────────────
+        let frameCount = 0;
+        let ambientBreeze = 0;
+
+        function runMainLoop() {
+            frameCount++;
+            
+            // 1. EXTRACT REAL-TIME AUDIO FREQUENCY DATA
+            let bass = 0;     // Low frequencies
+            let mid = 0;      // Mid range
+            let treble = 0;   // High pitch frequencies
+            let avgVolume = 0;
+
+            if (isAudioSetup && !audio.paused) {
+                analyser.getByteFrequencyData(audioDataArray);
+                
+                // Check if all analyzed frequencies are zero (typical for CORS block or initial silence under file://)
+                let isSilent = true;
+                for (let i = 0; i < audioDataArray.length; i++) {
+                    if (audioDataArray[i] > 0) {
+                        isSilent = false;
+                        break;
+                    }
+                }
+
+                if (isSilent) {
+                    // Procedural backup dance if Web Audio API analysis is muted/blocked by CORS
+                    const breathing = Math.sin(frameCount * 0.015);
+                    bass = 45 + breathing * 15;
+                    mid = 35 + Math.cos(frameCount * 0.02) * 10;
+                    treble = 20 + Math.sin(frameCount * 0.035) * 12;
+                    avgVolume = 30 + breathing * 10;
+                } else {
+                    // Calculate bands from real music frequencies
+                    let bassSum = 0;
+                    let midSum = 0;
+                    let trebleSum = 0;
+                    
+                    const len = audioDataArray.length;
+                    const bassLimit = Math.floor(len * 0.15);
+                    const midLimit = Math.floor(len * 0.55);
+
+                    for (let i = 0; i < len; i++) {
+                        const val = audioDataArray[i];
+                        avgVolume += val;
+                        if (i < bassLimit) bassSum += val;
+                        else if (i < midLimit) midSum += val;
+                        else trebleSum += val;
+                    }
+                    
+                    avgVolume /= len;
+                    bass = bassSum / bassLimit;
+                    mid = midSum / (midLimit - bassLimit);
+                    treble = trebleSum / (len - midLimit);
+                }
+            } else {
+                // Ethereal Idle breathing simulation if song is paused/loading
+                const breathing = Math.sin(frameCount * 0.015);
+                bass = 30 + breathing * 10;
+                mid = 25 + Math.cos(frameCount * 0.02) * 5;
+                treble = 15 + Math.sin(frameCount * 0.035) * 8;
+                avgVolume = 25 + breathing * 8;
+            }
+
+            // Normalize variables for safe physical triggers (range: ~0.0 to 2.5)
+            const normalizedBass = Math.max(0.1, bass / 70.0);
+            const normalizedMid = Math.max(0.1, mid / 70.0);
+            const normalizedTreble = Math.max(0.1, treble / 60.0);
+            const volumeScale = Math.max(0.1, avgVolume / 65.0);
+
+            // Interpolate ambient breeze towards cursor breeze target
+            ambientBreeze += (mouse.targetX * 1.5 - ambientBreeze) * 0.05;
+
+            // ── DECLARE HORIZON PLATFORM CONSTANTS FIRST (Avoid TDZ crash) ──
+            const platformY = window.innerHeight * 0.5;
+            const platformW = Math.min(window.innerWidth * 0.75, 340);
+            const platformH = 14;
+            const platformX = window.innerWidth / 2;
+
+            // ── CALCULATE FLOATING WISP DANCE CENTER DRIFT (Travelling all over screen) ──
+            const floatTime = frameCount * 0.005;
+            
+            // Proportional horizontal drift: scales safely with screen width to avoid clipping on mobile
+            const driftMaxX = Math.max(20, (window.innerWidth - platformW) * 0.48);
+            const driftX = Math.sin(floatTime) * driftMaxX;
+            
+            // Vertical drift floats elegantly in the sky area (from 15% to 45% of stage height)
+            const targetMinY = window.innerHeight * 0.15;
+            const targetMaxY = window.innerHeight * 0.45;
+            const floatCenterY = (targetMinY + targetMaxY) / 2;
+            const floatAmpY = (targetMaxY - targetMinY) / 2;
+            const driftY = (floatCenterY - platformY) + Math.cos(floatTime * 1.45) * floatAmpY;
+
+            // Clear Screen (Using logical space due to high-DPI scaling context)
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+            // ── DRAW CINEMATIC GRADIENT SKY ──
+            // Sky is reactive to mid/high frequencies, creating soft color pulses
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, platformY);
+            const baseSkyPurple = Math.floor(8 + normalizedMid * 5);
+            const baseSkyPink = Math.floor(3 + normalizedTreble * 3);
+            skyGradient.addColorStop(0, '#04010a');
+            skyGradient.addColorStop(0.5, `rgb(${14 + baseSkyPink}, 6, ${28 + baseSkyPurple})`);
+            skyGradient.addColorStop(1, '#0e041d');
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, window.innerWidth, platformY);
+
+            // ── DRAW PARALLAX STARFIELD ──
+            stars.forEach(star => {
+                // Twinkle effect synced to treble frequencies
+                const twinkleScale = 1.0 + Math.sin(frameCount * star.speed + star.phase) * 0.4 * normalizedTreble;
+                const starAlpha = Math.min(1.0, star.opacity * twinkleScale);
+                
+                ctx.fillStyle = `rgba(255, 255, 255, ${starAlpha})`;
+                ctx.beginPath();
+                // Star drifts slightly left-right according to screen breeze
+                const starDriftX = star.x + ambientBreeze * 40.0 * star.parallax;
+                ctx.arc(starDriftX % window.innerWidth, star.y, star.size * twinkleScale, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // ── DRAW MOON (Bass Glow & Earthshine Masterpiece) ──
+            const moonX = window.innerWidth > 768 ? window.innerWidth * 0.78 : window.innerWidth * 0.82;
+            const moonY = window.innerHeight * 0.14;
+            const moonRadius = Math.min(window.innerWidth, window.innerHeight) * 0.055;
+            
+            // 1. Draw responsive atmospheric halos (layers of soft refraction glows)
+            ctx.save();
+            const haloLevels = 5;
+            for (let i = haloLevels; i > 0; i--) {
+                const scale = 1.0 + (i * 0.35) + (normalizedBass * 0.32);
+                const alpha = (0.018 / i) * (1.0 + normalizedBass * 0.55);
+                
+                // Multi-colored refraction in the atmosphere (warm gold fading to space violet)
+                const haloGrad = ctx.createRadialGradient(moonX, moonY, moonRadius * 0.8, moonX, moonY, moonRadius * scale);
+                haloGrad.addColorStop(0, `rgba(254, 252, 224, ${alpha * 1.5})`);
+                haloGrad.addColorStop(0.3, `rgba(236, 72, 153, ${alpha * 0.6})`);
+                haloGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                
+                ctx.fillStyle = haloGrad;
+                ctx.beginPath();
+                ctx.arc(moonX, moonY, moonRadius * scale, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+
+            // 2. Earthshine Outline (Dimly lit dark portion of the moon for 3D realism)
+            ctx.save();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.012)';
+            ctx.strokeStyle = 'rgba(254, 252, 224, 0.04)';
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+
+            // 3. Volumetric Crescent Moon (Rendered using clipping mask for flawless spherical detail)
+            ctx.save();
+            ctx.beginPath();
+            // Outer crescent edge
+            ctx.arc(moonX, moonY, moonRadius, -Math.PI * 0.48, Math.PI * 0.48, false);
+            // Inner crescent edge (smooth bezier curve tapering at tips)
+            ctx.bezierCurveTo(
+                moonX - moonRadius * 0.15, moonY + moonRadius * 0.75,
+                moonX - moonRadius * 0.15, moonY - moonRadius * 0.75,
+                moonX, moonY - moonRadius * 0.98
+            );
+            ctx.closePath();
+            ctx.clip(); // Restrict surface drawing strictly to the crescent shape
+
+            // A. Base spherical 3D surface shading (Sunlight diffraction)
+            const surfaceGrad = ctx.createRadialGradient(
+                moonX - moonRadius * 0.3, moonY - moonRadius * 0.3, moonRadius * 0.1,
+                moonX, moonY, moonRadius
+            );
+            surfaceGrad.addColorStop(0, '#ffffff');
+            surfaceGrad.addColorStop(0.4, '#fefce0');
+            surfaceGrad.addColorStop(0.75, '#ebdca2');
+            surfaceGrad.addColorStop(1, '#caba7f');
+            ctx.fillStyle = surfaceGrad;
+            ctx.fillRect(moonX - moonRadius, moonY - moonRadius, moonRadius * 2, moonRadius * 2);
+
+            // B. Draw detailed craters and maria (darker lunar plains)
+            ctx.fillStyle = 'rgba(164, 142, 94, 0.16)'; // Soft textured plain color
+            
+            // Mare Serenitatis w/ soft edges
+            ctx.beginPath();
+            ctx.arc(moonX - moonRadius * 0.1, moonY - moonRadius * 0.2, moonRadius * 0.38, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Mare Crisium w/ soft edges
+            ctx.beginPath();
+            ctx.arc(moonX + moonRadius * 0.3, moonY + moonRadius * 0.1, moonRadius * 0.22, 0, Math.PI * 2);
+            ctx.fill();
+
+            // C. Crisp crater rim highlights
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.beginPath();
+            ctx.arc(moonX + moonRadius * 0.2, moonY - moonRadius * 0.3, moonRadius * 0.05, 0, Math.PI * 2);
+            ctx.fill();
+
+            // D. Sphere ambient shadow near terminate line
+            const sphereShade = ctx.createRadialGradient(
+                moonX, moonY, moonRadius * 0.6,
+                moonX, moonY, moonRadius
+            );
+            sphereShade.addColorStop(0, 'rgba(0,0,0,0)');
+            sphereShade.addColorStop(1, 'rgba(20, 10, 36, 0.35)'); 
+            ctx.fillStyle = sphereShade;
+            ctx.fillRect(moonX - moonRadius, moonY - moonRadius, moonRadius * 2, moonRadius * 2);
+
+            ctx.restore(); // Removes clip mask safely
+
+            // 4. Drifting Celestial Clouds in front of the Moon (Adding layer depth)
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            const cloudCount = 2;
+            for (let i = 0; i < cloudCount; i++) {
+                const cloudTime = frameCount * 0.0006 + i * 28.5;
+                // Slowly drifts across the moon area horizontally
+                const cx = moonX - moonRadius * 1.5 + ((cloudTime * 450) % (moonRadius * 4));
+                const cy = moonY + moonRadius * 0.3 + Math.sin(cloudTime * 4) * moonRadius * 0.25;
+                
+                const cloudGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, moonRadius * 1.3);
+                cloudGrad.addColorStop(0, 'rgba(139, 92, 246, 0.06)'); // Romantic Amethyst
+                cloudGrad.addColorStop(0.4, 'rgba(236, 72, 153, 0.03)'); // Rose glow
+                cloudGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                
+                ctx.fillStyle = cloudGrad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, moonRadius * 1.3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+
+            // ── DRAW Platform (Horizon Stage) ──
+
+            // Draw a futuristic glowing, floating pedestal
+            ctx.save();
+            
+            // Reactive base glow under platform
+            const platGlow = ctx.createRadialGradient(platformX, platformY, 5, platformX, platformY, platformW * 0.6);
+            platGlow.addColorStop(0, `rgba(236, 72, 153, ${0.28 * volumeScale})`);
+            platGlow.addColorStop(0.5, `rgba(212, 175, 55, ${0.1 * volumeScale})`);
+            platGlow.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = platGlow;
+            ctx.beginPath();
+            ctx.ellipse(platformX, platformY, platformW * 0.6, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Platform solid structure
+            ctx.fillStyle = 'rgba(20, 10, 36, 0.8)';
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.ellipse(platformX, platformY, platformW * 0.5, platformH, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Inset gold rim
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.65)';
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.ellipse(platformX, platformY, platformW * 0.47, platformH * 0.75, 0, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.restore();
+
+            // ── UPDATE & DRAW SPARKLING STARDUST PARTICLES ──
+            // Particles drift upwards based on average volume, following the floating wisps' wake!
+            if (audio.paused === false && Math.random() < 0.28 * normalizedTreble) {
+                // Spawn natural dance dust in the floating wisps' wake
+                particles.push(new SparkleParticle(
+                    platformX + driftX + (Math.random() - 0.5) * 60 * 1.8,
+                    platformY + driftY + (Math.random() - 0.5) * 60 * 1.8,
+                    Math.random() < 0.35 ? 'gold' : 'rose'
+                ));
+            }
+
+            // Update/Draw particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update(1.0 + normalizedTreble * 0.4);
+                p.draw(ctx);
+                if (p.alpha <= 0 || p.y < 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            // ── DRAW REACTIVE BACKGROUND GLOW BEHIND DANCERS (Drifting Nebula) ──
+            ctx.save();
+            const dancerGlowRadius = 80 + normalizedBass * 65;
+            const dancerGlow = ctx.createRadialGradient(platformX + driftX, platformY + driftY, 5, platformX + driftX, platformY + driftY, dancerGlowRadius);
+            dancerGlow.addColorStop(0, `rgba(236, 72, 153, ${0.22 * volumeScale})`);
+            dancerGlow.addColorStop(0.4, `rgba(139, 92, 246, ${0.08 * volumeScale})`);
+            dancerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = dancerGlow;
+            ctx.beginPath();
+            ctx.arc(platformX + driftX, platformY + driftY, dancerGlowRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // ────────────────────────────────────────────────────────
+            // 2. THE DANCING PHYSICAL ENGINE (PHYSICS & ROTATION SWING)
+            // ────────────────────────────────────────────────────────
+            ctx.save();
+            ctx.translate(platformX + driftX, platformY - 2 + driftY); // Set root coordinate to floating wisp center
+
+            // Waltz Motion Mathematics:
+            // - Side Sway (Sways left/right): standard low frequency wave
+            // - Vertical Dip-Rise (Waltz vertical jump): double frequency cosine
+            // - Lean/Pivot: minor tilt angle
+            const danceTime = frameCount * 0.024;
+            
+            // Sway magnitude scales directly with mid-range music volume
+            const swayAmplitude = 0.05 + normalizedMid * 0.04;
+            const swayAngle = Math.sin(danceTime) * swayAmplitude;
+
+            // Waltz vertical rise/dip scales with low-pitch bass
+            const verticalDipAmp = 5.0 + normalizedBass * 4.5;
+            const verticalDip = Math.abs(Math.cos(danceTime * 2.0)) * -verticalDipAmp;
+
+            // Micro-pulsing scale (Simulates intimate contractions in song rhythm)
+            const horizontalPulse = 1.0 + Math.sin(danceTime * 4.0) * 0.015 * normalizedBass;
+            const verticalPulse = 1.0 - Math.sin(danceTime * 4.0) * 0.012 * normalizedBass;
+
+            // Apply Dancers transform matrix
+            ctx.translate(0, verticalDip);
+            ctx.rotate(swayAngle);
+            ctx.scale(horizontalPulse, verticalPulse);
+
+            const coupleWidth = 230;
+            const coupleHeight = 230;
+
+            // Dynamically scale the wisp characters so they fit beautifully on mobile viewports
+            const wispScale = Math.min(1.8, Math.min(window.innerWidth / 480, window.innerHeight / 480) * 1.45);
+
+            // Draw primary Dancers (Separate interactive dancing partners)
+            drawDancingCoupleInteractive(ctx, wispScale, danceTime, normalizedBass, normalizedMid, normalizedTreble, volumeScale);
+            
+            ctx.restore(); // Ends waltz matrix transformation
+
+            // ────────────────────────────────────────────────────────
+            // 3. DOUBLE-LAYER WATER REFLECTION ENGINE (LOWER 35%)
+            // ────────────────────────────────────────────────────────
+            const waterGradient = ctx.createLinearGradient(0, platformY, 0, window.innerHeight);
+            waterGradient.addColorStop(0, '#0d041a');
+            waterGradient.addColorStop(0.3, '#07020d');
+            waterGradient.addColorStop(1, '#020005');
+            ctx.fillStyle = waterGradient;
+            ctx.fillRect(0, platformY, window.innerWidth, window.innerHeight - platformY);
+
+            // Water reflection layer
+            ctx.save();
+            ctx.globalAlpha = 0.22 + normalizedBass * 0.08;
+            
+            // To create the mirror reflection:
+            // 1. We translate to the horizon line (platformY).
+            // 2. We scale vertically by -1 (flips vertically).
+            // 3. We apply a pixel ripple displacement via horizontal sine cuts!
+            ctx.translate(platformX + driftX, platformY);
+            ctx.scale(1, -0.65); // Flips and compresses reflection depth (aesthetic perspective)
+            
+            // Waltz mirror transforms (Mirrors horizontal and vertical floating wake)
+            ctx.translate(0, verticalDip + driftY);
+            ctx.rotate(swayAngle);
+            ctx.scale(horizontalPulse, verticalPulse);
+
+            // Draw reflection of interactive dancing partners (mirrored)
+            drawDancingCoupleInteractive(ctx, wispScale, danceTime, normalizedBass, normalizedMid, normalizedTreble, volumeScale);
+            ctx.restore();
+
+            // ── DRAW GLOWING HORIZON SEAM (Platform / Reflection intersection) ──
+            const seamGrad = ctx.createLinearGradient(0, platformY - 2, 0, platformY + 6);
+            seamGrad.addColorStop(0, 'rgba(212, 175, 55, 0.4)');
+            seamGrad.addColorStop(0.5, 'rgba(236, 72, 153, 0.2)');
+            seamGrad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = seamGrad;
+            ctx.fillRect(platformX - platformW * 0.55, platformY - 2, platformW * 1.1, 8);
+
+            // ── PHYSICAL WATER RIPPLE OVERLAYS ──
+            // Add dynamic horizontal ripple lines that drift down and react to Bass
+            if (frameCount % 45 === 0) {
+                waveRipples.push({
+                    y: platformY + 2,
+                    w: platformW * 0.3,
+                    maxW: window.innerWidth * 0.95,
+                    alpha: 0.25,
+                    speed: 0.4 + Math.random() * 0.3
+                });
+            }
+
+            // Update/Draw water wave lines
+            ctx.save();
+            ctx.lineWidth = 1.0;
+            for (let i = waveRipples.length - 1; i >= 0; i--) {
+                const wr = waveRipples[i];
+                wr.y += wr.speed;
+                wr.w += wr.speed * 4.5 * normalizedBass;
+                wr.alpha -= 0.0016;
+
+                if (wr.alpha <= 0 || wr.y > window.innerHeight) {
+                    waveRipples.splice(i, 1);
+                    continue;
+                }
+
+                // Draw ripple ellipse contour
+                const grad = ctx.createLinearGradient(platformX - wr.w/2, 0, platformX + wr.w/2, 0);
+                grad.addColorStop(0, 'rgba(236, 72, 153, 0)');
+                grad.addColorStop(0.5, `rgba(236, 72, 153, ${wr.alpha * normalizedBass})`);
+                grad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+                
+                ctx.strokeStyle = grad;
+                ctx.beginPath();
+                ctx.ellipse(platformX, wr.y, wr.w / 2, (wr.y - platformY) * 0.08, 0, 0, Math.PI);
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // ── DYNAMIC METRIC REACTIVE BRIGHTNESS TRANSITION (Auroras & Artwork Pulse) ──
+            // Adjust visual aura scales in the DOM
+            if (auroraLeft && auroraRight && auroraCenter) {
+                auroraLeft.style.transform = `scale(${1.0 + normalizedBass * 0.35}) translate(${ambientBreeze * 20}px, 0)`;
+                auroraRight.style.transform = `scale(${1.0 + normalizedMid * 0.25}) translate(0, ${Math.sin(frameCount * 0.01) * 30}px)`;
+                auroraCenter.style.opacity = `${0.12 + volumeScale * 0.14}`;
+            }
+
+            if (artworkPulse) {
+                // Makes playing icon glow scale in sync with average song volume
+                artworkPulse.style.opacity = `${0.1 + volumeScale * 0.55}`;
+            }
+
+            // Loop
+            requestAnimationFrame(runMainLoop);
+        }
+
+        // Start core loop
+        runMainLoop();
+
+    </script>
+</body>
+</html>
