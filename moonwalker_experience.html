@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Jackson: The Moonwalker Experience</title>
+  <meta name="description" content="Una experiencia web ultra-premium e interactiva dedicada al Rey del Pop, con sintetizador Billie Jean, simulador de Moonwalk y diseño visual inmersivo.">
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Syne & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+  
+  <!-- Configuración de Tailwind Customizada -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            title: ['"Syne"', 'sans-serif'],
+            elegant: ['"Cinzel"', 'serif'],
+          },
+          colors: {
+            obsidian: {
+              DEFAULT: '#050508',
+              card: 'rgba(13, 13, 22, 0.6)',
+              border: 'rgba(212, 175, 55, 0.15)',
+              light: '#0D0D16'
+            },
+            goldmj: {
+              light: '#F3E5AB',
+              DEFAULT: '#D4AF37',
+              dark: '#AA7C11',
+              neon: '#FFD700'
+            },
+            electric: {
+              violet: '#7C3AED',
+              blue: '#2563EB',
+              pink: '#EC4899',
+              cyan: '#06B6D4'
+            }
+          },
+          boxShadow: {
+            gold: '0 0 20px rgba(212, 175, 55, 0.3)',
+            goldGlow: '0 0 35px rgba(212, 175, 55, 0.6)',
+            neonViolet: '0 0 25px rgba(124, 58, 237, 0.5)',
+            neonBlue: '0 0 25px rgba(37, 99, 235, 0.5)',
+            tileGlow: '0 0 30px var(--tile-color)'
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'spotlight-left': 'spotlightLeft 12s ease-in-out infinite',
+            'spotlight-right': 'spotlightRight 12s ease-in-out infinite',
+            'star-twinkle': 'twinkle 2s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(1deg)' },
+            },
+            spotlightLeft: {
+              '0%, 100%': { transform: 'rotate(-25deg) scaleX(0.8)' },
+              '50%': { transform: 'rotate(-5deg) scaleX(1.1)' },
+            },
+            spotlightRight: {
+              '0%, 100%': { transform: 'rotate(25deg) scaleX(0.8)' },
+              '50%': { transform: 'rotate(5deg) scaleX(1.1)' },
+            },
+            twinkle: {
+              '0%, 100%': { opacity: 0.3, transform: 'scale(0.8)' },
+              '50%': { opacity: 1, transform: 'scale(1.2)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/css">
+    /* Estilos base del Arquitecto */
+    body {
+      background-color: #050508;
+      color: #E2E8F0;
+      overflow-x: hidden;
+    }
+
+    /* Desenfoques de Fondo Ultra-Premium */
+    .glass-card {
+      background: rgba(10, 10, 16, 0.65);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+      transition: all 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    
+    .glass-card:hover {
+      border-color: rgba(212, 175, 55, 0.35);
+      box-shadow: 0 24px 64px -8px rgba(212, 175, 55, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Brillo de las Baldosas Billie Jean */
+    .billie-tile {
+      transition: all 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .billie-tile::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+
+    .billie-tile:hover::before {
+      opacity: 1;
+    }
+
+    /* Estilo del Slider Premium */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 48px;
+      height: 48px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D4AF37"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>') no-repeat center;
+      background-size: contain;
+      cursor: grab;
+      transition: transform 150ms ease;
+      filter: drop-shadow(0 0 10px rgba(212,175,55,0.8));
+    }
+
+    input[type="range"]::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    /* Glows e Iluminaciones dinámicas */
+    .glow-gold-text {
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .stage-light {
+      background: radial-gradient(ellipse at bottom, rgba(37, 99, 235, 0.15) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 100%);
+    }
+
+    /* Animación de la silueta */
+    .lean-silhouette {
+      transform-origin: bottom center;
+      transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Ocultar barra de scroll pero mantener funcionalidad */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Espaciado de rejilla exacto */
+    .mathematical-gap {
+      gap: 32px; /* 32px - 8x4 */
+    }
+  </style>
+</head>
+<body class="antialiased font-sans bg-obsidian text-slate-200 min-h-screen selection:bg-goldmj selection:text-black relative">
+
+  <!-- Ambient Background Spotlights -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute top-0 -left-1/4 w-[600px] h-[800px] bg-electric-violet/10 rounded-full blur-[160px] animate-pulse-slow"></div>
+    <div class="absolute top-[40%] -right-1/4 w-[650px] h-[850px] bg-electric-blue/10 rounded-full blur-[180px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-0 left-[20%] w-[500px] h-[700px] bg-goldmj/5 rounded-full blur-[140px] animate-pulse-slow" style="animation-delay: 1s;"></div>
+  </div>
+
+  <!-- Global Sound Engine Floating Bar -->
+  <div class="fixed top-8 right-8 z-50 flex items-center gap-4">
+    <button id="engine-init-btn" onclick="initGlobalAudio()" class="px-6 py-3 rounded-full bg-gradient-to-r from-goldmj-dark via-goldmj to-goldmj-light text-black font-semibold text-sm uppercase tracking-wider flex items-center gap-2 shadow-gold transition-all duration-200 hover:scale-105 active:scale-95">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      <span>Activar Audio Engine</span>
+    </button>
+    <div id="playing-badge" class="hidden px-4 py-2 rounded-full glass-card border-emerald-500/30 text-emerald-400 font-mono text-xs flex items-center gap-2">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+      </span>
+      <span>LIVE SEQUENCER: 117 BPM</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="w-full py-8 px-12 relative z-30 flex justify-between items-center max-w-7xl mx-auto border-b border-white/5">
+    <div class="flex items-center gap-3">
+      <span class="font-elegant text-2xl tracking-widest font-black text-transparent bg-clip-text bg-gradient-to-r from-goldmj via-amber-200 to-goldmj-light">M.J.</span>
+      <span class="w-[1px] h-6 bg-white/20"></span>
+      <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">The Moonwalker Experience</span>
+    </div>
+    <nav class="hidden md:flex items-center gap-8 text-xs uppercase tracking-widest font-semibold text-slate-400">
+      <a href="#hero-stage" class="hover:text-goldmj transition-colors duration-200">Inicio</a>
+      <a href="#billie-jean-grid" class="hover:text-goldmj transition-colors duration-200">Rhythm Stage</a>
+      <a href="#moonwalk-sim" class="hover:text-goldmj transition-colors duration-200">Moonwalk</a>
+      <a href="#legacy-section" class="hover:text-goldmj transition-colors duration-200">Discografía</a>
+      <a href="#dedicatoria" class="hover:text-goldmj transition-colors duration-200 text-goldmj/60">♥ Maju</a>
+    </nav>
+  </header>
+
+  <!-- Section 1: Hero Stage -->
+  <section id="hero-stage" class="relative min-h-[90vh] flex flex-col justify-center items-center px-6 overflow-hidden select-none">
+    <!-- Cursor Spotlight Canvas/Overlay -->
+    <div class="absolute inset-0 z-10" id="spotlight-overlay"></div>
+    
+    <!-- Stage Backdrop Elements -->
+    <div class="absolute inset-0 flex justify-between px-16 pointer-events-none opacity-30 z-0">
+      <div class="w-[2px] h-full bg-gradient-to-b from-electric-blue via-transparent to-transparent rotate-12 origin-top animate-spotlight-left"></div>
+      <div class="w-[2px] h-full bg-gradient-to-b from-electric-violet via-transparent to-transparent -rotate-12 origin-top animate-spotlight-right"></div>
+    </div>
+
+    <!-- Star Particles (Decorative) -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+      <div class="absolute top-[20%] left-[15%] w-1.5 h-1.5 bg-white rounded-full animate-star-twinkle"></div>
+      <div class="absolute top-[35%] right-[20%] w-2 h-2 bg-white rounded-full animate-star-twinkle" style="animation-delay: 0.5s;"></div>
+      <div class="absolute bottom-[40%] left-[28%] w-1 h-1 bg-white rounded-full animate-star-twinkle" style="animation-delay: 1.2s;"></div>
+      <div class="absolute top-[60%] right-[10%] w-1.5 h-1.5 bg-white rounded-full animate-star-twinkle" style="animation-delay: 0.8s;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-20 text-center max-w-4xl flex flex-col items-center">
+      
+      <!-- Premium Badge -->
+      <div class="mb-6 px-4 py-1.5 rounded-full bg-goldmj/10 border border-goldmj/30 text-goldmj text-xs uppercase tracking-widest font-bold tracking-tight inline-flex items-center gap-2">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <span>Una experiencia especial para Maju</span>
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="font-title text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-slate-400 tracking-tight leading-none mb-4 uppercase">
+        The King of Pop
+      </h1>
+      <h2 class="font-elegant text-2xl md:text-4xl text-goldmj glow-gold-text tracking-widest uppercase mb-8">
+        Michael Jackson
+      </h2>
+
+      <!-- Interactive Silhouette Section -->
+      <div class="relative w-80 h-96 flex items-center justify-center my-6 group cursor-pointer" onclick="triggerSecretPose()">
+        <!-- Glow Backlight -->
+        <div class="absolute w-48 h-48 rounded-full bg-goldmj/20 blur-[60px] group-hover:bg-goldmj/30 transition-all duration-300"></div>
+        
+        <!-- Interactive Silhouette SVG -->
+        <svg id="mj-silhouette" class="lean-silhouette w-72 h-80 text-white drop-shadow-[0_0_30px_rgba(212,175,55,0.4)]" viewBox="0 0 200 300" fill="currentColor">
+          <!-- Fedor Hat, Iconic Silhouette -->
+          <!-- Standard smooth criminal posture vector simplified representation -->
+          <path id="lean-path" d="M100 20 C88 20 84 25 80 32 L83 38 C88 38 95 35 100 35 C108 35 115 40 115 45 L118 40 C115 28 110 20 100 20 Z 
+                   M98 38 C90 40 85 45 83 55 C82 60 84 75 80 90 L60 170 C58 178 64 185 70 185 C75 185 82 178 85 170 L102 105 L95 160 L75 260 C74 265 76 270 82 270 C88 270 94 265 96 255 L118 160 L125 255 C126 265 132 270 138 270 C144 270 146 265 145 260 L120 115 C125 105 130 95 130 80 C130 65 125 55 118 48 C112 43 105 39 98 38 Z" />
+          <!-- Animated White Glove and Sparkling Socks -->
+          <circle cx="62" cy="180" r="4" fill="#FFFFFF" class="animate-pulse shadow-gold" />
+          <polygon points="76,262 82,262 80,268 74,268" fill="#FFFFFF" />
+          <polygon points="140,262 146,262 144,268 138,268" fill="#FFFFFF" />
+        </svg>
+
+        <!-- Floating Interactive Prompt -->
+        <span class="absolute bottom-2 text-xs font-mono text-slate-400 tracking-wider bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+          Hacer clic para activar inclinación "Lean"
+        </span>
+      </div>
+
+      <!-- Description -->
+      <p class="text-slate-400 text-sm md:text-base max-w-lg mt-4 leading-relaxed font-light">
+        Explora las eras del artista más influyente de todos los tiempos. Haz clic en las baldosas de abajo o interactúa con el simulador de Moonwalk.
+      </p>
+
+      <!-- Arrow Down -->
+      <div class="mt-12 animate-float">
+        <a href="#billie-jean-grid" class="flex flex-col items-center gap-2 text-xs uppercase tracking-widest text-slate-400 hover:text-goldmj transition-colors duration-200">
+          <span>Comenzar Show</span>
+          <svg class="w-4 h-4 text-goldmj" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 2: Billie Jean Rhythm Grid -->
+  <section id="billie-jean-grid" class="py-24 px-6 md:px-12 max-w-7xl mx-auto relative z-20">
+    <div class="text-center mb-16">
+      <span class="text-xs uppercase tracking-widest font-mono text-goldmj font-bold">RHYTHM STAGE</span>
+      <h2 class="font-title text-4xl md:text-5xl font-extrabold tracking-tight mt-2 text-white">
+        Billie Jean Floor Tiles
+      </h2>
+      <p class="text-slate-400 text-sm max-w-md mx-auto mt-3">
+        Activa el Audio Engine arriba. Pasa el cursor o haz clic en las baldosas para iluminar la pista y disparar sintetizadores interactivos en tiempo real.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Interactive Grid Tiles (Left Column) -->
+      <div class="lg:col-span-7 flex flex-col items-center">
+        <!-- The Billie Jean 4x4 Grid -->
+        <div class="grid grid-cols-4 gap-4 p-4 rounded-3xl glass-card bg-obsidian-light w-full max-w-[480px] aspect-square shadow-2xl relative border border-goldmj/20">
+          
+          <!-- Tile Rows -->
+          <!-- Row 1: Vocals (Magenta/Violet Glow) -->
+          <div onclick="playSynthSound('vocal1', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(236, 72, 153, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">HEE-HEE!</span>
+            <div class="w-6 h-6 rounded-full bg-electric-pink/20 flex items-center justify-center text-electric-pink mt-1 group-hover:scale-110 transition-transform">🎤</div>
+          </div>
+          <div onclick="playSynthSound('vocal2', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(236, 72, 153, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">OW!</span>
+            <div class="w-6 h-6 rounded-full bg-electric-pink/20 flex items-center justify-center text-electric-pink mt-1 group-hover:scale-110 transition-transform">🎤</div>
+          </div>
+          <div onclick="playSynthSound('vocal3', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(236, 72, 153, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">SHAMONE</span>
+            <div class="w-6 h-6 rounded-full bg-electric-pink/20 flex items-center justify-center text-electric-pink mt-1 group-hover:scale-110 transition-transform">🎤</div>
+          </div>
+          <div onclick="playSynthSound('vocal4', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(236, 72, 153, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">HOO!</span>
+            <div class="w-6 h-6 rounded-full bg-electric-pink/20 flex items-center justify-center text-electric-pink mt-1 group-hover:scale-110 transition-transform">🎤</div>
+          </div>
+
+          <!-- Row 2: Synths (Gold Glow) -->
+          <div onclick="playSynthSound('synth1', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(212, 175, 55, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">CHORD A</span>
+            <div class="w-6 h-6 rounded-full bg-goldmj/20 flex items-center justify-center text-goldmj mt-1 group-hover:scale-110 transition-transform">🎹</div>
+          </div>
+          <div onclick="playSynthSound('synth2', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(212, 175, 55, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">LASER</span>
+            <div class="w-6 h-6 rounded-full bg-goldmj/20 flex items-center justify-center text-goldmj mt-1 group-hover:scale-110 transition-transform">⚡</div>
+          </div>
+          <div onclick="playSynthSound('synth3', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(212, 175, 55, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">BASS E</span>
+            <div class="w-6 h-6 rounded-full bg-goldmj/20 flex items-center justify-center text-goldmj mt-1 group-hover:scale-110 transition-transform">🎸</div>
+          </div>
+          <div onclick="playSynthSound('synth4', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(212, 175, 55, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">BASS F#</span>
+            <div class="w-6 h-6 rounded-full bg-goldmj/20 flex items-center justify-center text-goldmj mt-1 group-hover:scale-110 transition-transform">🎸</div>
+          </div>
+
+          <!-- Row 3: Drums (Blue Glow) -->
+          <div onclick="playSynthSound('drum1', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(37, 99, 235, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">KICK DRUM</span>
+            <div class="w-6 h-6 rounded-full bg-electric-blue/20 flex items-center justify-center text-electric-blue mt-1 group-hover:scale-110 transition-transform">🥁</div>
+          </div>
+          <div onclick="playSynthSound('drum2', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(37, 99, 235, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">SNARE</span>
+            <div class="w-6 h-6 rounded-full bg-electric-blue/20 flex items-center justify-center text-electric-blue mt-1 group-hover:scale-110 transition-transform">🥁</div>
+          </div>
+          <div onclick="playSynthSound('drum3', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(37, 99, 235, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">HI-HAT</span>
+            <div class="w-6 h-6 rounded-full bg-electric-blue/20 flex items-center justify-center text-electric-blue mt-1 group-hover:scale-110 transition-transform">🥁</div>
+          </div>
+          <div onclick="playSynthSound('drum4', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(37, 99, 235, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">CLAP</span>
+            <div class="w-6 h-6 rounded-full bg-electric-blue/20 flex items-center justify-center text-electric-blue mt-1 group-hover:scale-110 transition-transform">👏</div>
+          </div>
+
+          <!-- Row 4: Special (Cyan Glow) -->
+          <div onclick="playSynthSound('spec1', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(6, 182, 212, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">LAUGH</span>
+            <div class="w-6 h-6 rounded-full bg-electric-cyan/20 flex items-center justify-center text-electric-cyan mt-1 group-hover:scale-110 transition-transform">🧟</div>
+          </div>
+          <div onclick="playSynthSound('spec2', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(6, 182, 212, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">BEATBOX</span>
+            <div class="w-6 h-6 rounded-full bg-electric-cyan/20 flex items-center justify-center text-electric-cyan mt-1 group-hover:scale-110 transition-transform">🎤</div>
+          </div>
+          <div onclick="playSynthSound('spec3', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(6, 182, 212, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">RISER</span>
+            <div class="w-6 h-6 rounded-full bg-electric-cyan/20 flex items-center justify-center text-electric-cyan mt-1 group-hover:scale-110 transition-transform">📈</div>
+          </div>
+          <div onclick="playSynthSound('spec4', this)" class="billie-tile aspect-square rounded-2xl bg-slate-900 border border-white/5 cursor-pointer flex flex-col items-center justify-center text-center p-2 group hover:scale-[1.02]" style="--tile-color: rgba(6, 182, 212, 0.6)">
+            <span class="text-[10px] font-mono text-slate-500 uppercase">SPARKLE</span>
+            <div class="w-6 h-6 rounded-full bg-electric-cyan/20 flex items-center justify-center text-electric-cyan mt-1 group-hover:scale-110 transition-transform">✨</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sequencer Controls & Visual Feedback (Right Column) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="glass-card p-8 rounded-3xl space-y-6 border border-white/5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-title text-xl font-bold tracking-tight text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-goldmj shadow-gold"></span>
+              Secuenciador Automático
+            </h3>
+            <!-- Switch -->
+            <button id="sequencer-toggle" onclick="toggleSequencer()" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-slate-800">
+              <span class="sr-only">Toggle Sequencer</span>
+              <span id="sequencer-toggle-handle" aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+            </button>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed font-light">
+            Enciende el secuenciador para reproducir el emblemático loop de bajo y batería de **Billie Jean**. Las baldosas de la cuadrícula se iluminarán automáticamente siguiendo los pulsos rítmicos.
+          </p>
+
+          <!-- Current step visualizer -->
+          <div class="space-y-2">
+            <span class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">PASO DEL COMPÁS</span>
+            <div class="flex justify-between gap-1" id="step-indicators">
+              <!-- JS will fill 16 step pills here -->
+            </div>
+          </div>
+
+          <!-- Lyrics Machine inside dynamic glassmorphic card -->
+          <div class="border-t border-white/5 pt-6 space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-mono tracking-widest text-goldmj font-bold uppercase">FRASES ICÓNICAS</span>
+              <button onclick="nextTrivia()" class="text-xs font-mono text-slate-400 hover:text-goldmj transition-colors duration-200 flex items-center gap-1">
+                <span>Siguiente</span> →
+              </button>
+            </div>
+            
+            <div id="trivia-container" class="relative h-24 flex items-center justify-center">
+              <!-- Loaded quote -->
+              <p id="trivia-text" class="text-sm font-light text-slate-300 italic text-center transition-all duration-300 tracking-tight leading-relaxed">
+                "In a world filled with hate, we must still dare to hope. In a world filled with anger, we must still dare to comfort."
+              </p>
+              
+              <!-- Custom Skeleton Loader (hidden by default) -->
+              <div id="trivia-skeleton" class="hidden absolute inset-0 flex flex-col justify-center space-y-3">
+                <div class="h-3 bg-slate-800 rounded-full w-5/6 mx-auto animate-pulse"></div>
+                <div class="h-3 bg-slate-800 rounded-full w-4/6 mx-auto animate-pulse"></div>
+                <div class="h-3 bg-slate-800 rounded-full w-3/6 mx-auto animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 3: The Moonwalk Parallax Simulator -->
+  <section id="moonwalk-sim" class="py-24 border-t border-white/5 bg-gradient-to-b from-black/40 to-obsidian relative z-20">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 space-y-12">
+      
+      <div class="text-center">
+        <span class="text-xs uppercase tracking-widest font-mono text-goldmj font-bold">INTERACTIVE CONTROLLER</span>
+        <h2 class="font-title text-4xl md:text-5xl font-extrabold tracking-tight mt-2 text-white">
+          The Moonwalk Simulator
+        </h2>
+        <p class="text-slate-400 text-sm max-w-md mx-auto mt-3">
+          Arrastra el deslizador dorado para hacer que Michael se deslice en reversa ("Moonwalk") y descubre su evolución artística a través del tiempo.
+        </p>
+      </div>
+
+      <!-- Parallax Street Stage Area -->
+      <div class="relative w-full h-80 rounded-3xl overflow-hidden glass-card border border-goldmj/20 shadow-2xl flex items-end">
+        <!-- City Skyline Background (Parallax Layer 1) -->
+        <div id="parallax-bg-1" class="absolute inset-0 bg-repeat-x transition-all duration-100 pointer-events-none" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;800&quot; height=&quot;300&quot; viewBox=&quot;0 0 800 300&quot; fill=&quot;none&quot;><rect y=&quot;200&quot; width=&quot;120&quot; height=&quot;100&quot; fill=&quot;%2308080C&quot; opacity=&quot;0.4&quot;/><rect x=&quot;150&quot; y=&quot;150&quot; width=&quot;100&quot; height=&quot;150&quot; fill=&quot;%2308080C&quot; opacity=&quot;0.4&quot;/><rect x=&quot;300&quot; y=&quot;180&quot; width=&quot;140&quot; height=&quot;120&quot; fill=&quot;%2308080C&quot; opacity=&quot;0.4&quot;/><rect x=&quot;500&quot; y=&quot;120&quot; width=&quot;110&quot; height=&quot;180&quot; fill=&quot;%2308080C&quot; opacity=&quot;0.4&quot;/><rect x=&quot;670&quot; y=&quot;170&quot; width=&quot;130&quot; height=&quot;130&quot; fill=&quot;%2308080C&quot; opacity=&quot;0.4&quot;/></svg>'); background-position-x: 0px; background-size: cover;"></div>
+        
+        <!-- Streets & Neon Signs (Parallax Layer 2) -->
+        <div id="parallax-bg-2" class="absolute inset-0 bg-repeat-x transition-all duration-100 pointer-events-none" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;800&quot; height=&quot;300&quot; viewBox=&quot;0 0 800 300&quot; fill=&quot;none&quot;><circle cx=&quot;200&quot; cy=&quot;100&quot; r=&quot;2&quot; fill=&quot;%23EC4899&quot; filter=&quot;blur(1px)&quot;/><text x=&quot;210&quot; y=&quot;103&quot; fill=&quot;%23EC4899&quot; font-family=&quot;sans-serif&quot; font-size=&quot;12&quot; font-weight=&quot;bold&quot; opacity=&quot;0.6&quot;>THRILLER CLUB</text><circle cx=&quot;550&quot; cy=&quot;80&quot; r=&quot;2&quot; fill=&quot;%23D4AF37&quot; filter=&quot;blur(1px)&quot;/><text x=&quot;560&quot; y=&quot;83&quot; fill=&quot;%23D4AF37&quot; font-family=&quot;sans-serif&quot; font-size=&quot;12&quot; font-weight=&quot;bold&quot; opacity=&quot;0.6&quot;>MOTOWN 25</text></svg>'); background-position-x: 0px; background-size: cover;"></div>
+        
+        <!-- Floor Spotlight Glow -->
+        <div class="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-goldmj/20 to-transparent"></div>
+
+        <!-- Moonwalking Silhouette Character -->
+        <div id="mj-dancer" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 transition-transform duration-100 scale-100">
+          <svg class="w-32 h-36 text-white drop-shadow-[0_0_15px_rgba(212,175,55,0.7)]" viewBox="0 0 100 100" fill="currentColor">
+            <!-- Dynamic Silhouette walking path -->
+            <path d="M50 15 C45 15 42 18 42 22 C42 26 45 29 50 29 C55 29 58 26 58 22 C58 18 55 15 50 15 Z 
+                     M48 29 C40 31 38 38 35 48 C33 55 35 62 30 70 L25 80 C23 85 28 89 32 87 L38 80 L35 95 L30 98 C30 98 40 98 44 92 L53 72 L62 92 C65 98 75 98 75 98 L70 95 L67 80 L73 87 C77 89 82 85 80 80 L70 65 C68 58 65 48 55 29 Z" />
+            <!-- Glowing Socks & Fedora tip -->
+            <circle cx="50" cy="14" r="2.5" fill="#D4AF37" />
+            <!-- White Sparkling Socks -->
+            <polygon points="30,95 36,95 34,98 28,98" fill="#FFFFFF" class="animate-pulse" />
+            <polygon points="70,95 76,95 74,98 68,98" fill="#FFFFFF" class="animate-pulse" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Dynamic Timeline Slider Track -->
+      <div class="space-y-4 max-w-3xl mx-auto">
+        <div class="flex justify-between items-center text-xs font-mono text-slate-500 px-2">
+          <span>COMIENZO</span>
+          <span class="text-goldmj">MOONWALK SLIDER</span>
+          <span>FINAL</span>
+        </div>
+        <div class="relative flex items-center">
+          <input type="range" id="moonwalk-range" min="0" max="100" value="50" oninput="handleMoonwalk(this.value)" class="w-full h-2 bg-slate-800 rounded-full appearance-none outline-none border border-white/5 shadow-inner cursor-pointer" />
+        </div>
+      </div>
+
+      <!-- Dynamic Era Description Card (Glassmorphic) -->
+      <div class="max-w-2xl mx-auto glass-card p-8 rounded-3xl border border-goldmj/20 flex flex-col md:flex-row justify-between items-center gap-8 min-h-[220px]">
+        <div class="space-y-4 text-center md:text-left flex-1">
+          <span id="era-year" class="px-3 py-1 rounded-full bg-goldmj/10 text-goldmj border border-goldmj/20 font-mono text-xs uppercase tracking-widest font-bold">1982</span>
+          <h3 id="era-title" class="font-title text-2xl font-bold tracking-tight text-white mt-2">Era Thriller</h3>
+          <p id="era-desc" class="text-slate-400 text-xs font-light leading-relaxed">
+            El álbum más vendido de la historia de la música. Michael redefine los videos musicales y se consagra a nivel mundial con el famoso paso del Moonwalk en Motown 25.
+          </p>
+        </div>
+        <div class="flex flex-col items-center justify-center p-6 bg-black/40 rounded-2xl border border-white/5 min-w-[160px] aspect-square">
+          <span class="text-[10px] font-mono tracking-widest text-slate-500 uppercase">HIT CLAVE</span>
+          <span id="era-stat-val" class="font-elegant text-3xl font-black text-goldmj glow-gold-text mt-2">100M+</span>
+          <span id="era-stat-lbl" class="text-[10px] text-slate-400 uppercase tracking-widest text-center mt-1">Copias Vendidas</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 4: Discography Premium Showcase (3D Tilting Cards) -->
+  <section id="legacy-section" class="py-24 max-w-7xl mx-auto px-6 md:px-12 relative z-20">
+    <div class="text-center mb-16">
+      <span class="text-xs uppercase tracking-widest font-mono text-goldmj font-bold">THE LEGACY</span>
+      <h2 class="font-title text-4xl md:text-5xl font-extrabold tracking-tight mt-2 text-white">
+        Álbumes Emblemáticos
+      </h2>
+      <p class="text-slate-400 text-sm max-w-md mx-auto mt-3">
+        Descubre las obras maestras que redefinieron el sonido del pop internacional. Pasa el cursor por las tarjetas para interactuar con la perspectiva 3D física.
+      </p>
+    </div>
+
+    <!-- Album grid with exact mathematical gaps -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mathematical-gap">
+      
+      <!-- Card 1: Off The Wall -->
+      <div class="tilt-card glass-card p-6 rounded-3xl border border-white/5 flex flex-col justify-between space-y-6 cursor-pointer group" style="transform-style: preserve-3d;">
+        <div class="space-y-4">
+          <!-- Artwork container -->
+          <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700 p-[1px]">
+            <div class="w-full h-full bg-slate-950 rounded-2xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-200">
+              <!-- Custom retro disco shapes -->
+              <div class="absolute w-24 h-24 rounded-full bg-orange-500/20 blur-xl top-4 left-4 animate-pulse-slow"></div>
+              <span class="font-elegant text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-200 to-orange-500 z-10 leading-none">1979</span>
+              <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-2 z-10">DISCO FUNK REVOLUTION</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-title text-lg font-bold tracking-tight text-white group-hover:text-goldmj transition-colors duration-200">Off The Wall</h3>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              El despegue en solitario de Michael junto a Quincy Jones. Ritmos disco pulidos, funk sofisticado y baladas inolvidables.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="text-[10px] font-mono text-goldmj font-bold">20M+ VENTAS</span>
+          <span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 group-hover:bg-goldmj group-hover:text-black transition-colors duration-200">EXPLORAR</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Thriller -->
+      <div class="tilt-card glass-card p-6 rounded-3xl border border-white/5 flex flex-col justify-between space-y-6 cursor-pointer group" style="transform-style: preserve-3d;">
+        <div class="space-y-4">
+          <!-- Artwork container -->
+          <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-red-600 via-rose-700 to-purple-900 p-[1px]">
+            <div class="w-full h-full bg-slate-950 rounded-2xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-200">
+              <!-- Spooky red glow -->
+              <div class="absolute w-24 h-24 rounded-full bg-red-600/30 blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"></div>
+              <span class="font-elegant text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-red-200 to-rose-500 z-10 leading-none">1982</span>
+              <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-2 z-10">BEST SELLING OF ALL TIME</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-title text-lg font-bold tracking-tight text-white group-hover:text-goldmj transition-colors duration-200">Thriller</h3>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              El pináculo de la música pop. Ocho premios Grammy en una noche y el video musical más emblemático jamás creado.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="text-[10px] font-mono text-goldmj font-bold">100M+ VENTAS</span>
+          <span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 group-hover:bg-goldmj group-hover:text-black transition-colors duration-200">EXPLORAR</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Bad -->
+      <div class="tilt-card glass-card p-6 rounded-3xl border border-white/5 flex flex-col justify-between space-y-6 cursor-pointer group" style="transform-style: preserve-3d;">
+        <div class="space-y-4">
+          <!-- Artwork container -->
+          <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-slate-600 via-zinc-700 to-stone-900 p-[1px]">
+            <div class="w-full h-full bg-slate-950 rounded-2xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-200">
+              <!-- Metallic street glow -->
+              <div class="absolute w-24 h-24 rounded-full bg-slate-600/20 blur-xl top-6 left-12 animate-pulse-slow"></div>
+              <span class="font-elegant text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-zinc-400 z-10 leading-none">1987</span>
+              <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-2 z-10">5 CONSECUTIVE BILLBOARD #1s</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-title text-lg font-bold tracking-tight text-white group-hover:text-goldmj transition-colors duration-200">Bad</h3>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              Estilo urbano y rebelde. Contiene clásicos indiscutibles como "Smooth Criminal", "Man in the Mirror" y "The Way You Make Me Feel".
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="text-[10px] font-mono text-goldmj font-bold">45M+ VENTAS</span>
+          <span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 group-hover:bg-goldmj group-hover:text-black transition-colors duration-200">EXPLORAR</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Dangerous -->
+      <div class="tilt-card glass-card p-6 rounded-3xl border border-white/5 flex flex-col justify-between space-y-6 cursor-pointer group" style="transform-style: preserve-3d;">
+        <div class="space-y-4">
+          <!-- Artwork container -->
+          <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-goldmj-dark via-goldmj to-goldmj-light p-[1px]">
+            <div class="w-full h-full bg-slate-950 rounded-2xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-200">
+              <!-- Golden mask glow -->
+              <div class="absolute w-24 h-24 rounded-full bg-goldmj/20 blur-xl bottom-6 right-6 animate-pulse-slow"></div>
+              <span class="font-elegant text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-goldmj-light to-goldmj-dark z-10 leading-none">1991</span>
+              <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-2 z-10">NEW JACK SWING ERA</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-title text-lg font-bold tracking-tight text-white group-hover:text-goldmj transition-colors duration-200">Dangerous</h3>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              Sonidos electrónicos modernos y ritmos de New Jack Swing. "Black or White" e "Remember the Time" conquistan el planeta.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="text-[10px] font-mono text-goldmj font-bold">40M+ VENTAS</span>
+          <span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 group-hover:bg-goldmj group-hover:text-black transition-colors duration-200">EXPLORAR</span>
+        </div>
+      </div>
+
+      <!-- Card 5: HIStory -->
+      <div class="tilt-card glass-card p-6 rounded-3xl border border-white/5 flex flex-col justify-between space-y-6 cursor-pointer group" style="transform-style: preserve-3d;">
+        <div class="space-y-4">
+          <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blue-700 via-slate-800 to-zinc-900 p-[1px]">
+            <div class="w-full h-full bg-slate-950 rounded-2xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-200">
+              <div class="absolute w-24 h-24 rounded-full bg-blue-700/20 blur-xl top-4 right-4 animate-pulse-slow"></div>
+              <span class="font-elegant text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-blue-200 to-slate-400 z-10 leading-none">1995</span>
+              <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-2 z-10">DOUBLE ALBUM MONUMENT</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-title text-lg font-bold tracking-tight text-white group-hover:text-goldmj transition-colors duration-200">HIStory</h3>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              Álbum doble monumental. "You Are Not Alone" bate récords mundiales y estatuas de Michael recorren Europa en épica campaña promocional.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="text-[10px] font-mono text-goldmj font-bold">22M+ VENTAS</span>
+          <span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 group-hover:bg-goldmj group-hover:text-black transition-colors duration-200">EXPLORAR</span>
+        </div>
+      </div>
+
+      <!-- Card 6: Invincible -->
+      <div class="tilt-card glass-card p-6 rounded-3xl border border-white/5 flex flex-col justify-between space-y-6 cursor-pointer group" style="transform-style: preserve-3d;">
+        <div class="space-y-4">
+          <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-700 via-teal-800 to-cyan-900 p-[1px]">
+            <div class="w-full h-full bg-slate-950 rounded-2xl flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-200">
+              <div class="absolute w-24 h-24 rounded-full bg-emerald-600/20 blur-xl bottom-4 left-4 animate-pulse-slow"></div>
+              <span class="font-elegant text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-emerald-200 to-teal-400 z-10 leading-none">2001</span>
+              <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-2 z-10">THE FINAL STUDIO ALBUM</span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-title text-lg font-bold tracking-tight text-white group-hover:text-goldmj transition-colors duration-200">Invincible</h3>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              El último álbum de estudio. Un sofisticado viaje por el R&B contemporáneo que demuestra que el Rey del Pop seguía siendo imbatible.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="text-[10px] font-mono text-goldmj font-bold">13M+ VENTAS</span>
+          <span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 group-hover:bg-goldmj group-hover:text-black transition-colors duration-200">EXPLORAR</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 5: Dedicatoria para Maju -->
+  <section id="dedicatoria" class="py-28 border-t border-white/5 relative z-20 overflow-hidden">
+    <!-- Background golden halo -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-goldmj/5 rounded-full blur-[130px]"></div>
+    </div>
+
+    <!-- Floating stars decoration -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-[15%] left-[8%] w-2 h-2 bg-goldmj rounded-full animate-star-twinkle opacity-40"></div>
+      <div class="absolute top-[30%] right-[12%] w-1.5 h-1.5 bg-goldmj rounded-full animate-star-twinkle opacity-30" style="animation-delay: 0.7s;"></div>
+      <div class="absolute bottom-[20%] left-[18%] w-1 h-1 bg-white rounded-full animate-star-twinkle opacity-20" style="animation-delay: 1.4s;"></div>
+      <div class="absolute bottom-[35%] right-[6%] w-2 h-2 bg-goldmj rounded-full animate-star-twinkle opacity-25" style="animation-delay: 0.3s;"></div>
+      <div class="absolute top-[55%] left-[5%] w-1.5 h-1.5 bg-white rounded-full animate-star-twinkle opacity-15" style="animation-delay: 1.8s;"></div>
+    </div>
+
+    <div class="max-w-2xl mx-auto px-6 text-center space-y-10 relative z-10">
+
+      <!-- Floating rose icon -->
+      <div class="flex justify-center">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-goldmj/20 to-goldmj/5 border border-goldmj/30 flex items-center justify-center text-4xl animate-float shadow-gold">
+          🌹
+        </div>
+      </div>
+
+      <!-- Label -->
+      <div>
+        <span class="text-xs uppercase tracking-widest font-mono text-goldmj font-bold">Con todo el cariño del mundo</span>
+      </div>
+
+      <!-- Big name -->
+      <h2 class="font-elegant text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-goldmj-light via-goldmj to-goldmj-dark glow-gold-text leading-none">
+        Para Maju
+      </h2>
+
+      <!-- Message card -->
+      <div class="glass-card p-8 md:p-12 rounded-3xl border border-goldmj/25 space-y-8">
+        <p class="text-slate-200 text-base md:text-lg font-light leading-relaxed tracking-wide">
+          Esta experiencia fue creada especialmente para ti, quien comparte con Michael ese amor genuino e incondicional por la música — esa que trasciende el tiempo, rompe todas las barreras y se siente en el alma.
+        </p>
+
+        <!-- Divider -->
+        <div class="flex items-center justify-center gap-4">
+          <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-goldmj/40 to-transparent"></div>
+          <span class="text-goldmj text-lg">♪</span>
+          <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-goldmj/40 to-transparent"></div>
+        </div>
+
+        <p class="text-slate-400 text-sm md:text-base font-light leading-relaxed italic">
+          "The greatest education in the world is watching the masters at work."
+        </p>
+        <span class="block text-goldmj text-xs font-mono tracking-widest not-italic">— Michael Jackson</span>
+      </div>
+
+      <!-- Stars row -->
+      <div class="flex justify-center gap-3 text-goldmj">
+        <span class="animate-star-twinkle text-lg">★</span>
+        <span class="animate-star-twinkle text-lg" style="animation-delay: 0.25s">★</span>
+        <span class="animate-star-twinkle text-xl" style="animation-delay: 0.5s">★</span>
+        <span class="animate-star-twinkle text-lg" style="animation-delay: 0.75s">★</span>
+        <span class="animate-star-twinkle text-lg" style="animation-delay: 1s">★</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-white/5 py-12 px-6 bg-obsidian-light text-center relative z-20">
+    <div class="max-w-7xl mx-auto space-y-3">
+      <span class="font-elegant text-2xl tracking-widest font-black text-slate-400">HEE - HEE</span>
+      <p class="text-sm text-slate-400 font-light">
+        Creado con 💛 especialmente para <span class="text-goldmj font-semibold glow-gold-text">Maju</span> — la fan más hermosa del Rey del Pop.
+      </p>
+      <p class="text-xs text-slate-600 font-light">
+        © 2026. Tributo al eterno Michael Jackson. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Script de Audio y UI interactiva -->
+  <script>
+    // --- 1. MOTOR DE AUDIO WEB AUDIO API (Sintetizador Puro) ---
+    class MJSynthesizer {
+      constructor() {
+        this.ctx = null;
+        this.isPlaying = false;
+        this.bpm = 117; // Billie Jean Tempo
+        this.step = 0;
+        this.timerId = null;
+        this.nextNoteTime = 0.0;
+        
+        // Billie Jean Bassline Notes (Frequencies in Hz)
+        // F#2 (92.50), C#3 (138.59), E3 (164.81), F#3 (185.00)
+        this.bassline = [
+          92.50, 138.59, 164.81, 185.00,
+          164.81, 138.59, 123.47, 138.59
+        ];
+      }
+
+      init() {
+        if (this.ctx) return;
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      playKick(time) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.frequency.setValueAtTime(150, time);
+        osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.3);
+
+        gain.gain.setValueAtTime(0.8, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
+
+        osc.start(time);
+        osc.stop(time + 0.3);
+      }
+
+      playSnare(time) {
+        if (!this.ctx) return;
+        // White noise snare
+        const bufferSize = this.ctx.sampleRate * 0.2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 1000;
+
+        const gain = this.ctx.createGain();
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        gain.gain.setValueAtTime(0.4, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+
+        // Snap drum shell sound
+        const osc = this.ctx.createOscillator();
+        const oscGain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, time);
+        osc.connect(oscGain);
+        oscGain.connect(this.ctx.destination);
+
+        oscGain.gain.setValueAtTime(0.3, time);
+        oscGain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+
+        noise.start(time);
+        noise.stop(time + 0.25);
+        osc.start(time);
+        osc.stop(time + 0.15);
+      }
+
+      playHihat(time) {
+        if (!this.ctx) return;
+        const bufferSize = this.ctx.sampleRate * 0.05;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 7000;
+
+        const gain = this.ctx.createGain();
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        gain.gain.setValueAtTime(0.15, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+
+        noise.start(time);
+        noise.stop(time + 0.06);
+      }
+
+      playBass(freq, time, duration) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, time);
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(freq + 1.5, time); // detune for phatness
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(450, time);
+        filter.frequency.exponentialRampToValueAtTime(200, time + duration);
+
+        gain.gain.setValueAtTime(0.25, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
+
+        osc.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(time);
+        osc2.start(time);
+        osc.stop(time + duration);
+        osc2.stop(time + duration);
+      }
+
+      playVocalHeeHee(time) {
+        if (!this.ctx) return;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(900, time);
+        osc1.frequency.exponentialRampToValueAtTime(1700, time + 0.08);
+        osc1.frequency.exponentialRampToValueAtTime(1300, time + 0.25);
+
+        osc2.type = 'sawtooth';
+        osc2.frequency.setValueAtTime(905, time);
+        osc2.frequency.exponentialRampToValueAtTime(1710, time + 0.08);
+        osc2.frequency.exponentialRampToValueAtTime(1305, time + 0.25);
+
+        filter.type = 'bandpass';
+        filter.frequency.value = 1400;
+        filter.Q.value = 1.5;
+
+        gain.gain.setValueAtTime(0.4, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.28);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(time);
+        osc2.start(time);
+        osc1.stop(time + 0.3);
+        osc2.stop(time + 0.3);
+      }
+
+      playVocalOw(time) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(550, time);
+        osc.frequency.exponentialRampToValueAtTime(1300, time + 0.06);
+        osc.frequency.exponentialRampToValueAtTime(120, time + 0.18);
+
+        gain.gain.setValueAtTime(0.5, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(time);
+        osc.stop(time + 0.25);
+      }
+
+      playLaser(time) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(2500, time);
+        osc.frequency.exponentialRampToValueAtTime(50, time + 0.4);
+
+        gain.gain.setValueAtTime(0.2, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.4);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(time);
+        osc.stop(time + 0.4);
+      }
+
+      playVocalShamone(time) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, time);
+        osc.frequency.linearRampToValueAtTime(110, time + 0.3);
+
+        gain.gain.setValueAtTime(0.5, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(time);
+        osc.stop(time + 0.3);
+      }
+
+      playSpookyLaugh(time) {
+        if (!this.ctx) return;
+        const noteLength = 0.5;
+        const baseFreq = 80;
+        
+        // Thriller Vincent Price laugh approximation (descending deep waves)
+        for (let i = 0; i < 3; i++) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(baseFreq - (i * 15), time + (i * 0.15));
+          
+          gain.gain.setValueAtTime(0.2, time + (i * 0.15));
+          gain.gain.exponentialRampToValueAtTime(0.01, time + (i * 0.15) + 0.2);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(time + (i * 0.15));
+          osc.stop(time + (i * 0.15) + 0.25);
+        }
+      }
+
+      start() {
+        if (this.isPlaying) return;
+        this.init();
+        this.isPlaying = true;
+        this.step = 0;
+        this.nextNoteTime = this.ctx.currentTime;
+        
+        const schedule = () => {
+          while (this.nextNoteTime < this.ctx.currentTime + 0.1) {
+            this.scheduleNextStep(this.step, this.nextNoteTime);
+            
+            // Advance the beat
+            const secondsPerBeat = 60.0 / this.bpm;
+            const secondsPerEighth = secondsPerBeat / 2;
+            this.nextNoteTime += secondsPerEighth;
+            
+            this.step = (this.step + 1) % 16;
+          }
+          this.timerId = setTimeout(schedule, 25);
+        };
+        schedule();
+      }
+
+      stop() {
+        this.isPlaying = false;
+        clearTimeout(this.timerId);
+      }
+
+      scheduleNextStep(step, time) {
+        // Sequencer Drums (Billie Jean rhythm pattern)
+        // Kick on 0, 4, 8, 12
+        if (step === 0 || step === 4 || step === 8 || step === 12) {
+          this.playKick(time);
+        }
+
+        // Snare on 4, 12
+        if (step === 4 || step === 12) {
+          this.playSnare(time);
+        }
+
+        // Hihat on eighths
+        if (step % 2 === 0) {
+          this.playHihat(time);
+        }
+
+        // Billie Jean Bassline (8 note loop)
+        const bassNoteIndex = step % 8;
+        const noteFreq = this.bassline[bassNoteIndex];
+        this.playBass(noteFreq, time, 0.2);
+
+        // Dispatch step event to UI
+        setTimeout(() => {
+          triggerStepVisual(step);
+        }, (time - this.ctx.currentTime) * 1000);
+      }
+    }
+
+    const synth = new MJSynthesizer();
+
+    // Init audio on click
+    function initGlobalAudio() {
+      synth.init();
+      document.getElementById('engine-init-btn').classList.add('hidden');
+      document.getElementById('playing-badge').classList.remove('hidden');
+      // Play a nice starter audio signal
+      synth.playLaser(synth.ctx.currentTime);
+      synth.playVocalHeeHee(synth.ctx.currentTime + 0.25);
+    }
+
+    // --- 2. BILLIE JEAN TILE TRIGGERS ---
+    function playSynthSound(soundType, element) {
+      synth.init();
+      if (!synth.ctx) return;
+
+      const time = synth.ctx.currentTime;
+      
+      // Trigger appropriate sound
+      switch(soundType) {
+        case 'vocal1': synth.playVocalHeeHee(time); break;
+        case 'vocal2': synth.playVocalOw(time); break;
+        case 'vocal3': synth.playVocalShamone(time); break;
+        case 'vocal4': synth.playVocalOw(time); break; // Altered
+        case 'synth1': 
+          // Custom retro brass chord
+          synth.playBass(220, time, 0.4);
+          synth.playBass(275, time, 0.4);
+          synth.playBass(330, time, 0.4);
+          break;
+        case 'synth2': synth.playLaser(time); break;
+        case 'synth3': synth.playBass(123.47, time, 0.3); break;
+        case 'synth4': synth.playBass(138.59, time, 0.3); break;
+        case 'drum1': synth.playKick(time); break;
+        case 'drum2': synth.playSnare(time); break;
+        case 'drum3': synth.playHihat(time); break;
+        case 'drum4': 
+          // Clap approximation
+          synth.playSnare(time);
+          synth.playHihat(time);
+          break;
+        case 'spec1': synth.playSpookyLaugh(time); break;
+        case 'spec2': 
+          synth.playKick(time);
+          synth.playHihat(time + 0.05);
+          break;
+        case 'spec3': synth.playLaser(time); break;
+        case 'spec4': 
+          synth.playHihat(time);
+          synth.playLaser(time + 0.1);
+          break;
+      }
+
+      // Visual flash
+      const glowColor = element.style.getPropertyValue('--tile-color');
+      element.style.boxShadow = `0 0 35px ${glowColor}`;
+      element.style.borderColor = glowColor;
+      element.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+
+      setTimeout(() => {
+        element.style.boxShadow = '';
+        element.style.borderColor = '';
+        element.style.backgroundColor = '';
+      }, 200);
+    }
+
+    // --- 3. SEQUENCER SEQUENCING UI ---
+    let sequencerActive = false;
+    
+    // Create step indicator bar
+    const indicatorBar = document.getElementById('step-indicators');
+    for (let i = 0; i < 16; i++) {
+      const stepDot = document.createElement('div');
+      stepDot.className = 'w-full h-2 rounded-full bg-slate-800 transition-all duration-100';
+      stepDot.id = `step-dot-${i}`;
+      indicatorBar.appendChild(stepDot);
+    }
+
+    function toggleSequencer() {
+      synth.init();
+      if (!synth.ctx) {
+        alert("Por favor, haz clic en el botón 'Activar Audio Engine' arriba a la derecha primero.");
+        return;
+      }
+
+      sequencerActive = !sequencerActive;
+      const handle = document.getElementById('sequencer-toggle-handle');
+      const toggle = document.getElementById('sequencer-toggle');
+
+      if (sequencerActive) {
+        handle.classList.replace('translate-x-0', 'translate-x-5');
+        toggle.classList.replace('bg-slate-800', 'bg-goldmj');
+        synth.start();
+      } else {
+        handle.classList.replace('translate-x-5', 'translate-x-0');
+        toggle.classList.replace('bg-goldmj', 'bg-slate-800');
+        synth.stop();
+        // Clear lights
+        for (let i = 0; i < 16; i++) {
+          document.getElementById(`step-dot-${i}`).className = 'w-full h-2 rounded-full bg-slate-800 transition-all duration-100';
+        }
+      }
+    }
+
+    function triggerStepVisual(step) {
+      // Highlight the active dot
+      for (let i = 0; i < 16; i++) {
+        const dot = document.getElementById(`step-dot-${i}`);
+        if (i === step) {
+          dot.className = 'w-full h-2 rounded-full bg-goldmj shadow-gold scale-y-125 transition-all duration-75';
+        } else {
+          dot.className = 'w-full h-2 rounded-full bg-slate-800 transition-all duration-100';
+        }
+      }
+
+      // Synchronize floor tile highlights
+      const tiles = document.querySelectorAll('.billie-tile');
+      const activeTileIndex = step % tiles.length;
+      const activeTile = tiles[activeTileIndex];
+      const glowColor = activeTile.style.getPropertyValue('--tile-color');
+      
+      activeTile.style.boxShadow = `0 0 25px ${glowColor}`;
+      activeTile.style.borderColor = glowColor;
+      
+      setTimeout(() => {
+        activeTile.style.boxShadow = '';
+        activeTile.style.borderColor = '';
+      }, 150);
+    }
+
+    // --- 4. MOONWALK SIMULATOR CONTROL ---
+    const eras = [
+      {
+        year: "1979",
+        title: "Era Off The Wall",
+        desc: "El primer álbum solista de Michael con Quincy Jones. Introduce al mundo un refinado sonido disco-funk y baladas con una voz angelical, consagrándolo como una súper estrella en crecimiento.",
+        statVal: "20M+",
+        statLbl: "Copias Vendidas"
+      },
+      {
+        year: "1982",
+        title: "Era Thriller",
+        desc: "El álbum más vendido de toda la historia de la música universal. Rompe barreras raciales en la televisión con videos legendarios y estrena el legendario paso de baile 'Moonwalk' en Motown 25.",
+        statVal: "100M+",
+        statLbl: "Copias Vendidas"
+      },
+      {
+        year: "1987",
+        title: "Era Bad",
+        desc: "Michael regresa con un look urbano oscuro y metalizado. Realiza su primera gira solista mundial y rompe récords colocando cinco sencillos consecutivos en la primera posición de Billboard.",
+        statVal: "45M+",
+        statLbl: "Copias Vendidas"
+      },
+      {
+        year: "1991",
+        title: "Era Dangerous",
+        desc: "Una fusión vanguardista de pop, new jack swing y hip-hop. Presenta una portada artística misteriosa e inolvidables videos cinematográficos como 'Black or White' e 'Remember the Time'.",
+        statVal: "40M+",
+        statLbl: "Copias Vendidas"
+      },
+      {
+        year: "1995",
+        title: "Era HIStory",
+        desc: "Un masivo e histórico álbum doble que reflexiona sobre su carrera y el impacto de los medios de comunicación en su vida. Acompañado de monumentales estatuas doradas promocionales por toda Europa.",
+        statVal: "22M+",
+        statLbl: "Álbum Doble Vendido"
+      }
+    ];
+
+    function handleMoonwalk(val) {
+      const percent = parseFloat(val);
+      
+      // Calculate background parallax translation
+      const bg1 = document.getElementById('parallax-bg-1');
+      const bg2 = document.getElementById('parallax-bg-2');
+      bg1.style.backgroundPositionX = `${-percent * 2.5}px`;
+      bg2.style.backgroundPositionX = `${-percent * 5}px`;
+
+      // Animate walking height/legs vibration inside the Dancer SVG container
+      const dancer = document.getElementById('mj-dancer');
+      // Vibrating scale y simulate stepping slide
+      const bounce = 1 + Math.sin(percent * 0.5) * 0.03;
+      dancer.style.transform = `translateX(-50%) scaleY(${bounce})`;
+
+      // Map slider percentage to matching era index
+      // 0-20 (Off the wall), 21-40 (Thriller), 41-60 (Bad), 61-80 (Dangerous), 81-100 (History)
+      let index = Math.floor((percent / 100) * eras.length);
+      if (index >= eras.length) index = eras.length - 1;
+
+      // Update descriptions
+      const selected = eras[index];
+      document.getElementById('era-year').innerText = selected.year;
+      document.getElementById('era-title').innerText = selected.title;
+      document.getElementById('era-desc').innerText = selected.desc;
+      document.getElementById('era-stat-val').innerText = selected.statVal;
+      document.getElementById('era-stat-lbl').innerText = selected.statLbl;
+    }
+
+    // Set initial simulator state
+    handleMoonwalk(50);
+
+    // --- 5. 3D TILT EFFECT FOR ALBUM CARDS ---
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width/2;
+        const y = e.clientY - rect.top - rect.height/2;
+        
+        // Tilt bounds: maximum 12 degrees tilt
+        const tiltX = (y / (rect.height/2)) * -12;
+        const tiltY = (x / (rect.width/2)) * 12;
+
+        card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.03, 1.03, 1.03)`;
+        card.style.boxShadow = `0 24px 64px -8px rgba(212, 175, 55, 0.18)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        card.style.boxShadow = '';
+      });
+    });
+
+    // --- 6. TRIVIA & QUOTE GENERATOR ---
+    const triviaQuotes = [
+      "\"In a world filled with hate, we must still dare to hope. In a world filled with anger, we must still dare to comfort.\"",
+      "\"If you wanna make the world a better place, take a look at yourself, and then make a change.\"",
+      "\"Lies run sprints, but the truth runs marathons.\"",
+      "\"To give someone a piece of your heart is worth more than all the wealth in the world.\"",
+      "\"I'm happy to be alive, I'm happy to be who I am.\"",
+      "\"Let us dream of tomorrow where we can truly love from the soul, and know love as the ultimate truth.\""
+    ];
+    
+    let currentTriviaIndex = 0;
+
+    function nextTrivia() {
+      const textElem = document.getElementById('trivia-text');
+      const skeletonElem = document.getElementById('trivia-skeleton');
+
+      // Hide text and show skeleton (simulate network call / dynamic fetch)
+      textElem.classList.add('opacity-0');
+      skeletonElem.classList.remove('hidden');
+
+      setTimeout(() => {
+        currentTriviaIndex = (currentTriviaIndex + 1) % triviaQuotes.length;
+        textElem.innerText = triviaQuotes[currentTriviaIndex];
+        
+        // Switch back
+        skeletonElem.classList.add('hidden');
+        textElem.classList.remove('opacity-0');
+      }, 650);
+    }
+
+    // --- 7. SPECIAL POSE INCLINATION TRIVIA (Smooth Criminal Lean) ---
+    let leaned = false;
+    function triggerSecretPose() {
+      const silhouette = document.getElementById('mj-silhouette');
+      const path = document.getElementById('lean-path');
+      
+      leaned = !leaned;
+      if (leaned) {
+        // Skew silhouette down forward (the Smooth Criminal 45-degree tilt)
+        silhouette.style.transform = 'skewX(-28deg) scaleY(0.9)';
+        
+        // Trigger a nice vocal synth if engine is ready
+        if (synth.ctx) {
+          synth.playVocalOw(synth.ctx.currentTime);
+        }
+      } else {
+        silhouette.style.transform = 'skewX(0deg) scaleY(1)';
+        if (synth.ctx) {
+          synth.playVocalHeeHee(synth.ctx.currentTime);
+        }
+      }
+    }
+
+    // --- 8. STAGE LIGHT MOUSE FOLLOW EFFECT ---
+    const stage = document.getElementById('hero-stage');
+    stage.addEventListener('mousemove', e => {
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      stage.style.setProperty('--mouse-x', `${x}px`);
+      stage.style.setProperty('--mouse-y', `${y}px`);
+    });
+    
+    // Inject CSS for dynamic cursor spotlight follow
+    const sheet = window.document.styleSheets[0];
+    sheet.insertRule(`
+      #hero-stage::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 175, 55, 0.08) 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 1;
+      }
+    `, sheet.cssRules.length);
+  </script>
+</body>
+</html>
